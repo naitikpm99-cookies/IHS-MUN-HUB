@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IHS MUN HUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#7A1425;--maroon-d:#5A0E1B;--yellow:#F2B705;--black:#141010;--bg:#fff;--fg:#141010;--muted:#5b5252;--alt:#F7F0F0;--card:#fff;--line:#e3d6d6;--accent:#7A1425;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141010;--fg:#fff;--muted:#cbbcbc;--alt:#1d1414;--card:#241819;--line:#3a2a2c;--accent:#F2B705}}
+:root[data-theme="dark"]{--bg:#141010;--fg:#fff;--muted:#cbbcbc;--alt:#1d1414;--card:#241819;--line:#3a2a2c;--accent:#F2B705}
+html{scroll-padding-top:calc(80px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--black);z-index:30}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;line-height:1.1;margin:0}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;background:var(--yellow);color:var(--black);font:700 16px 'DM Sans',sans-serif;border:2px solid var(--yellow);border-radius:4px;text-decoration:none;cursor:pointer;transition:background .15s,color .15s}
+.btn:hover{background:var(--black);color:var(--yellow)}
+.btn.ghost{background:transparent;color:#fff;border-color:#fff}
+.btn.ghost:hover{background:#fff;color:var(--maroon)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--black);color:#fff;border-bottom:3px solid var(--yellow)}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:16px}
+.logo{font:900 22px 'Playfair Display',Georgia,serif;text-decoration:none;letter-spacing:.02em}
+.logo span{color:var(--yellow)}
+nav{display:flex;align-items:center;gap:26px}
+nav a:not(.btn){text-decoration:none;font-size:15px;font-weight:500;padding:10px 0}
+nav a:not(.btn):hover{color:var(--yellow)}
+nav .btn{min-height:44px;padding:0 20px}
+.burger{display:none;width:44px;height:44px;background:none;border:0;color:#fff;cursor:pointer}
+.hero{background:var(--maroon);color:#fff;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-top:88px;padding-bottom:88px}
+.hero .eyebrow{color:var(--yellow)}
+.hero h1{font-size:clamp(40px,6vw,78px);font-weight:900}
+.hero h1 em{font-style:normal;color:var(--yellow)}
+.hero p.lead{font-size:19px;max-width:520px;margin:24px 0 32px;color:#f3dfe2}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.hero svg{width:100%;height:auto;max-width:420px;justify-self:center}
+.stats{background:var(--yellow);color:var(--black)}
+.stats .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:24px;padding-top:36px;padding-bottom:36px;text-align:center}
+.stats b{display:block;font:900 44px 'Playfair Display',Georgia,serif}
+.stats span{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+section.block{padding:88px 0}
+section.alt{background:var(--alt)}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:36px}
+.head h2{font-size:clamp(30px,4vw,44px)}
+.head a{font-weight:700;color:var(--accent)}
+.ph{background:repeating-linear-gradient(135deg,var(--maroon) 0 14px,var(--maroon-d) 14px 28px);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:14px;font-weight:500;border-radius:4px}
+.conf{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.conf .ph{min-height:340px}
+.conf h2{font-size:clamp(32px,4.4vw,52px);margin-bottom:16px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 16px;padding:0;list-style:none;font-weight:700}
+.meta li::before{content:"";display:inline-block;width:8px;height:8px;background:var(--yellow);margin-right:8px;border:1px solid var(--black)}
+.conf p{color:var(--muted);max-width:480px;margin:0 0 28px}
+.conf .btn{background:var(--maroon);border-color:var(--maroon);color:#fff}
+.conf .btn:hover{background:var(--yellow);border-color:var(--yellow);color:var(--black)}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.card{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--maroon);border-radius:4px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.card .ph{height:130px;margin-bottom:6px}
+.card h3{font-size:22px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{display:inline-block;align-self:flex-start;background:var(--black);color:var(--yellow);font-size:12px;font-weight:700;letter-spacing:.1em;padding:4px 10px;border-radius:2px}
+.card a.more{margin-top:auto;font-weight:700;color:var(--accent);padding-top:8px}
+.join{background:var(--black);color:#fff;text-align:center}
+.join .wrap{padding-top:88px;padding-bottom:88px;display:flex;flex-direction:column;align-items:center;gap:20px}
+.join h2{font-size:clamp(32px,5vw,56px);color:var(--yellow)}
+.join p{max-width:520px;margin:0;color:#d8cccc}
+footer{background:var(--maroon-d);color:#f3dfe2;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;padding-top:40px;padding-bottom:40px}
+footer .logo{color:#fff;font-size:20px}
+footer .links{display:flex;flex-wrap:wrap;gap:8px 24px}
+footer .links a{padding:8px 0}
+a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+@media (max-width:860px){
+.burger{display:inline-flex;align-items:center;justify-content:center}
+nav{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;align-items:stretch;gap:0;background:var(--black);padding:8px 24px 20px;border-bottom:3px solid var(--yellow)}
+nav.open{display:flex}
+nav a:not(.btn){padding:14px 0;border-bottom:1px solid #2c2222}
+nav .btn{margin-top:16px}
+.hero .wrap,.conf{grid-template-columns:1fr}
+.hero .wrap{padding-top:56px;padding-bottom:56px}
+section.block{padding:60px 0}
+.hero svg{max-width:260px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+<div class="wrap bar">
+<a class="logo" href="#">IHS <span>MUN</span> HUB</a>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+<nav id="nav" aria-label="Main">
+<a href="#about">About</a>
+<a href="#conference">Conferences</a>
+<a href="#committees">Committees</a>
+<a href="#resources">Resources</a>
+<a href="#contact">Contact</a>
+<a class="btn" href="#conference">Register</a>
+</nav>
+</div>
+</header>
+
+<main>
+<section class="hero" id="about">
+<div class="wrap">
+<div>
+<p class="eyebrow">Model United Nations · [School name]</p>
+<h1>Where students become <em>delegates.</em></h1>
+<p class="lead">[One-sentence pitch: who we are, what we do and who can join.]</p>
+<div class="cta-row">
+<a class="btn" href="#join">Join the club</a>
+<a class="btn ghost" href="#conference">Upcoming conference</a>
+</div>
+</div>
+<svg viewBox="0 0 400 400" role="img" aria-label="Decorative globe rings">
+<circle cx="200" cy="200" r="190" fill="none" stroke="#F2B705" stroke-width="3"/>
+<circle cx="200" cy="200" r="140" fill="#5A0E1B"/>
+<ellipse cx="200" cy="200" rx="140" ry="55" fill="none" stroke="#F2B705" stroke-width="2"/>
+<ellipse cx="200" cy="200" rx="55" ry="140" fill="none" stroke="#F2B705" stroke-width="2"/>
+<path d="M60 200h280M200 60v280" stroke="#F2B705" stroke-width="2"/>
+<circle cx="200" cy="200" r="14" fill="#F2B705"/>
+</svg>
+</div>
+</section>
+
+<section class="stats" aria-label="At a glance">
+<div class="wrap">
+<div><b>[00]</b><span>Members</span></div>
+<div><b>[00]</b><span>Conferences attended</span></div>
+<div><b>[00]</b><span>Awards</span></div>
+<div><b>[00]</b><span>Committees</span></div>
+</div>
+</section>
+
+<section class="block" id="conference">
+<div class="wrap conf">
+<div class="ph" role="img" aria-label="Conference poster placeholder">[CONFERENCE POSTER / IMAGE]</div>
+<div>
+<p class="eyebrow">Next conference</p>
+<h2>[Conference name]</h2>
+<ul class="meta"><li>[Date]</li><li>[Venue]</li><li>Register by [deadline]</li></ul>
+<p>[Short description: theme, who it is for and what delegates can expect.]</p>
+<a class="btn" href="#join">Register now</a>
+</div>
+</div>
+</section>
+
+<section class="block alt" id="committees">
+<div class="wrap">
+<div class="head"><div><p class="eyebrow">Debate</p><h2>Committees</h2></div><a href="#">See all committees</a></div>
+<div class="grid3">
+<article class="card"><div class="ph">[IMAGE]</div><span class="tag">GA</span><h3>[General Assembly]</h3><p>[Topic and difficulty level.]</p><a class="more" href="#">Read the background guide</a></article>
+<article class="card"><div class="ph">[IMAGE]</div><span class="tag">SC</span><h3>[Security Council]</h3><p>[Topic and difficulty level.]</p><a class="more" href="#">Read the background guide</a></article>
+<article class="card"><div class="ph">[IMAGE]</div><span class="tag">CRISIS</span><h3>[Crisis committee]</h3><p>[Topic and difficulty level.]</p><a class="more" href="#">Read the background guide</a></article>
+</div>
+</div>
+</section>
+
+<section class="block" id="resources">
+<div class="wrap">
+<div class="head"><div><p class="eyebrow">Learn</p><h2>News and resources</h2></div><a href="#">All updates</a></div>
+<div class="grid3">
+<article class="card"><div class="ph">[IMAGE]</div><span class="tag">NEWS</span><h3>[Headline]</h3><p>[Two-line summary.]</p></article>
+<article class="card"><div class="ph">[IMAGE]</div><span class="tag">GUIDE</span><h3>[Rules of procedure]</h3><p>[How to write a position paper and speak in session.]</p></article>
+<article class="card"><div class="ph">[IMAGE]</div><span class="tag">RECAP</span><h3>[Past conference recap]</h3><p>[Highlights and photos.]</p></article>
+</div>
+</div>
+</section>
+
+<section class="join" id="join">
+<div class="wrap">
+<h2>Ready to take the floor?</h2>
+<p>[Short invitation: meeting times, who can join and no experience needed.]</p>
+<a class="btn" href="#contact">Join IHS MUN HUB</a>
+</div>
+</section>
+</main>
+
+<footer id="contact">
+<div class="wrap">
+<div><a class="logo" href="#">IHS MUN HUB</a><div>[email] · [Instagram]</div></div>
+<div class="links"><a href="#about">About</a><a href="#conference">Conferences</a><a href="#resources">Resources</a><a href="#contact">Contact</a></div>
+<div>© [Year] IHS MUN HUB</div>
+</div>
+</footer>
+
+<script>
+var b=document.getElementById('burger'),n=document.getElementById('nav');
+b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);});
+n.addEventListener('click',function(e){if(e.target.tagName==='A'){n.classList.remove('open');b.setAttribute('aria-expanded',false);}});
+</script>
+</body>
+</html>
