@@ -1,0 +1,670 @@
+/* ==========================================================
+   IHS MUN HUB - main stylesheet
+
+   1. Variables      5. Header          9. Cards
+   2. Base           6. Hero           10. Join + footer
+   3. Layout         7. Stats          11. Animations
+   4. Buttons        8. Sections       12. Mobile
+   ========================================================== */
+
+
+/* ---------- 1. VARIABLES ---------- */
+
+:root {
+  --maroon:   #7A1425;
+  --maroon-d: #5A0E1B;
+  --yellow:   #F2B705;
+  --black:    #141010;
+
+  --bg:     #ffffff;
+  --fg:     #141010;
+  --muted:  #5b5252;
+  --alt:    #F7F0F0;
+  --card:   #ffffff;
+  --line:   #e3d6d6;
+  --accent: #7A1425;
+}
+
+/* Dark mode: follows the visitor's device setting */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #141010;
+    --fg:     #ffffff;
+    --muted:  #cbbcbc;
+    --alt:    #1d1414;
+    --card:   #241819;
+    --line:   #3a2a2c;
+    --accent: #F2B705;
+  }
+}
+
+
+/* ---------- 2. BASE ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  line-height: 1.1;
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+
+/* ---------- 3. LAYOUT HELPERS ---------- */
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  flex-shrink: 0;
+  width: 28px;
+  height: 3px;
+  background: currentColor;
+}
+
+
+/* ---------- 4. BUTTONS ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 28px;
+  background: var(--yellow);
+  color: var(--black);
+  border: 2px solid var(--yellow);
+  border-radius: 4px;
+  font: 700 16px 'DM Sans', sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.btn:hover {
+  background: var(--black);
+  color: var(--yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn.ghost:hover {
+  background: #fff;
+  color: var(--maroon);
+}
+
+
+/* ---------- 5. HEADER ---------- */
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--black);
+  color: #fff;
+  border-bottom: 3px solid var(--yellow);
+  transition: box-shadow 0.3s;
+}
+
+.top.scrolled {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 68px;
+}
+
+.logo {
+  font: 900 22px 'Playfair Display', Georgia, serif;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--yellow);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+nav a:not(.btn) {
+  position: relative;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* The yellow line that grows under a link on hover */
+nav a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 100%;
+  height: 2px;
+  background: var(--yellow);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s;
+}
+
+nav a:not(.btn):hover {
+  color: var(--yellow);
+}
+
+nav a:not(.btn):hover::after {
+  transform: scaleX(1);
+}
+
+nav .btn {
+  min-height: 44px;
+  padding: 0 20px;
+}
+
+.burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+}
+
+
+/* ---------- 6. HERO ---------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--maroon);
+  color: #fff;
+}
+
+/* The photo sits on the right and fades out towards the left.
+   - mask-image makes the left edge see-through (the gradient)
+   - mix-blend-mode: lighten lets the maroon show through the dark parts */
+.hero__photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 68%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 30% center;
+  mix-blend-mode: lighten;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 25%, #000 65%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 25%, #000 65%);
+  animation: fade-in 1.6s ease both;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  padding-top: 110px;
+  padding-bottom: 110px;
+}
+
+.hero__text {
+  max-width: 600px;
+}
+
+.hero .eyebrow {
+  color: var(--yellow);
+}
+
+.hero h1 {
+  font-size: clamp(40px, 6vw, 78px);
+  font-weight: 900;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero h1 em {
+  color: var(--yellow);
+  font-style: normal;
+}
+
+.hero .lead {
+  max-width: 520px;
+  margin: 24px 0 32px;
+  color: #f3dfe2;
+  font-size: 19px;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Hero text slides up one piece at a time when the page loads */
+.hero__text > * {
+  animation: fade-up 0.8s ease both;
+}
+
+.hero__text > :nth-child(2) { animation-delay: 0.10s; }
+.hero__text > :nth-child(3) { animation-delay: 0.20s; }
+.hero__text > :nth-child(4) { animation-delay: 0.30s; }
+
+
+/* ---------- 7. STATS ---------- */
+
+.stats {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+.stats .wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 24px;
+  padding-top: 36px;
+  padding-bottom: 36px;
+  text-align: center;
+}
+
+.stats b {
+  display: block;
+  font: 900 44px 'Playfair Display', Georgia, serif;
+}
+
+.stats span {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+/* ---------- 8. SECTIONS ---------- */
+
+section.block {
+  padding: 88px 0;
+}
+
+section.alt {
+  background: var(--alt);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.head h2 {
+  font-size: clamp(30px, 4vw, 44px);
+}
+
+/* Short yellow bar under every section title */
+.head h2::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 4px;
+  margin-top: 14px;
+  background: var(--yellow);
+}
+
+.head a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Striped placeholder boxes (swap these for real images later) */
+.ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: repeating-linear-gradient(135deg, var(--maroon) 0 14px, var(--maroon-d) 14px 28px);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.conf {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.conf .ph {
+  min-height: 340px;
+}
+
+.conf h2 {
+  margin-bottom: 16px;
+  font-size: clamp(32px, 4.4vw, 52px);
+}
+
+.conf p {
+  max-width: 480px;
+  margin: 0 0 28px;
+  color: var(--muted);
+}
+
+.conf .btn {
+  background: var(--maroon);
+  border-color: var(--maroon);
+  color: #fff;
+}
+
+.conf .btn:hover {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--black);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  font-weight: 700;
+}
+
+.meta li::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  background: var(--yellow);
+  border: 1px solid var(--black);
+}
+
+
+/* ---------- 9. CARDS ---------- */
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--maroon);
+  border-radius: 4px;
+  transition: transform 0.25s, box-shadow 0.25s, border-top-color 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-top-color: var(--yellow);
+  box-shadow: 0 16px 32px rgba(20, 16, 16, 0.18);
+}
+
+.card .ph {
+  height: 130px;
+  margin-bottom: 6px;
+}
+
+.card h3 {
+  font-size: 22px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.card a.more {
+  margin-top: auto;
+  padding-top: 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.tag {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 10px;
+  background: var(--black);
+  color: var(--yellow);
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+
+/* ---------- 10. JOIN + FOOTER ---------- */
+
+.join {
+  background: radial-gradient(circle at 50% 0%, #3b1119 0%, var(--black) 65%);
+  color: #fff;
+  text-align: center;
+}
+
+.join .wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+
+.join h2 {
+  color: var(--yellow);
+  font-size: clamp(32px, 5vw, 56px);
+}
+
+.join p {
+  max-width: 520px;
+  margin: 0;
+  color: #d8cccc;
+}
+
+footer {
+  background: var(--maroon-d);
+  color: #f3dfe2;
+  border-top: 4px solid var(--yellow);
+  font-size: 14px;
+}
+
+footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+footer .logo {
+  color: #fff;
+  font-size: 20px;
+}
+
+footer .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+footer .links a {
+  padding: 8px 0;
+}
+
+footer .links a:hover {
+  color: var(--yellow);
+}
+
+
+/* ---------- 11. ANIMATIONS ---------- */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* main.js adds .reveal, then .is-visible when the element scrolls into view */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Visitors who prefer less motion get no animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
+/* ---------- 12. MOBILE (screens under 860px wide) ---------- */
+
+@media (max-width: 860px) {
+  .burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 24px 20px;
+    background: var(--black);
+    border-bottom: 3px solid var(--yellow);
+  }
+
+  nav.open {
+    display: flex;
+  }
+
+  nav a:not(.btn) {
+    padding: 14px 0;
+    border-bottom: 1px solid #2c2222;
+  }
+
+  nav a:not(.btn)::after {
+    display: none;
+  }
+
+  nav .btn {
+    margin-top: 16px;
+  }
+
+  /* Photo covers the whole hero but stays faint so the text is readable */
+  .hero__photo {
+    width: 100%;
+    opacity: 0.3;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);
+  }
+
+  .hero__content {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .conf {
+    grid-template-columns: 1fr;
+  }
+
+  section.block {
+    padding: 60px 0;
+  }
+}
