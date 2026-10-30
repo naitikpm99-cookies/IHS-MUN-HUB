@@ -1,198 +1,160 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IHS MUN HUB</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DXB MUN</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- Our own files -->
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js" defer></script>
+<!-- Our own files -->
+<link rel="stylesheet" href="css/style.css">
+<script src="js/main.js" defer></script>
 </head>
-
 <body>
 
-  <!-- ========== HEADER ========== -->
-  <header class="top">
-    <div class="wrap bar">
-      <a class="logo" href="#">IHS <span>MUN</span> HUB</a>
+<!-- Navigation -->
+<header class="nav" id="top">
+<a class="logo disp" href="#home">DXB <span>MUN</span></a>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="links">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+<nav class="links" id="links" aria-label="Main">
+<a href="#home" class="on">Home</a><a href="#about">About</a><a href="#committees">Committees</a><a href="#schedule">Schedule</a><a href="#resources">Resources</a><a href="#contact">Contact</a>
+</nav>
+</header>
 
-      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <path d="M3 6h18M3 12h18M3 18h18"/>
-        </svg>
-      </button>
+<main>
 
-      <nav id="nav" aria-label="Main">
-        <a href="#about">About</a>
-        <a href="#conference">Conferences</a>
-        <a href="#committees">Committees</a>
-        <a href="#resources">Resources</a>
-        <a href="#contact">Contact</a>
-        <a class="btn" href="#conference">Register</a>
-      </nav>
-    </div>
-  </header>
+<!-- Home: the photo comes from css/style.css (--photo) -->
+<section class="hero" id="home">
+<div class="photo" role="img" aria-label="Delegates carrying national flags on stage at an MUN summit"></div>
+<div class="copy">
+<p class="kicker disp">Model United Nations · Dubai</p>
+<h1 class="disp">DXB MUN</h1>
+<p class="tagline disp">DXB MUN 2027</p>
+</div>
+<div class="bar"><span>© 2027 DXB MUN</span><span><a href="#contact">KANYE</a><a href="#contact">KIM</a></span></div>
+</section>
 
-  <main>
+<!-- About -->
+<section class="sec" id="about">
+<div class="photo" aria-hidden="true"></div>
+<div class="copy">
+<h2 class="disp">About</h2>
+<div class="about">
+<div class="vline" aria-hidden="true"></div>
+<div>
+<p>[Two or three sentences about DXB MUN: who you are, what you debate and who can join.]</p>
+<p>[One more sentence: meeting times, location or how to get involved.]</p>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- ========== HERO ========== -->
-    <section class="hero" id="about">
-      <img class="hero__photo" src="images/hero-photo.jpg" width="2000" height="1333"
-           alt="Delegates carrying national flags on stage at an MUN summit">
+<!-- Committees: click a tile on the right to change the committee -->
+<section class="sec cm-sec" id="committees">
+<div class="stage">
+<div class="copy">
+<p class="cm-idx disp" id="cm-idx">01 / 19</p>
+<h2 class="cm-a disp" id="cm-a">IPMC</h2>
+<p class="cm-n disp" id="cm-n">Indian Prime Minister’s Cabinet</p>
+<p class="cm-d">[Short description and topic of this committee.]</p>
+</div>
+<div class="railwrap">
+<button class="step" id="prev" aria-label="Previous committee"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+<div class="rail" id="rail" role="group" aria-label="Committees">
+<button type="button" data-a="IPMC" data-n="Indian Prime Minister’s Cabinet" aria-current="true">IPMC</button>
+<button type="button" data-a="HCC" data-n="Historic Crisis Committee">HCC</button>
+<button type="button" data-a="IPC" data-n="International Press Corps">IPC</button>
+<button type="button" data-a="WHO" data-n="World Health Organization">WHO</button>
+<button type="button" data-a="ECOSOC" data-n="Economic and Social Council">ECOSOC</button>
+<button type="button" data-a="AU" data-n="African Union">AU</button>
+<button type="button" data-a="EU" data-n="European Union">EU</button>
+<button type="button" data-a="ICJ" data-n="International Court of Justice">ICJ</button>
+<button type="button" data-a="DISEC" data-n="Disarmament and International Security Committee">DISEC</button>
+<button type="button" data-a="UNODC" data-n="United Nations Office on Drugs and Crime">UNODC</button>
+<button type="button" data-a="UNEP" data-n="United Nations Environment Program">UNEP</button>
+<button type="button" data-a="UNOOSA" data-n="United Nations Office for Outer Space Affairs">UNOOSA</button>
+<button type="button" data-a="UNSC" data-n="United Nations Security Council">UNSC</button>
+<button type="button" data-a="UNHRC" data-n="United Nations Human Rights Council">UNHRC</button>
+<button type="button" data-a="UNCSW" data-n="United Nations Commission on the Status of Women">UNCSW</button>
+<button type="button" data-a="UNCSTD" data-n="United Nations Commission on Science and Technology for Development">UNCSTD</button>
+<button type="button" data-a="SOCHUM" data-n="Social, Humanitarian, and Cultural Committee">SOCHUM</button>
+<button type="button" data-a="INTERPOL" data-n="International Criminal Police Organization">INTERPOL</button>
+<button type="button" data-a="NATO" data-n="North Atlantic Treaty Organization">NATO</button>
+</div>
+<button class="step" id="next" aria-label="Next committee"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+</div>
+</div>
+</section>
 
-      <div class="wrap hero__content">
-        <div class="hero__text">
-          <p class="eyebrow">Model United Nations · [School name]</p>
-          <h1>Where students become <em>delegates.</em></h1>
-          <p class="lead">[One-sentence pitch: who we are, what we do and who can join.]</p>
+<!-- Schedule: edit the times and events here. Each <ol> is one day; the Day buttons switch between them. -->
+<section class="sec sched" id="schedule">
+<div class="copy" style="width:100%">
+<h2 class="disp">Schedule</h2>
+<div class="tabs" role="tablist" aria-label="Conference days">
+<button type="button" role="tab" id="tab-1" aria-selected="true" aria-controls="day-1" data-day="1">Day 1</button>
+<button type="button" role="tab" id="tab-2" aria-selected="false" aria-controls="day-2" data-day="2">Day 2</button>
+<button type="button" role="tab" id="tab-3" aria-selected="false" aria-controls="day-3" data-day="3">Day 3</button>
+</div>
+<table class="day" id="day-1" role="tabpanel" aria-labelledby="tab-1">
+<thead><tr><th>Session</th><th>Timings</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td class="s">Registration</td><td class="t">12:30 PM – 1:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Opening Ceremony</td><td class="t">1:30 PM – 2:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">ROP Briefing</td><td class="t">2:30 PM – 3:00 PM</td><td>30 minutes</td></tr>
+<tr><td class="s">Break</td><td class="t">3:00 PM – 4:00 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Committee Session 1</td><td class="t">4:00 PM – 5:30 PM</td><td>1 hour 30 minutes</td></tr>
+<tr><td class="s">Dispersal</td><td class="t">5:30 PM</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+<table class="day" id="day-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+<thead><tr><th>Session</th><th>Timings</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td class="s">Registration</td><td class="t">9:00 AM – 9:30 AM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 2</td><td class="t">9:30 AM – 11:15 AM</td><td>1 hour 45 minutes</td></tr>
+<tr><td class="s">Break</td><td class="t">11:15 AM – 11:45 AM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 3</td><td class="t">11:45 AM – 1:30 PM</td><td>1 hour 45 minutes</td></tr>
+<tr><td class="s">Lunch</td><td class="t">1:30 PM – 2:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Committee Session 4</td><td class="t">2:30 PM – 4:30 PM</td><td>2 hours</td></tr>
+<tr><td class="s">Socials</td><td class="t">4:30 PM – 7:00 PM</td><td>2 hours 30 minutes</td></tr>
+<tr><td class="s">Dispersal</td><td class="t">7:00 PM</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+<table class="day" id="day-3" role="tabpanel" aria-labelledby="tab-3" hidden>
+<thead><tr><th>Session</th><th>Timings</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td class="s">Registration</td><td class="t">9:00 AM – 9:30 AM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 5</td><td class="t">9:30 AM – 11:30 AM</td><td>2 hours</td></tr>
+<tr><td class="s">Break</td><td class="t">11:30 AM – 12:00 PM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 6</td><td class="t">12:00 PM – 2:30 PM</td><td>2 hours 30 minutes</td></tr>
+<tr><td class="s">Lunch</td><td class="t">2:30 PM – 3:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Closing Ceremony</td><td class="t">3:30 PM – 5:30 PM</td><td>2 hours</td></tr>
+<tr><td class="s">Dispersal</td><td class="t">5:30 PM</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+</div>
+</section>
 
-          <div class="cta-row">
-            <a class="btn" href="#join">Join the club</a>
-            <a class="btn ghost" href="#conference">Upcoming conference</a>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- Resources -->
+<section class="sec res" id="resources">
+<div class="copy" style="width:100%">
+<h2 class="disp">Resources</h2>
+<a class="row" href="#"><div><b class="disp">[Rules of procedure]</b><span>[How to write a position paper and speak in session.]</span></div><span aria-hidden="true">→</span></a>
+</div>
+</section>
 
-    <!-- ========== STATS ========== -->
-    <section class="stats" aria-label="At a glance">
-      <div class="wrap">
-        <div><b>[00]</b><span>Members</span></div>
-        <div><b>[00]</b><span>Conferences attended</span></div>
-        <div><b>[00]</b><span>Awards</span></div>
-        <div><b>[00]</b><span>Committees</span></div>
-      </div>
-    </section>
+</main>
 
-    <!-- ========== NEXT CONFERENCE ========== -->
-    <section class="block" id="conference">
-      <div class="wrap conf">
-        <div class="ph" role="img" aria-label="Conference poster placeholder">[CONFERENCE POSTER / IMAGE]</div>
-
-        <div>
-          <p class="eyebrow">Next conference</p>
-          <h2>[Conference name]</h2>
-          <ul class="meta">
-            <li>[Date]</li>
-            <li>[Venue]</li>
-            <li>Register by [deadline]</li>
-          </ul>
-          <p>[Short description: theme, who it is for and what delegates can expect.]</p>
-          <a class="btn" href="#join">Register now</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== COMMITTEES ========== -->
-    <section class="block alt" id="committees">
-      <div class="wrap">
-        <div class="head">
-          <div>
-            <p class="eyebrow">Debate</p>
-            <h2>Committees</h2>
-          </div>
-          <a href="#">See all committees</a>
-        </div>
-
-        <div class="grid3">
-          <article class="card">
-            <div class="ph">[IMAGE]</div>
-            <span class="tag">GA</span>
-            <h3>[General Assembly]</h3>
-            <p>[Topic and difficulty level.]</p>
-            <a class="more" href="#">Read the background guide</a>
-          </article>
-
-          <article class="card">
-            <div class="ph">[IMAGE]</div>
-            <span class="tag">SC</span>
-            <h3>[Security Council]</h3>
-            <p>[Topic and difficulty level.]</p>
-            <a class="more" href="#">Read the background guide</a>
-          </article>
-
-          <article class="card">
-            <div class="ph">[IMAGE]</div>
-            <span class="tag">CRISIS</span>
-            <h3>[Crisis committee]</h3>
-            <p>[Topic and difficulty level.]</p>
-            <a class="more" href="#">Read the background guide</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== NEWS AND RESOURCES ========== -->
-    <section class="block" id="resources">
-      <div class="wrap">
-        <div class="head">
-          <div>
-            <p class="eyebrow">Learn</p>
-            <h2>News and resources</h2>
-          </div>
-          <a href="#">All updates</a>
-        </div>
-
-        <div class="grid3">
-          <article class="card">
-            <div class="ph">[IMAGE]</div>
-            <span class="tag">NEWS</span>
-            <h3>[Headline]</h3>
-            <p>[Two-line summary.]</p>
-          </article>
-
-          <article class="card">
-            <div class="ph">[IMAGE]</div>
-            <span class="tag">GUIDE</span>
-            <h3>[Rules of procedure]</h3>
-            <p>[How to write a position paper and speak in session.]</p>
-          </article>
-
-          <article class="card">
-            <div class="ph">[IMAGE]</div>
-            <span class="tag">RECAP</span>
-            <h3>[Past conference recap]</h3>
-            <p>[Highlights and photos.]</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== JOIN ========== -->
-    <section class="join" id="join">
-      <div class="wrap">
-        <h2>Ready to take the floor?</h2>
-        <p>[Short invitation: meeting times, who can join and no experience needed.]</p>
-        <a class="btn" href="#contact">Join IHS MUN HUB</a>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ========== FOOTER ========== -->
-  <footer id="contact">
-    <div class="wrap">
-      <div>
-        <a class="logo" href="#">IHS MUN HUB</a>
-        <div>[email] · [Instagram]</div>
-      </div>
-
-      <div class="links">
-        <a href="#about">About</a>
-        <a href="#conference">Conferences</a>
-        <a href="#resources">Resources</a>
-        <a href="#contact">Contact</a>
-      </div>
-
-      <div>© [Year] IHS MUN HUB</div>
-    </div>
-  </footer>
+<!-- Footer -->
+<footer id="contact">
+<span>© [Year] DXB MUN · [email] · [Instagram]</span>
+<a href="#home">Back to top</a>
+</footer>
 
 </body>
 </html>

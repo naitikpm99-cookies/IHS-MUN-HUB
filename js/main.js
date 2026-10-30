@@ -1,57 +1,63 @@
-/* IHS MUN HUB - main script */
+// DXB MUN – menu, section highlighting and the committee showcase
 
-
-/* ---------- 1. Mobile menu ---------- */
-
-const burger = document.getElementById('burger');
-const nav = document.getElementById('nav');
-
-function setMenu(open) {
-  nav.classList.toggle('open', open);
+// Mobile menu
+var burger = document.getElementById('burger');
+var links = document.getElementById('links');
+burger.addEventListener('click', function () {
+  var open = links.classList.toggle('open');
   burger.setAttribute('aria-expanded', open);
-}
-
-// Tapping the burger button opens or closes the menu
-burger.addEventListener('click', () => {
-  setMenu(!nav.classList.contains('open'));
 });
-
-// Tapping a link inside the menu closes it
-nav.addEventListener('click', (event) => {
-  if (event.target.tagName === 'A') {
-    setMenu(false);
+links.addEventListener('click', function (e) {
+  if (e.target.tagName === 'A') {
+    links.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
   }
 });
 
-
-/* ---------- 2. Header shadow after scrolling ---------- */
-
-const header = document.querySelector('.top');
-
-function updateHeader() {
-  header.classList.toggle('scrolled', window.scrollY > 10);
-}
-
-window.addEventListener('scroll', updateHeader, { passive: true });
-updateHeader();
-
-
-/* ---------- 3. Fade elements in as they scroll into view ---------- */
-
-const revealTargets = document.querySelectorAll('.card, .conf > *, .head, .join .wrap > *');
-
+// Highlight the nav link of the section on screen
+var anchors = [].slice.call(links.querySelectorAll('a'));
 if ('IntersectionObserver' in window) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        anchors.forEach(function (a) {
+          a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id);
+        });
       }
     });
-  }, { threshold: 0.15 });
-
-  revealTargets.forEach((element) => {
-    element.classList.add('reveal');
-    observer.observe(element);
-  });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
 }
+
+// Committee showcase: click a tile or use the arrows
+var rail = document.getElementById('rail');
+var btns = [].slice.call(rail.querySelectorAll('button'));
+var cur = 0;
+
+function show(i) {
+  cur = (i + btns.length) % btns.length;
+  var b = btns[cur];
+  btns.forEach(function (x) { x.removeAttribute('aria-current'); });
+  b.setAttribute('aria-current', 'true');
+  document.getElementById('cm-a').textContent = b.dataset.a;
+  document.getElementById('cm-n').textContent = b.dataset.n;
+  document.getElementById('cm-idx').textContent = ('0' + (cur + 1)).slice(-2) + ' / ' + btns.length;
+  rail.scrollTop = b.offsetTop - rail.clientHeight / 2 + b.offsetHeight / 2;
+  rail.scrollLeft = b.offsetLeft - rail.clientWidth / 2 + b.offsetWidth / 2;
+}
+
+btns.forEach(function (b, i) { b.addEventListener('click', function () { show(i); }); });
+document.getElementById('prev').addEventListener('click', function () { show(cur - 1); });
+document.getElementById('next').addEventListener('click', function () { show(cur + 1); });
+
+// Schedule: switch between the days
+var tabs = [].slice.call(document.querySelectorAll('.tabs button'));
+tabs.forEach(function (t) {
+  t.addEventListener('click', function () {
+    tabs.forEach(function (x) {
+      var on = x === t;
+      x.setAttribute('aria-selected', on);
+      document.getElementById('day-' + x.dataset.day).hidden = !on;
+    });
+  });
+});
