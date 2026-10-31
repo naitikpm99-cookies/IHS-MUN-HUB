@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in – DXB MUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/auth.css">
+<script src="js/auth.js" defer></script>
+</head>
+<body>
+
+<header class="top">
+<a class="logo disp" href="index.html">DXB <span>MUN</span></a>
+<nav aria-label="Site"><a href="index.html">Back to website</a></nav>
+</header>
+
+<main class="a-wrap">
+<div class="a-photo" aria-hidden="true"></div>
+
+<section class="a-card">
+<h1 class="disp" id="auth-title">Sign in</h1>
+<p class="a-sub" id="auth-sub">Welcome back, delegate.</p>
+<p class="a-msg" id="msg" role="alert" aria-live="polite"></p>
+
+<!-- Sign in -->
+<form id="login-form" novalidate>
+<label for="li-email">Email</label>
+<input id="li-email" type="email" autocomplete="email" inputmode="email" required>
+<label for="li-pass">Password</label>
+<input id="li-pass" type="password" autocomplete="current-password" required>
+<button class="a-btn" type="submit">Sign in</button>
+</form>
+
+<!-- Create account -->
+<form id="signup-form" novalidate hidden>
+<label for="su-name">Full name</label>
+<input id="su-name" type="text" autocomplete="name" required>
+<label for="su-school">School</label>
+<input id="su-school" type="text" autocomplete="organization">
+<label for="su-email">Email</label>
+<input id="su-email" type="email" autocomplete="email" inputmode="email" required>
+<label for="su-pass">Password (8+ characters)</label>
+<input id="su-pass" type="password" autocomplete="new-password" minlength="8" required>
+<button class="a-btn" type="submit">Create account</button>
+</form>
+
+<p class="a-switch"><span id="switch-text">New here?</span> <button type="button" id="switch-btn">Create an account</button></p>
+<p class="a-note">Demo only: accounts are saved in this browser, not on a server.</p>
+</section>
+</main>
+
+</body>
+</html>
