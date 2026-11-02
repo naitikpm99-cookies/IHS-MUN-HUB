@@ -78,7 +78,7 @@ h2{margin:0 0 24px;font-size:clamp(52px,min(9vw,16vh),120px);line-height:.9}
 footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:28px clamp(20px,4vw,48px);border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
 footer a{padding:8px 0}
 a:focus-visible,button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
-@media (prefers-reduced-motion:no-preference){.copy{animation:rise .9s ease both}@keyframes rise{from{opacity:0;transform:translateY(24px)}}}
+@media (prefers-reduced-motion:no-preference){.copy{animation:rise .15s ease both}@keyframes rise{from{opacity:0;transform:translateY(24px)}}}
 
 /* ---------- zoomed in / small laptop: menu moves to a top bar ---------- */
 @media (max-width:1280px),(max-height:720px){
@@ -120,3 +120,67 @@ h2{font-size:clamp(52px,16vw,96px)}
 .day .t{white-space:normal;font-size:14px}
 .day td:last-child{font-size:14px}
 }
+
+
+/* ================= interactive layer ================= */
+
+/* scroll progress bar, mouse glow, back-to-top */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;background:linear-gradient(90deg,var(--maroon),var(--accent));transform-origin:0 50%;transform:scaleX(0)}
+.glow{position:fixed;top:0;left:0;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:3;background:radial-gradient(circle,rgba(242,183,5,.13),transparent 62%);mix-blend-mode:screen;will-change:transform}
+.totop{position:fixed;right:clamp(16px,3vw,32px);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:var(--maroon);border:1px solid var(--accent);color:#fff;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s,background .2s,color .2s}
+.totop.show{opacity:1;visibility:visible;transform:none}
+.totop:hover{background:var(--accent);color:#000}
+
+/* fade-up on scroll */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* hero title letters */
+.w{display:inline-block;white-space:nowrap}
+.ch{display:inline-block;cursor:default;transition:color .2s,transform .25s cubic-bezier(.2,.7,.2,1)}
+.ch:hover{color:var(--accent);transform:translateY(-8px) rotate(-3deg)}
+@media (prefers-reduced-motion:no-preference){
+.ch{animation:pop .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i)*55ms)}
+@keyframes pop{from{opacity:0;transform:translateY(46px)}}
+}
+
+/* nav and links */
+.links a{transition:color .2s,transform .2s}
+@media (min-width:1281px) and (min-height:721px){.links a:hover,.links a.on{transform:translateX(8px)}}
+footer a{transition:color .2s}
+footer a:hover{color:var(--accent)}
+.row>span:last-child{transition:transform .25s,color .25s}
+.row:hover>span:last-child{transform:translateX(8px);color:var(--accent)}
+
+/* committees */
+.swap{animation:swap .45s cubic-bezier(.2,.7,.2,1) backwards}
+@keyframes swap{from{opacity:0;transform:translateY(18px)}}
+.rail button{transition:border-color .2s,background .2s,box-shadow .2s,color .2s}
+.rail button:hover{background:var(--maroon-d)}
+.rail button[aria-current="true"]{background:var(--maroon)}
+.rail button[hidden]{display:none}
+.step{transition:border-color .2s,color .2s,background .2s}
+.step:hover{background:var(--maroon-d)}
+.cm-search{width:100%;min-height:44px;padding:0 12px;background:var(--card);border:1px solid var(--line);border-radius:2px;color:#fff;font:500 13px 'DM Sans',sans-serif}
+.cm-search::placeholder{color:var(--muted)}
+.cm-search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 18px rgba(242,183,5,.25)}
+.cm-none{margin:0;font-size:13px;color:var(--muted)}
+.cm-none[hidden]{display:none}
+
+/* schedule */
+.tabs button{transition:border-color .2s,background .2s,box-shadow .2s,transform .2s}
+.tabs button:hover{transform:translateY(-2px)}
+.tabs button[aria-selected="true"]{background:var(--maroon)}
+.day th:first-child,.day td:first-child{padding-left:12px}
+.day tbody tr{cursor:pointer;transition:background .2s}
+.day tbody tr:hover,.day tbody tr.pin{background:rgba(122,20,37,.38)}
+.day tbody tr.pin .s{color:var(--accent)}
+.day tbody tr:nth-child(1){--r:0}.day tbody tr:nth-child(2){--r:1}.day tbody tr:nth-child(3){--r:2}.day tbody tr:nth-child(4){--r:3}
+.day tbody tr:nth-child(5){--r:4}.day tbody tr:nth-child(6){--r:5}.day tbody tr:nth-child(7){--r:6}.day tbody tr:nth-child(8){--r:7}
+@media (prefers-reduced-motion:no-preference){
+.day:not([hidden]) tbody tr{animation:rowin .5s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--r)*60ms)}
+@keyframes rowin{from{opacity:0;transform:translateX(-18px)}}
+}
+
+@media (max-width:960px){.cm-search{min-height:44px}.totop{bottom:calc(16px + env(safe-area-inset-bottom,0px))}}
+@media (prefers-reduced-motion:reduce){.glow{display:none}.rv{opacity:1;transform:none;transition:none}}

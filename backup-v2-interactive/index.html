@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DXB MUN</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Our own files -->
+<link rel="stylesheet" href="css/style.css">
+<script src="js/main.js" defer></script>
+</head>
+<body>
+
+<!-- Navigation -->
+<header class="nav" id="top">
+<a class="logo disp" href="#home">DXB <span>MUN</span></a>
+<button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="links">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+<nav class="links" id="links" aria-label="Main">
+<a href="#home" class="on">Home</a><a href="#about">About</a><a href="#committees">Committees</a><a href="#schedule">Schedule</a><a href="#resources">Resources</a><a href="#contact">Contact</a><a href="login.html">Login</a>
+</nav>
+</header>
+
+<main>
+
+<!-- Home: the photo comes from css/style.css (--photo) -->
+<section class="hero" id="home">
+<div class="photo" role="img" aria-label="Delegates carrying national flags on stage at an MUN summit"></div>
+<div class="copy">
+<p class="kicker disp">Model United Nations · Dubai</p>
+<h1 class="disp">DXB MUN</h1>
+<p class="tagline disp">DXB MUN 2027</p>
+</div>
+<div class="bar"><span>© 2027 DXB MUN</span><span><a href="#contact">KANYE</a><a href="#contact">KIM</a></span></div>
+</section>
+
+<!-- About -->
+<section class="sec" id="about">
+<div class="photo" aria-hidden="true"></div>
+<div class="copy">
+<h2 class="disp">About</h2>
+<div class="about">
+<div class="vline" aria-hidden="true"></div>
+<div>
+<p>DIPLOMACY AROUND US </p>
+<p>INDIAN HIGH SCHOOL</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Committees: click a tile on the right to change the committee -->
+<section class="sec cm-sec" id="committees">
+<div class="stage">
+<div class="copy">
+<p class="cm-idx disp" id="cm-idx">01 / 19</p>
+<h2 class="cm-a disp" id="cm-a">IPMC</h2>
+<p class="cm-n disp" id="cm-n">Indian Prime Minister’s Cabinet</p>
+<p class="cm-d"></p>
+</div>
+<div class="railwrap">
+<input class="cm-search" id="cm-search" type="search" placeholder="Search…" aria-label="Search committees" autocomplete="off">
+<p class="cm-none" id="cm-none" hidden>No match</p>
+<button class="step" id="prev" aria-label="Previous committee"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+<div class="rail" id="rail" role="group" aria-label="Committees">
+<button type="button" data-a="IPMC" data-n="Indian Prime Minister’s Cabinet" aria-current="true">IPMC</button>
+<button type="button" data-a="HCC" data-n="Historic Crisis Committee">HCC</button>
+<button type="button" data-a="IPC" data-n="International Press Corps">IPC</button>
+<button type="button" data-a="WHO" data-n="World Health Organization">WHO</button>
+<button type="button" data-a="ECOSOC" data-n="Economic and Social Council">ECOSOC</button>
+<button type="button" data-a="AU" data-n="African Union">AU</button>
+<button type="button" data-a="EU" data-n="European Union">EU</button>
+<button type="button" data-a="ICJ" data-n="International Court of Justice">ICJ</button>
+<button type="button" data-a="DISEC" data-n="Disarmament and International Security Committee">DISEC</button>
+<button type="button" data-a="UNODC" data-n="United Nations Office on Drugs and Crime">UNODC</button>
+<button type="button" data-a="UNEP" data-n="United Nations Environment Program">UNEP</button>
+<button type="button" data-a="UNOOSA" data-n="United Nations Office for Outer Space Affairs">UNOOSA</button>
+<button type="button" data-a="UNSC" data-n="United Nations Security Council">UNSC</button>
+<button type="button" data-a="UNHRC" data-n="United Nations Human Rights Council">UNHRC</button>
+<button type="button" data-a="UNCSW" data-n="United Nations Commission on the Status of Women">UNCSW</button>
+<button type="button" data-a="UNCSTD" data-n="United Nations Commission on Science and Technology for Development">UNCSTD</button>
+<button type="button" data-a="SOCHUM" data-n="Social, Humanitarian, and Cultural Committee">SOCHUM</button>
+<button type="button" data-a="INTERPOL" data-n="International Criminal Police Organization">INTERPOL</button>
+<button type="button" data-a="NATO" data-n="North Atlantic Treaty Organization">NATO</button>
+</div>
+<button class="step" id="next" aria-label="Next committee"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+</div>
+</div>
+</section>
+
+<!-- Schedule: edit the sessions and times here. Each <table> is one day; the Day buttons switch between them. -->
+<section class="sec sched" id="schedule">
+<div class="copy" style="width:100%">
+<h2 class="disp">Schedule</h2>
+<div class="tabs" role="tablist" aria-label="Conference days">
+<button type="button" role="tab" id="tab-1" aria-selected="true" aria-controls="day-1" data-day="1">Day 1</button>
+<button type="button" role="tab" id="tab-2" aria-selected="false" aria-controls="day-2" data-day="2">Day 2</button>
+<button type="button" role="tab" id="tab-3" aria-selected="false" aria-controls="day-3" data-day="3">Day 3</button>
+</div>
+<table class="day" id="day-1" role="tabpanel" aria-labelledby="tab-1">
+<thead><tr><th>Session</th><th>Timings</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td class="s">Registration</td><td class="t">12:30 PM – 1:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Opening Ceremony</td><td class="t">1:30 PM – 2:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">ROP Briefing</td><td class="t">2:30 PM – 3:00 PM</td><td>30 minutes</td></tr>
+<tr><td class="s">Break</td><td class="t">3:00 PM – 4:00 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Committee Session 1</td><td class="t">4:00 PM – 5:30 PM</td><td>1 hour 30 minutes</td></tr>
+<tr><td class="s">Dispersal</td><td class="t">5:30 PM</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+<table class="day" id="day-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+<thead><tr><th>Session</th><th>Timings</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td class="s">Registration</td><td class="t">9:00 AM – 9:30 AM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 2</td><td class="t">9:30 AM – 11:15 AM</td><td>1 hour 45 minutes</td></tr>
+<tr><td class="s">Break</td><td class="t">11:15 AM – 11:45 AM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 3</td><td class="t">11:45 AM – 1:30 PM</td><td>1 hour 45 minutes</td></tr>
+<tr><td class="s">Lunch</td><td class="t">1:30 PM – 2:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Committee Session 4</td><td class="t">2:30 PM – 4:30 PM</td><td>2 hours</td></tr>
+<tr><td class="s">Socials</td><td class="t">4:30 PM – 7:00 PM</td><td>2 hours 30 minutes</td></tr>
+<tr><td class="s">Dispersal</td><td class="t">7:00 PM</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+<table class="day" id="day-3" role="tabpanel" aria-labelledby="tab-3" hidden>
+<thead><tr><th>Session</th><th>Timings</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td class="s">Registration</td><td class="t">9:00 AM – 9:30 AM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 5</td><td class="t">9:30 AM – 11:30 AM</td><td>2 hours</td></tr>
+<tr><td class="s">Break</td><td class="t">11:30 AM – 12:00 PM</td><td>30 minutes</td></tr>
+<tr><td class="s">Committee Session 6</td><td class="t">12:00 PM – 2:30 PM</td><td>2 hours 30 minutes</td></tr>
+<tr><td class="s">Lunch</td><td class="t">2:30 PM – 3:30 PM</td><td>1 hour</td></tr>
+<tr><td class="s">Closing Ceremony</td><td class="t">3:30 PM – 5:30 PM</td><td>2 hours</td></tr>
+<tr><td class="s">Dispersal</td><td class="t">5:30 PM</td><td>30 minutes</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- Resources -->
+<section class="sec res" id="resources">
+<div class="copy" style="width:100%">
+<h2 class="disp">Resources</h2>
+<a class="row" href="#"><div><b class="disp">[Rules of procedure]</b><span>[How to write a position paper and speak in session.]</span></div><span aria-hidden="true">→</span></a>
+</div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer id="contact">
+<span>© [Year] DXB MUN · [email] · [Instagram]</span>
+<a href="#home">Back to top</a>
+</footer>
+
+</body>
+</html>

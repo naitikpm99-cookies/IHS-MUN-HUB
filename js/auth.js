@@ -9,86 +9,32 @@
   }
   function write(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
 
-  // Turn email + password into a fingerprint so the password itself is never stored
-  function hash(email, pw) {
-    var text = email + '|' + pw;
-    if (window.crypto && crypto.subtle && window.TextEncoder) {
-      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
-        return Array.prototype.map.call(new Uint8Array(buf), function (b) {
-          return ('0' + b.toString(16)).slice(-2);
-        }).join('');
-      });
-    }
-    var h = 0;
-    for (var i = 0; i < text.length; i++) { h = (h * 31 + text.charCodeAt(i)) | 0; }
-    return Promise.resolve('x' + h);
-  }
-
   function currentUser() {
     var email = localStorage.getItem(SESSION);
     return email ? (read(USERS, {})[email] || null) : null;
   }
 
   /* ---------------- login page ---------------- */
-  var loginForm = document.getElementById('login-form');
-  if (loginForm) {
-    if (currentUser()) { location.replace('dashboard.html'); return; }
-
-    var signupForm = document.getElementById('signup-form');
-    var title = document.getElementById('auth-title');
-    var sub = document.getElementById('auth-sub');
-    var switchText = document.getElementById('switch-text');
-    var switchBtn = document.getElementById('switch-btn');
+  var codeForm = document.getElementById('delegate-code-form');
+  if (codeForm) {
+    var codeInput = document.getElementById('delegate-code');
     var msg = document.getElementById('msg');
-    var signup = false;
-
-    function say(text) { msg.textContent = text; }
-
-    function setMode(isSignup) {
-      signup = isSignup;
-      loginForm.hidden = isSignup;
-      signupForm.hidden = !isSignup;
-      title.textContent = isSignup ? 'Create account' : 'Sign in';
-      sub.textContent = isSignup ? 'Register as a delegate to use your dashboard.' : 'Welcome back, delegate.';
-      switchText.textContent = isSignup ? 'Already have an account?' : 'New here?';
-      switchBtn.textContent = isSignup ? 'Sign in' : 'Create an account';
-      say('');
-    }
-    switchBtn.addEventListener('click', function () { setMode(!signup); });
-
-    loginForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var email = document.getElementById('li-email').value.trim().toLowerCase();
-      var pw = document.getElementById('li-pass').value;
-      if (!email || !pw) { say('Enter your email and password.'); return; }
-      var user = read(USERS, {})[email];
-      hash(email, pw).then(function (h) {
-        if (user && user.hash === h) {
-          localStorage.setItem(SESSION, email);
-          location.href = 'dashboard.html';
-        } else {
-          say('Email or password is incorrect.');
-        }
-      });
+    codeInput.addEventListener('input', function () {
+      codeInput.value = codeInput.value.toUpperCase();
+      msg.textContent = '';
+      msg.classList.remove('info');
     });
 
-    signupForm.addEventListener('submit', function (e) {
+    codeForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var name = document.getElementById('su-name').value.trim();
-      var school = document.getElementById('su-school').value.trim();
-      var email = document.getElementById('su-email').value.trim().toLowerCase();
-      var pw = document.getElementById('su-pass').value;
-      if (!name) { say('Enter your full name.'); return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say('Enter a valid email address.'); return; }
-      if (pw.length < 8) { say('Use a password with at least 8 characters.'); return; }
-      var users = read(USERS, {});
-      if (users[email]) { say('An account with this email already exists.'); return; }
-      hash(email, pw).then(function (h) {
-        users[email] = { name: name, school: school, email: email, hash: h, committee: '', done: {} };
-        write(USERS, users);
-        localStorage.setItem(SESSION, email);
-        location.href = 'dashboard.html';
-      });
+      if (!codeInput.value.trim()) {
+        msg.classList.remove('info');
+        msg.textContent = 'Enter your delegate access code.';
+        codeInput.focus();
+        return;
+      }
+      msg.classList.add('info');
+      msg.textContent = 'Code sign-in is not active yet. Your delegate code will be provided before the conference.';
     });
   }
 

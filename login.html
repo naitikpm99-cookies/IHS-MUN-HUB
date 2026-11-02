@@ -7,50 +7,52 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/auth.css">
 <script src="js/auth.js" defer></script>
 </head>
 <body>
 
-<header class="top">
+<header class="nav auth-nav">
 <a class="logo disp" href="index.html">DXB <span>MUN</span></a>
-<nav aria-label="Site"><a href="index.html">Back to website</a></nav>
+<nav class="links" aria-label="Site"><a class="cta" href="index.html">Back to website</a></nav>
 </header>
 
-<main class="a-wrap">
-<div class="a-photo" aria-hidden="true"></div>
+<main class="hero auth-hero">
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
 
+<div class="hero-in auth-hero-in">
 <section class="a-card">
-<h1 class="disp" id="auth-title">Sign in</h1>
-<p class="a-sub" id="auth-sub">Welcome back, delegate.</p>
+<p class="kicker disp">Delegate access</p>
+<h1 class="disp" id="auth-title">Delegate<br>sign in</h1>
+<p class="a-sub" id="auth-sub">Sign in with your personal delegate code.</p>
 <p class="a-msg" id="msg" role="alert" aria-live="polite"></p>
 
-<!-- Sign in -->
-<form id="login-form" novalidate>
-<label for="li-email">Email</label>
-<input id="li-email" type="email" autocomplete="email" inputmode="email" required>
-<label for="li-pass">Password</label>
-<input id="li-pass" type="password" autocomplete="current-password" required>
-<button class="a-btn" type="submit">Sign in</button>
+<form id="delegate-code-form" novalidate>
+<label for="delegate-code">Delegate access code</label>
+<input id="delegate-code" class="a-code-input" type="text" inputmode="text" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="Enter your code" aria-describedby="code-hint" required>
+<p class="a-hint" id="code-hint">Your code will be provided before the conference.</p>
+<button class="a-btn" type="submit">Continue</button>
 </form>
 
-<!-- Create account -->
-<form id="signup-form" novalidate hidden>
-<label for="su-name">Full name</label>
-<input id="su-name" type="text" autocomplete="name" required>
-<label for="su-school">School</label>
-<input id="su-school" type="text" autocomplete="organization">
-<label for="su-email">Email</label>
-<input id="su-email" type="email" autocomplete="email" inputmode="email" required>
-<label for="su-pass">Password (8+ characters)</label>
-<input id="su-pass" type="password" autocomplete="new-password" minlength="8" required>
-<button class="a-btn" type="submit">Create account</button>
-</form>
-
-<p class="a-switch"><span id="switch-text">New here?</span> <button type="button" id="switch-btn">Create an account</button></p>
-<p class="a-note">Demo only: accounts are saved in this browser, not on a server.</p>
+<p class="a-note">Keep your code safe. You can reuse it for future sign-ins.</p>
 </section>
+
+<div class="visual auth-visual" aria-hidden="true">
+<div class="frame"><div class="photo"></div></div>
+<svg class="badge" viewBox="0 0 200 200">
+<defs><path id="auth-circ" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0"/></defs>
+<circle class="bg" cx="100" cy="100" r="98"/>
+<text><textPath href="#auth-circ" textLength="440" lengthAdjust="spacing">DIPLOMACY AROUND US • INDIAN HIGH SCHOOL • </textPath></text>
+<circle cx="100" cy="100" r="30" fill="#7A1425"/>
+<path d="M100 82l5 12 13 1-10 9 3 13-11-7-11 7 3-13-10-9 13-1z" fill="#F2B705"/>
+</svg>
+<span class="chip c1">DXB MUN 2027</span>
+<span class="chip c2">Delegate access</span>
+</div>
+</div>
+<div class="hero-foot auth-hero-foot"><span>© 2027 DXB MUN</span><span>Diplomacy around us</span></div>
 </main>
 
 </body>
