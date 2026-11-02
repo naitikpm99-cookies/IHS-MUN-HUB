@@ -3,101 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dashboard – DXB MUN</title>
+<title>Delegate dashboard – DXB MUN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/portal.css">
 <script src="js/auth.js" defer></script>
+<script src="js/delegate.js" defer></script>
 </head>
 <body>
 
-<header class="top">
+<header class="nav pt-nav">
 <a class="logo disp" href="index.html">DXB <span>MUN</span></a>
-<nav aria-label="Account">
-<a href="index.html">Website</a>
-<button type="button" class="linkbtn" id="logout">Log out</button>
+<nav class="links" aria-label="Account">
+<a class="hide-sm" href="index.html">Website</a>
+<button class="cta" id="logout" type="button">Back to website</button>
 </nav>
 </header>
 
-<main class="d-wrap">
-<p class="kicker disp">Delegate dashboard</p>
-<h1 class="d-hello disp" id="hello">Welcome</h1>
-<p class="d-sub">Finish these steps before the conference.</p>
-<div class="d-prog" id="prog" role="progressbar" aria-label="Your progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progbar"></i></div>
-<p class="d-sub" id="proglabel"></p>
-
-<div class="d-grid">
-
-<!-- Profile -->
-<section class="d-card">
-<h2 class="disp">Your profile</h2>
-<form id="profile-form" novalidate>
-<label for="p-name">Full name</label>
-<input id="p-name" type="text" autocomplete="name">
-<label for="p-school">School</label>
-<input id="p-school" type="text" autocomplete="organization">
-<p class="d-sub" style="margin:0 0 16px">Email: <b id="p-email"></b></p>
-<p class="a-msg ok" id="p-msg" aria-live="polite"></p>
-<button class="a-btn" type="submit">Save profile</button>
-</form>
+<main>
+<section class="pt-hero">
+<div class="pt-in">
+<p class="kicker disp">DXB MUN 2027 · Delegate portal</p>
+<h1 class="disp" id="hello">Welcome</h1>
+<ul class="pt-tags" id="tags"></ul>
+</div>
 </section>
 
-<!-- Committee -->
-<section class="d-card">
-<h2 class="disp">Your committee</h2>
-<label for="committee">Committee preference</label>
-<select id="committee">
-<option value="">Choose a committee</option>
-<option>IPMC</option><option>HCC</option><option>IPC</option><option>WHO</option><option>ECOSOC</option>
-<option>AU</option><option>EU</option><option>ICJ</option><option>DISEC</option><option>UNODC</option>
-<option>UNEP</option><option>UNOOSA</option><option>UNSC</option><option>UNHRC</option><option>UNCSW</option>
-<option>UNCSTD</option><option>SOCHUM</option><option>INTERPOL</option><option>NATO</option>
-</select>
-<p class="a-msg ok" id="c-msg" aria-live="polite"></p>
-<ul class="d-list">
-<li><span>Preference</span><b id="c-pref">[Not chosen yet]</b></li>
-<li><span>Country / portfolio</span><b>[Not assigned yet]</b></li>
-<li><span>Allocation status</span><b>[Pending]</b></li>
-</ul>
+<div class="pt-in pt-body">
+<div class="pt-grid">
+
+<section class="pt-card" aria-labelledby="send-h">
+<div class="pt-head"><div><p class="eyebrow disp">01</p><h2 class="disp" id="send-h">Send a chit</h2></div></div>
+<p class="pt-sub">Chits go to your chair first. Once the chair approves, the other delegation receives it.</p>
+
+<label class="f-label" for="filter">1 · Choose a delegation</label>
+<input class="f-input" id="filter" type="search" placeholder="Search delegations…" autocomplete="off">
+<div class="chips" id="roster" role="radiogroup" aria-label="Delegations in your committee"></div>
+
+<div class="reply-bar" id="reply-bar" hidden><span id="reply-text"></span><button class="btn ghost xs" id="reply-cancel" type="button">Cancel</button></div>
+<p class="to-line" id="to-line">Pick a delegation above to start.</p>
+
+<label class="f-label" for="text">2 · Write your message</label>
+<textarea class="f-input" id="text" maxlength="500" placeholder="Keep it short and diplomatic…"></textarea>
+<div class="f-meta"><span id="hint">Approved by the chair before delivery.</span><span id="count">0 / 500</span></div>
+<button class="btn" id="send" type="button" disabled>Send chit</button>
+<p class="f-msg" id="send-msg" role="status" aria-live="polite"></p>
 </section>
 
-<!-- Checklist -->
-<section class="d-card">
-<h2 class="disp">Checklist</h2>
-<ul class="d-check">
-<li><input type="checkbox" id="k-profile" data-key="profile" disabled><label for="k-profile">Complete your profile</label></li>
-<li><input type="checkbox" id="k-committee" data-key="committee" disabled><label for="k-committee">Choose a committee preference</label></li>
-<li><input type="checkbox" id="k-rules" data-key="rules"><label for="k-rules">Read the rules of procedure</label></li>
-<li><input type="checkbox" id="k-paper" data-key="paper"><label for="k-paper">Submit your position paper</label></li>
-<li><input type="checkbox" id="k-rop" data-key="rop"><label for="k-rop">Attend the ROP briefing (Day 1, 2:30 PM)</label></li>
-</ul>
+<div class="pt-stack">
+<section class="pt-card" aria-labelledby="in-h">
+<div class="pt-head">
+<div><p class="eyebrow disp">02</p><h2 class="disp" id="in-h">Inbox <span class="pt-count zero" id="in-count">0</span></h2></div>
+<button class="btn ghost xs" id="read-all" type="button" hidden>Mark all read</button>
+</div>
+<div class="scroll-list" id="inbox"></div>
+</section>
+</div>
+
+<section class="pt-card wide" aria-labelledby="sent-h">
+<div class="pt-head"><div><p class="eyebrow disp">03</p><h2 class="disp" id="sent-h">Sent chits</h2></div></div>
+<div class="scroll-list" id="sent"></div>
 </section>
 
-<!-- Day 1 -->
-<section class="d-card">
-<h2 class="disp">Day 1 at a glance</h2>
-<ul class="d-list">
-<li><span>Registration</span><b>12:30 PM – 1:30 PM</b></li>
-<li><span>Opening Ceremony</span><b>1:30 PM – 2:30 PM</b></li>
-<li><span>ROP Briefing</span><b>2:30 PM – 3:00 PM</b></li>
-<li><span>Committee Session 1</span><b>4:00 PM – 5:30 PM</b></li>
-</ul>
-<a class="d-link" href="index.html#schedule">See the full 3-day schedule →</a>
-</section>
-
-<!-- Resources -->
-<section class="d-card">
-<h2 class="disp">Resources</h2>
-<ul class="d-list">
-<li><span>[Rules of procedure]</span><b>[Link]</b></li>
-<li><span>[Background guides]</span><b>[Link]</b></li>
-<li><span>[Position paper template]</span><b>[Link]</b></li>
-</ul>
-<a class="d-link" href="index.html#resources">Go to resources →</a>
-</section>
-
+</div>
 </div>
 </main>
 

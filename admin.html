@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin dashboard – DXB MUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/portal.css">
+<script src="js/auth.js" defer></script>
+<script src="js/admin.js" defer></script>
+</head>
+<body>
+
+<header class="nav pt-nav">
+<a class="logo disp" href="index.html">DXB <span>MUN</span></a>
+<nav class="links" aria-label="Account">
+<a class="hide-sm" href="index.html">Website</a>
+<button class="cta" id="logout" type="button">Back to website</button>
+</nav>
+</header>
+
+<main>
+<section class="pt-hero">
+<div class="pt-in">
+<p class="kicker disp">DXB MUN 2027 · Organiser portal</p>
+<h1 class="disp">Admin dashboard</h1>
+<div class="pt-stats">
+<div class="pt-stat"><b id="s-del">0</b><span>Delegates</span></div>
+<div class="pt-stat"><b id="s-chair">0</b><span>Chairs</span></div>
+<div class="pt-stat"><b id="s-chits">0</b><span>Chits sent</span></div>
+<div class="pt-stat"><b id="s-wait">0</b><span>Waiting for a chair</span></div>
+</div>
+</div>
+</section>
+
+<div class="pt-in pt-body">
+<div class="pt-grid">
+
+<section class="pt-card wide" aria-labelledby="cm-h">
+<div class="pt-head">
+<div><p class="eyebrow disp">01</p><h2 class="disp" id="cm-h">Committees</h2></div>
+<button class="btn ghost xs" id="csv" type="button">Download roster (CSV)</button>
+</div>
+<div class="cm-pick" id="pick"></div>
+</section>
+
+<section class="pt-card" aria-labelledby="add-h">
+<div class="pt-head"><div><p class="eyebrow disp">02</p><h2 class="disp" id="add-h">Add delegates to <span id="sel-a">…</span></h2></div></div>
+
+<div class="f-row">
+<div><label class="f-label" for="n-deleg">Delegation</label><input class="f-input" id="n-deleg" type="text" maxlength="60" placeholder="e.g. France" autocomplete="off"></div>
+<div><label class="f-label" for="n-name">Delegate name</label><input class="f-input" id="n-name" type="text" maxlength="80" placeholder="Optional" autocomplete="off"></div>
+<button class="btn" id="add-one" type="button">Add</button>
+</div>
+<p class="f-msg" id="add-msg" role="status" aria-live="polite"></p>
+
+<hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+<label class="f-label" for="bulk">Or add many at once</label>
+<p class="pt-sub" style="margin-top:0">One per line: <b>Delegation | Delegate name</b>. The name is optional.</p>
+<textarea class="f-input" id="bulk" placeholder="France | Asha&#10;Brazil | Ben&#10;China"></textarea>
+<button class="btn ghost" id="add-bulk" type="button">Add all</button>
+<div class="bulk-out" id="bulk-out" role="status" aria-live="polite"></div>
+</section>
+
+<section class="pt-card" aria-labelledby="chair-h">
+<div class="pt-head"><div><p class="eyebrow disp">03</p><h2 class="disp" id="chair-h">Chair of <span id="sel-b">…</span></h2></div></div>
+<p class="pt-sub">Each committee has one chair account.</p>
+<div id="chair-box"></div>
+<p class="f-msg" id="chair-msg" role="status" aria-live="polite"></p>
+</section>
+
+<section class="pt-card wide" aria-labelledby="tbl-h">
+<div class="pt-head"><div><p class="eyebrow disp">04</p><h2 class="disp" id="tbl-h">Delegates in <span id="sel-c">…</span> <span class="pt-count zero" id="tbl-count">0</span></h2></div></div>
+<div class="tbl-wrap" id="tbl"></div>
+</section>
+
+<section class="pt-card wide" aria-labelledby="log-h">
+<div class="pt-head"><div><p class="eyebrow disp">05</p><h2 class="disp" id="log-h">All chits</h2></div></div>
+<div class="scroll-list" id="log"></div>
+</section>
+
+</div>
+</div>
+</main>
+
+</body>
+</html>

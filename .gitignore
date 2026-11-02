@@ -1,0 +1,4 @@
+# Private portal data (access codes, chits). Never commit this.
+data/
+*.tmp
+backup-v4-node-server/
