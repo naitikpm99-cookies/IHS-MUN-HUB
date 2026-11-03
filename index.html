@@ -12,10 +12,21 @@
 
 <!-- Our own files (the homepage has its own stylesheet; portal pages use css/style.css) -->
 <link rel="stylesheet" href="css/home.css">
+<script src="js/intro.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/wellness.js" defer></script>
 </head>
 <body>
+
+<div class="intro-screen" id="intro-screen" role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-describedby="intro-caption">
+<div class="intro-content">
+<div class="intro-mark disp" aria-hidden="true">DXB<span>✦</span>MUN</div>
+<p class="intro-caption" id="intro-caption">Indian High School · Dubai</p>
+<h1 class="intro-title disp" id="intro-title">Diplomacy<br><span>starts here.</span></h1>
+<button class="intro-skip" id="intro-skip" type="button">Skip intro <span aria-hidden="true">→</span></button>
+</div>
+<div class="intro-progress" aria-hidden="true"></div>
+</div>
 
 <!-- Navigation -->
 <header class="nav" id="top">

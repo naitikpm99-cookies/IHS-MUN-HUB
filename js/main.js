@@ -247,7 +247,7 @@ if ('IntersectionObserver' in window && !reduce) {
 }
 
 // ---------- Hero title: letters pop in and lift when you hover them ----------
-var h1 = document.querySelector('h1');
+var h1 = document.querySelector('.hero h1');
 if (h1 && !reduce) {
   var text = h1.textContent.trim();
   var idx = 0;
