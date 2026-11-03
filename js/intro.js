@@ -1,22 +1,12 @@
 (function () {
-  var showIntro = false;
-  try {
-    showIntro = !sessionStorage.getItem('dxb-mun-intro-seen');
-    if (showIntro) sessionStorage.setItem('dxb-mun-intro-seen', 'true');
-  } catch (error) {
-    console.warn('Intro could not access session storage; it may appear again on reload.', error);
-    showIntro = true;
-  }
-
-  if (!showIntro || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('intro-enabled');
   document.addEventListener('DOMContentLoaded', function () {
     var screen = document.getElementById('intro-screen');
-    var skip = document.getElementById('intro-skip');
+    var title = document.getElementById('intro-title');
     var main = document.querySelector('main');
     var nav = document.querySelector('.nav');
-    if (!screen || !skip || !main || !nav) return;
+    if (!screen || !title || !main || !nav) return;
 
     var dismissed = false;
     var finishTimer;
@@ -25,13 +15,12 @@
     main.inert = true;
     nav.inert = true;
     document.body.style.overflow = 'hidden';
-    skip.focus();
+    title.focus();
 
     function dismiss() {
       if (dismissed) return;
       dismissed = true;
       clearTimeout(finishTimer);
-      document.removeEventListener('keydown', onKeydown);
       screen.classList.add('is-leaving');
       setTimeout(function () {
         screen.setAttribute('aria-hidden', 'true');
@@ -43,14 +32,6 @@
       }, 600);
     }
 
-    skip.addEventListener('click', dismiss);
-    function onKeydown(event) {
-      if (event.key === 'Escape' && !dismissed) {
-        event.preventDefault();
-        dismiss();
-      }
-    }
-    document.addEventListener('keydown', onKeydown);
-    finishTimer = setTimeout(dismiss, 2700);
+    finishTimer = setTimeout(dismiss, reduceMotion ? 1200 : 2700);
   });
 })();
