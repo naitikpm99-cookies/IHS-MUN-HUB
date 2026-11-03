@@ -178,6 +178,20 @@ h2{margin:0 0 36px;font-size:clamp(56px,10vw,150px);line-height:.88}
 .tl li:nth-child(1){--r:0}.tl li:nth-child(2){--r:1}.tl li:nth-child(3){--r:2}.tl li:nth-child(4){--r:3}
 .tl li:nth-child(5){--r:4}.tl li:nth-child(6){--r:5}.tl li:nth-child(7){--r:6}.tl li:nth-child(8){--r:7}
 
+/* delegate wellness */
+.wellness-sec{background:linear-gradient(145deg,var(--maroon-d),var(--ink) 68%)}
+.wellness-sec .head{margin-bottom:22px}
+.wellness-card{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px 32px;align-items:center;max-width:900px;padding:clamp(22px,4vw,36px);border:1px solid rgba(255,255,255,.16);border-radius:var(--r);background:rgba(0,0,0,.28)}
+.wellness-intro h3{margin:0;color:var(--accent);font-size:clamp(26px,4vw,38px);line-height:1}
+.wellness-intro>p{margin:8px 0 0;color:var(--muted)}
+.wellness-intro .wellness-status{margin-top:14px;color:var(--cream);font-size:13px;font-weight:700}
+.wellness-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-width:0;margin:0;padding:0;border:0}
+.wellness-item{display:flex;min-height:74px;align-items:center;justify-content:center;gap:8px;padding:12px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:var(--card);color:var(--cream);font-size:13px;font-weight:700;text-align:center;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.wellness-item.is-checked{border-color:var(--accent);background:var(--accent);color:var(--ink)}
+.wellness-item input{width:18px;height:18px;margin:0;accent-color:var(--maroon);flex:none}
+.wellness-item:focus-within{outline:3px solid var(--pop);outline-offset:3px}
+.wellness-note{grid-column:2;margin:0;color:var(--muted);font-size:11px;text-align:right}
+
 /* resources */
 .res{background:var(--accent);color:var(--ink)}
 .res .eyebrow{color:var(--maroon)}
@@ -233,6 +247,9 @@ footer{position:relative;overflow:hidden;padding:80px 0 28px;background:var(--bg
 .tl li:hover,.tl li.pin{transform:translateX(4px)}
 .tl .tm,.tl .du{white-space:normal}
 .res .row{padding:24px}
+.wellness-card{grid-template-columns:1fr;gap:16px}
+.wellness-intro .wellness-status{margin-top:10px}
+.wellness-note{grid-column:1;text-align:left}
 .hero-foot{flex-wrap:wrap;font-size:12px;padding-bottom:36px}
 .hero-foot a{margin:0 16px 0 0}
 }
@@ -253,6 +270,8 @@ footer{position:relative;overflow:hidden;padding:80px 0 28px;background:var(--bg
 .stats div{padding-left:12px}
 .stats b{font-size:clamp(42px,14vw,76px)}
 .stats span{font-size:10px;letter-spacing:.12em}
+.wellness-list{gap:7px}
+.wellness-item{flex-direction:column;min-height:76px;gap:4px;padding:8px 4px;font-size:11px}
 .timer-sec{padding-top:48px}
 .timer-shell{padding:24px;box-shadow:8px 8px 0 var(--accent)}
 .timer-help{font-size:15px}

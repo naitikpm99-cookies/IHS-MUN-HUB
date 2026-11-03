@@ -13,6 +13,7 @@
 <!-- Our own files (the homepage has its own stylesheet; portal pages use css/style.css) -->
 <link rel="stylesheet" href="css/home.css">
 <script src="js/main.js" defer></script>
+<script src="js/wellness.js" defer></script>
 </head>
 <body>
 
@@ -23,7 +24,7 @@
 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
 </button>
 <nav class="links" id="links" aria-label="Main">
-<a href="#home" class="on">Home</a><a href="#about">About</a><a href="#committees">Committees</a><a href="#schedule">Schedule</a><a href="timer.html">Timer</a><a href="#resources">Resources</a><a href="#contact">Contact</a>
+<a href="#home" class="on">Home</a><a href="#about">About</a><a href="#committees">Committees</a><a href="#schedule">Schedule</a><a href="timer.html">Timer</a><a href="#wellness">Wellness</a><a href="#resources">Resources</a><a href="#contact">Contact</a>
 </nav>
 </header>
 
@@ -177,10 +178,30 @@
 </div>
 </section>
 
+<!-- Delegate wellness: a small daily self-care check-in, saved only in this browser. -->
+<section class="sec wellness-sec" id="wellness">
+<div class="wrap">
+<div class="head"><p class="eyebrow disp">04</p><h2 class="disp">Delegate wellness</h2></div>
+<div class="wellness-card">
+<div class="wellness-intro">
+<h3 class="disp">Quick reset</h3>
+<p>Take a moment between sessions.</p>
+<p class="wellness-status" id="wellness-status" role="status" aria-live="polite">0 of 3 checked today.</p>
+</div>
+<fieldset class="wellness-list" aria-label="Daily wellness check-in">
+<label class="wellness-item"><input type="checkbox" data-wellness="water"><span>Water</span></label>
+<label class="wellness-item"><input type="checkbox" data-wellness="stretch"><span>Stretch</span></label>
+<label class="wellness-item"><input type="checkbox" data-wellness="breathe"><span>Breathe</span></label>
+</fieldset>
+<p class="wellness-note" id="wellness-note">Saved on this device for today.</p>
+</div>
+</div>
+</section>
+
 <!-- Resources -->
 <section class="sec res" id="resources">
 <div class="wrap">
-<div class="head"><p class="eyebrow disp">04</p><h2 class="disp">Resources</h2></div>
+<div class="head"><p class="eyebrow disp">05</p><h2 class="disp">Resources</h2></div>
 <div class="rowwrap">
 <a class="row" href="#"><div><b class="disp">[Rules of procedure]</b><span>[How to write a position paper and speak in session.]</span></div><span class="arrow disp" aria-hidden="true">→</span></a>
 </div>
