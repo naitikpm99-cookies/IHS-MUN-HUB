@@ -12,47 +12,6 @@ a{color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,48px)}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--pop);outline-offset:3px}
 
-/* ---------- homepage intro ---------- */
-.intro-screen{display:none}
-.intro-enabled .intro-screen{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow:hidden;padding:24px;background:radial-gradient(40% 42% at 50% 46%,rgba(122,20,37,.42),transparent 100%),radial-gradient(65% 70% at 50% 50%,rgba(255,90,54,.08),transparent 75%),var(--bg);text-align:center;isolation:isolate}
-.intro-enabled,.intro-enabled body{overflow:hidden}
-.intro-screen::before,.intro-screen::after{position:absolute;z-index:-1;content:"";width:min(78vw,620px);aspect-ratio:1;border:1px solid rgba(242,183,5,.12);border-radius:50%;animation:intro-ring-spin 22s linear infinite}
-.intro-screen::after{width:min(58vw,450px);border-color:rgba(255,241,208,.1);animation-duration:16s;animation-direction:reverse}
-.intro-content{position:relative;z-index:1;width:min(100%,760px);padding:56px 16px;animation:intro-rise .85s cubic-bezier(.2,.7,.2,1) both}
-.intro-orbit{position:absolute;z-index:-1;top:50%;left:50%;width:min(58vw,420px);aspect-ratio:1;border:1px dashed rgba(255,241,208,.16);border-radius:50%;transform:translate(-50%,-50%);animation:intro-orbit-spin 28s linear infinite}
-.intro-orbit i{position:absolute;top:8%;left:50%;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 24px rgba(242,183,5,.7)}
-.intro-orbit i:nth-child(2){top:auto;right:9%;bottom:23%;left:auto;width:6px;height:6px;background:var(--pop)}
-.intro-orbit i:nth-child(3){top:25%;right:auto;bottom:auto;left:8%;width:5px;height:5px;background:var(--cream)}
-.intro-kicker{margin:0 0 20px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;animation:intro-fade-up .65s .1s both}
-.intro-mark{display:flex;align-items:center;justify-content:center;gap:clamp(12px,3vw,24px);color:var(--cream);font-size:clamp(26px,6vw,48px);letter-spacing:.16em}
-.intro-mark>span:first-child{animation:intro-slide-left .7s .2s both}
-.intro-mark>span:last-child{animation:intro-slide-right .7s .2s both}
-.intro-mark i{display:grid;width:36px;aspect-ratio:1;place-items:center;border:1px solid rgba(242,183,5,.7);border-radius:50%;color:var(--accent);font-size:17px;font-style:normal;animation:intro-spin 1.8s .25s ease-out both}
-.intro-caption{margin:16px 0 32px;color:var(--accent);font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;animation:intro-fade-up .7s .35s both}
-.intro-caption span{padding:0 5px;color:var(--pop)}
-.intro-title{display:grid;gap:8px;margin:0;color:var(--cream);font-size:clamp(58px,12vw,132px);line-height:.94;letter-spacing:.085em}
-.intro-title:focus{outline:none}
-.intro-title-line{display:block;animation:intro-title-in .8s .45s cubic-bezier(.2,.7,.2,1) both}
-.intro-title-outline{color:transparent;-webkit-text-stroke:1px var(--accent);animation:intro-title-in .8s .65s cubic-bezier(.2,.7,.2,1) both,intro-outline-glow 2.2s 1.1s ease-in-out infinite alternate}
-.intro-motto{margin:30px 0 0;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;animation:intro-fade-up .75s 1s both}
-.intro-motto i{padding:0 8px;color:var(--pop);font-style:normal}
-.intro-progress{position:absolute;right:0;bottom:0;left:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;animation:intro-progress 2.7s linear both}
-.intro-screen.is-leaving{opacity:0;visibility:hidden;transition:opacity .55s ease,visibility .55s}
-@keyframes intro-rise{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:none}}
-@keyframes intro-spin{from{transform:rotate(-120deg) scale(.5);opacity:0}to{transform:rotate(0) scale(1);opacity:1}}
-@keyframes intro-fade-up{from{opacity:0;transform:translateY(14px);letter-spacing:.5em}to{opacity:1;transform:none}}
-@keyframes intro-slide-left{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
-@keyframes intro-slide-right{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
-@keyframes intro-title-in{from{opacity:0;transform:translateY(34px) scale(.96);letter-spacing:.2em}to{opacity:1;transform:none;letter-spacing:.085em}}
-@keyframes intro-outline-glow{from{filter:drop-shadow(0 0 0 rgba(242,183,5,0))}to{filter:drop-shadow(0 0 14px rgba(242,183,5,.3))}}
-@keyframes intro-ring-spin{to{transform:rotate(360deg)}}
-@keyframes intro-orbit-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes intro-progress{to{transform:scaleX(1)}}
-@media (prefers-reduced-motion:reduce){
-.intro-screen::before,.intro-screen::after,.intro-orbit,.intro-content,.intro-kicker,.intro-mark>span,.intro-mark i,.intro-caption,.intro-title-line,.intro-motto,.intro-progress{animation:none}
-.intro-title-outline{filter:none}
-}
-
 /* ---------- navigation: floating pill ---------- */
 .nav{position:fixed;z-index:50;top:calc(14px + env(safe-area-inset-top,0px));left:0;right:0;width:min(1120px,calc(100% - 24px));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 10px 8px 24px;border-radius:999px;background:rgba(20,8,11,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}
 .logo{position:relative;z-index:2;font-size:24px;line-height:1;letter-spacing:.04em;text-decoration:none}
@@ -295,14 +254,6 @@ footer{position:relative;overflow:hidden;padding:80px 0 28px;background:var(--bg
 .hero-foot a{margin:0 16px 0 0}
 }
 @media (max-width:600px){
-.intro-content{padding-inline:8px}
-.intro-kicker{max-width:260px;margin-inline:auto;font-size:8px;letter-spacing:.22em;line-height:1.8}
-.intro-mark{gap:10px;font-size:clamp(24px,8vw,36px);letter-spacing:.12em}
-.intro-caption{margin:14px 0 28px;font-size:9px;letter-spacing:.2em}
-.intro-title{gap:10px;font-size:clamp(40px,11vw,64px);letter-spacing:.045em}
-.intro-title-outline{letter-spacing:.045em}
-.intro-motto{max-width:260px;margin:26px auto 0;font-size:9px;letter-spacing:.2em;line-height:2}
-.intro-orbit{width:min(78vw,360px)}
 .hero{padding:94px 0 82px}
 .hero-in{gap:38px;padding:0 18px}
 .hero h1{font-size:clamp(64px,23vw,128px)}
