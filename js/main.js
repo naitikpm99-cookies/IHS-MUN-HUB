@@ -5,6 +5,25 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var fine = window.matchMedia('(pointer: fine)').matches;
 function $(id) { return document.getElementById(id); }
 
+// ---------- Cinematic opening: skip with a click, Enter, Space, or Escape ----------
+(function () {
+  var intro = $('start-screen');
+  var skip = $('start-skip');
+  if (!intro || !skip || reduce) return;
+  var closed = false;
+  function closeIntro() {
+    if (closed) return;
+    closed = true;
+    intro.classList.add('is-leaving');
+    setTimeout(function () { intro.remove(); }, 800);
+  }
+  skip.addEventListener('click', closeIntro);
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') closeIntro();
+  });
+  setTimeout(function () { if (!closed) intro.remove(); }, 4000);
+})();
+
 // ---------- Mobile menu ----------
 var burger = $('burger');
 var links = $('links');
@@ -55,7 +74,7 @@ function burst(x, y, n) {
     ], { duration: 800 + Math.random() * 500, easing: 'cubic-bezier(.15,.7,.3,1)' });
     an.onfinish = (function (el) { return function () { el.remove(); }; })(p);
   }
-}
+}-
 function burstAt(el, n) {
   var r = el.getBoundingClientRect();
   burst(r.left + r.width / 2, r.top + r.height / 2, n);

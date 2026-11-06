@@ -26,7 +26,7 @@ on conflict (id) do nothing;
 
 create table if not exists private.users (
   id uuid primary key default gen_random_uuid(),
-  role text not null check (role in ('admin','chair','delegate')),
+  role text not null check (role in ('admin','chair','delegate','committee')),
   name text not null default '',
   delegation text,
   committee text references private.committees (id),
@@ -38,6 +38,10 @@ create table if not exists private.users (
 );
 create unique index if not exists users_one_chair on private.users (committee) where role = 'chair';
 create unique index if not exists users_delegation on private.users (committee, lower(delegation)) where role = 'delegate';
+-- committee screens: one display account per committee (older installs are upgraded here)
+alter table private.users drop constraint if exists users_role_check;
+alter table private.users add constraint users_role_check check (role in ('admin','chair','delegate','committee'));
+create unique index if not exists users_one_screen on private.users (committee) where role = 'committee';
 
 create table if not exists private.sessions (
   token_hash bytea primary key,
@@ -257,11 +261,12 @@ declare u private.users := private.me(p_token);
 begin
   perform private.need(u, 'admin');
   return jsonb_build_object(
-    'committees', (select jsonb_agg(jsonb_build_object('id', cm.id, 'name', cm.name,
+    'committees', coalesce((select jsonb_agg(jsonb_build_object('id', cm.id, 'name', cm.name,
         'chair', (select jsonb_build_object('id', ch.id, 'name', ch.name, 'code', ch.code) from private.users ch where ch.role = 'chair' and ch.committee = cm.id),
+        'screen', (select jsonb_build_object('id', s.id, 'code', s.code) from private.users s where s.role = 'committee' and s.committee = cm.id),
         'delegates', coalesce((select jsonb_agg(jsonb_build_object('id', d.id, 'name', d.name, 'delegation', d.delegation, 'code', d.code) order by lower(d.delegation))
                                from private.users d where d.role = 'delegate' and d.committee = cm.id), '[]'::jsonb)) order by cm.sort)
-      from private.committees cm),
+      from private.committees cm), '[]'::jsonb),
     'stats', jsonb_build_object(
         'delegates', (select count(*) from private.users where role = 'delegate'),
         'chairs', (select count(*) from private.users where role = 'chair'),
@@ -334,6 +339,7 @@ declare u private.users := private.me(p_token);
 begin
   perform private.need(u, 'admin');
   if not exists (select 1 from private.users where id = p_id and role <> 'admin') then perform private.fail('Account not found', 'PT404'); end if;
+  if exists (select 1 from private.users where id = p_id and role = 'committee') then perform private.fail('The committee screen is removed together with its committee.', 'PT409'); end if;
   delete from private.users where id = p_id;
   return jsonb_build_object('ok', true);
 end $$;
@@ -344,7 +350,7 @@ begin
   perform private.need(u, 'admin');
   select * into t from private.users where id = p_id;
   if t.id is null or t.role = 'admin' then perform private.fail('Account not found', 'PT404'); end if;
-  c := private.new_code(case when t.role = 'chair' then 'CHR' else 'DEL' end);
+  c := private.new_code(case when t.role = 'chair' then 'CHR' when t.role = 'committee' then 'COM' else 'DEL' end);
   update private.users set code = c, code_norm = private.norm(c) where id = t.id;
   delete from private.sessions where user_id = t.id;
   return jsonb_build_object('code', c);
@@ -358,6 +364,46 @@ begin
           from (select * from private.chits order by created_at desc limit 300) x), '[]'::jsonb));
 end $$;
 
+-- ---------------------------------------------------------------- committees and their screens
+create or replace function public.admin_add_committee(p_token text, p_id text, p_name text) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token); cid text := upper(regexp_replace(coalesce(p_id, ''), '[^A-Za-z0-9-]', '', 'g')); nm text := private.clean(p_name, 100); c text;
+begin
+  perform private.need(u, 'admin');
+  if length(cid) < 2 or length(cid) > 12 then perform private.fail('Use a short acronym of 2 to 12 letters or numbers (for example UNSC).', 'PT400'); end if;
+  if nm = '' then perform private.fail('Enter the full committee name.', 'PT400'); end if;
+  if exists (select 1 from private.committees where id = cid) then perform private.fail(cid || ' already exists.', 'PT409'); end if;
+  insert into private.committees (id, name, sort) values (cid, nm, coalesce((select max(sort) from private.committees), 0) + 1);
+  c := private.new_code('COM');
+  insert into private.users (role, name, committee, code, code_norm) values ('committee', nm, cid, c, private.norm(c));
+  return jsonb_build_object('committee', jsonb_build_object('id', cid, 'name', nm), 'screen', jsonb_build_object('code', c));
+end $$;
+
+create or replace function public.admin_remove_committee(p_token text, p_id text) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token);
+begin
+  perform private.need(u, 'admin');
+  if not exists (select 1 from private.committees where id = p_id) then perform private.fail('Committee not found', 'PT404'); end if;
+  delete from private.chits where committee = p_id;
+  delete from private.users where committee = p_id;   -- chair, delegates and the screen (their sessions go with them)
+  delete from private.committees where id = p_id;
+  return jsonb_build_object('ok', true);
+end $$;
+
+create or replace function public.committee_screen(p_token text) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token);
+begin
+  perform private.need(u, 'committee');
+  return jsonb_build_object(
+    'committee', private.committee_json(u.committee),
+    'chair', (select nullif(ch.name, '') from private.users ch where ch.role = 'chair' and ch.committee = u.committee),
+    'delegations', coalesce((select jsonb_agg(d.delegation order by lower(d.delegation)) from private.users d where d.role = 'delegate' and d.committee = u.committee), '[]'::jsonb));
+end $$;
+
+grant execute on function public.admin_add_committee(text, text, text), public.admin_remove_committee(text, text), public.committee_screen(text) to anon, authenticated;
+
 -- ---------------------------------------------------------------- permissions
 revoke all on all functions in schema private from public, anon, authenticated;
 grant execute on function public.login(text), public.logout(text), public.me(text), public.delegate_roster(text), public.my_chits(text),
@@ -365,6 +411,13 @@ grant execute on function public.login(text), public.logout(text), public.me(tex
   public.admin_overview(text), public.admin_add_delegate(text, text, text, text), public.admin_bulk_add(text, text, text),
   public.admin_add_chair(text, text, text), public.admin_update_user(text, uuid, text, text), public.admin_delete_user(text, uuid),
   public.admin_reset_code(text, uuid), public.admin_chits(text) to anon, authenticated;
+
+-- every committee gets a screen account (this also upgrades older installs)
+insert into private.users (role, name, committee, code, code_norm)
+select 'committee', cm.name, cm.id, x.c, private.norm(x.c)
+from private.committees cm
+cross join lateral (select private.new_code('COM') as c) x
+where not exists (select 1 from private.users u where u.role = 'committee' and u.committee = cm.id);
 
 -- ---------------------------------------------------------------- your admin account (created once)
 insert into private.users (role, name, code, code_norm)
