@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign in – DXB MUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/auth.css">
+<script src="js/config.js" defer></script>
+<script src="js/auth.js" defer></script>
+</head>
+<body>
+
+<header class="nav auth-nav">
+<a class="logo disp" href="index.html">DXB <span>MUN</span></a>
+<nav class="links" aria-label="Site"><a class="cta" href="index.html">Back to website</a></nav>
+</header>
+
+<main class="hero auth-hero">
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
+
+<div class="hero-in auth-hero-in">
+<section class="a-card">
+<p class="kicker disp">Portal access</p>
+<h1 class="disp" id="auth-title">Sign<br>in</h1>
+<p class="a-sub" id="auth-sub">Delegates, chairs and organisers: enter your personal access code.</p>
+<p class="a-msg" id="msg" role="alert" aria-live="polite"></p>
+
+<form id="delegate-code-form" novalidate>
+<label for="delegate-code">Access code</label>
+<input id="delegate-code" class="a-code-input" type="text" inputmode="text" autocapitalize="characters" autocomplete="off" spellcheck="false" maxlength="32" placeholder="DEL-XXXX-XXXX" aria-describedby="code-hint" required>
+<p class="a-hint" id="code-hint">Your code is given to you by the DXB MUN team.</p>
+<button class="a-btn" type="submit">Continue</button>
+</form>
+
+<p class="a-note">Keep your code private. It is your login, and it can be reused to sign in again.</p>
+</section>
+
+<div class="visual auth-visual" aria-hidden="true">
+<div class="frame"><div class="photo"></div></div>
+<svg class="badge" viewBox="0 0 200 200">
+<defs><path id="auth-circ" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0"/></defs>
+<circle class="bg" cx="100" cy="100" r="98"/>
+<text><textPath href="#auth-circ" textLength="440" lengthAdjust="spacing">DIPLOMACY AROUND US • INDIAN HIGH SCHOOL • </textPath></text>
+<circle cx="100" cy="100" r="30" fill="#7A1425"/>
+<path d="M100 82l5 12 13 1-10 9 3 13-11-7-11 7 3-13-10-9 13-1z" fill="#F2B705"/>
+</svg>
+<span class="chip c1">DXB MUN 2027</span>
+<span class="chip c2">Portal</span>
+</div>
+</div>
+<div class="hero-foot auth-hero-foot"><span>© 2027 DXB MUN</span><span>Diplomacy around us</span></div>
+</main>
+
+</body>
+</html>

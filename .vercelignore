@@ -1,0 +1,8 @@
+backup-*/
+supabase/
+data/
+CODE-EXPLAINED.md
+read me.txt
+SETUP.md
+IHS-MUN-HUB-site/
+*.sql

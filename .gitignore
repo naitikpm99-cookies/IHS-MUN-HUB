@@ -2,3 +2,7 @@
 data/
 *.tmp
 backup-v4-node-server/
+!backup-v4-node-server/
+backup-v4-node-server/*
+!backup-v4-node-server/server.js
+!backup-v4-node-server/start-server.bat

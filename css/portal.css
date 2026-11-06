@@ -112,6 +112,11 @@ select.f-input option{background:#1B0D10;color:#fff}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .file-warn{position:fixed;z-index:400;left:0;right:0;top:0;padding:14px 20px;background:var(--pop);color:#fff;font-weight:700;text-align:center}
 
+.login-main{min-height:100vh;min-height:100svh}
+.login-card{max-width:620px}
+.login-card h1{font-size:clamp(48px,9vw,88px)}
+.login-card .f-msg{min-height:22px}
+
 @media (max-width:960px){
 .pt-nav .links a,.pt-nav .links button{padding:10px 12px;letter-spacing:.08em}
 .pt-nav .links a.hide-sm{display:none}
