@@ -224,6 +224,11 @@ if ('IntersectionObserver' in window && !reduce) {
     el.classList.add('rv');
     ro.observe(el);
   });
+  document.querySelectorAll('.cards .card').forEach(function (el, i) {
+    el.style.setProperty('--reveal-index', i);
+    el.classList.add('rv');
+    ro.observe(el);
+  });
 }
 
 // ---------- Numbers count up when they come into view ----------

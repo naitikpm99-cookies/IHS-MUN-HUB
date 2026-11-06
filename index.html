@@ -8,14 +8,23 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <!-- Our own files (the homepage has its own stylesheet; portal pages use css/style.css) -->
 <link rel="stylesheet" href="css/home.css">
+<script src="js/intro-colors.js"></script>
 <script src="js/main.js" defer></script>
 <script src="js/wellness.js" defer></script>
 </head>
 <body>
+
+<div class="intro" aria-hidden="true">
+<i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><i class="l5"></i>
+<div class="intro-text">
+<p class="intro-word"><span class="w"><span class="c ic1">D</span><span class="c ic2">X</span><span class="c ic3">B</span></span><span class="w"><span class="c ic4">M</span><span class="c ic5">U</span><span class="c ic6">N</span></span><b class="intro-line"></b></p>
+<div class="intro-meta"><p class="intro-count"><span class="intro-n"></span> / 100</p><p class="intro-sub">INDIAN HIGH SCHOOL · DUBAI</p></div>
+</div>
+</div>
 
 <!-- Navigation -->
 <header class="nav" id="top">
@@ -57,7 +66,7 @@
 <span class="chip c2">3 days</span>
 </div>
 </div>
-<div class="hero-foot"><span>© 2027 DXB MUN</span><span><a href="#contact"></a><a href="#contact"></a></span></div>
+<div class="hero-foot"><span>© 2027 DXB MUN</span><a class="hero-scroll" href="#about"><span>Scroll to explore</span><i aria-hidden="true"></i></a></div>
 </section>
 
 <!-- Scrolling strip of committees (filled in by js/main.js) -->
