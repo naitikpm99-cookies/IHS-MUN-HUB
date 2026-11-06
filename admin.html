@@ -13,7 +13,7 @@
 <script src="js/auth.js" defer></script>
 <script src="js/admin.js" defer></script>
 </head>
-<body>
+<body class="admin-page">
 
 <header class="nav pt-nav">
 <a class="logo disp" href="index.html">DXB <span>MUN</span></a>
@@ -24,10 +24,9 @@
 </header>
 
 <main>
-<section class="pt-hero">
+<section class="pt-hero admin-hero">
 <div class="pt-in">
-<p class="kicker disp">DXB MUN 2027 · Organiser portal</p>
-<h1 class="disp">Admin dashboard</h1>
+<div class="admin-hero-top"><div><p class="kicker disp">DXB MUN 2027 · Organiser portal</p><h1 class="disp">Control room</h1></div><p class="admin-hero-note">Committee operations, all in one place.</p></div>
 <div class="pt-stats">
 <div class="pt-stat"><b id="s-del">0</b><span>Delegates</span></div>
 <div class="pt-stat"><b id="s-chair">0</b><span>Chairs</span></div>
@@ -45,6 +44,7 @@
 <div><p class="eyebrow disp">01</p><h2 class="disp" id="cm-h">Committees</h2></div>
 <button class="btn ghost xs" id="csv" type="button">Download roster (CSV)</button>
 </div>
+<p class="pt-sub">Select a committee to manage its delegation, chair and activity.</p>
 <div class="cm-pick" id="pick"></div>
 </section>
 

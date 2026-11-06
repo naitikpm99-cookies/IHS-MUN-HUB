@@ -75,6 +75,7 @@
     ]));
   }
 
+
   function setMsg(node, text, ok) { node.className = 'f-msg' + (ok ? ' ok' : ''); node.textContent = text; }
 
   function addOne() {
