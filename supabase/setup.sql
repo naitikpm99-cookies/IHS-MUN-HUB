@@ -413,11 +413,15 @@ grant execute on function public.login(text), public.logout(text), public.me(tex
   public.admin_reset_code(text, uuid), public.admin_chits(text) to anon, authenticated;
 
 -- every committee gets a screen account (this also upgrades older installs)
-insert into private.users (role, name, committee, code, code_norm)
-select 'committee', cm.name, cm.id, x.c, private.norm(x.c)
-from private.committees cm
-cross join lateral (select private.new_code('COM') as c) x
-where not exists (select 1 from private.users u where u.role = 'committee' and u.committee = cm.id);
+do $$
+declare cm record; c text;
+begin
+  for cm in select k.id, k.name from private.committees k
+            where not exists (select 1 from private.users u where u.role = 'committee' and u.committee = k.id) loop
+    c := private.new_code('COM');
+    insert into private.users (role, name, committee, code, code_norm) values ('committee', cm.name, cm.id, c, private.norm(c));
+  end loop;
+end $$;
 
 -- ---------------------------------------------------------------- your admin account (created once)
 insert into private.users (role, name, code, code_norm)

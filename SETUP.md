@@ -23,3 +23,6 @@ Nothing here needs a server of your own. Supabase stores the accounts and chits.
 - A chit goes: delegate -> their chair (approves or rejects) -> recipient delegation.
 
 Every time you change the website files, push to GitHub and Vercel redeploys by itself.
+
+## Updating later
+When a new version of `supabase/setup.sql` comes with an update (for example, committees and committee screens), paste the whole file into Supabase SQL Editor and click Run again. It is safe: it keeps all your existing data and only adds what is new.

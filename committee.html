@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Committee screen – DXB MUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/portal.css">
+<script src="js/config.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/committee.js" defer></script>
+</head>
+<body class="screen-page">
+
+<div class="blob b1" aria-hidden="true"></div>
+<div class="blob b2" aria-hidden="true"></div>
+
+<main class="scr">
+<header class="scr-top">
+<span class="scr-brand disp">DXB <b>MUN</b> 2027</span>
+<div class="scr-clock"><b id="c-time">--:--</b><span id="c-date"></span></div>
+</header>
+
+<section class="scr-main" aria-labelledby="c-acr">
+<p class="scr-kicker disp">Committee</p>
+<h1 class="scr-acr disp" id="c-acr">&hellip;</h1>
+<p class="scr-name disp" id="c-name"></p>
+<p class="scr-chair" id="c-chair" hidden>Chair <b id="c-chair-name"></b></p>
+</section>
+
+<section class="scr-roll" aria-label="Delegations">
+<p class="scr-roll-h disp">Delegations <span id="c-count">0</span></p>
+<ul class="scr-list" id="c-list"></ul>
+</section>
+</main>
+
+<div class="scr-ui" id="scr-ui">
+<button class="btn ghost xs" id="fs" type="button">Full screen</button>
+<button class="btn ghost xs" id="logout" type="button">Sign out</button>
+</div>
+
+</body>
+</html>

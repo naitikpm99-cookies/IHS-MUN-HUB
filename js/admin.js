@@ -5,14 +5,19 @@
   var ov = null;                 // overview from the server
   var sel = 'IPMC';              // committee being edited
   var last = {};
+  var showCodes = false;           // codes stay masked until you press Show codes
 
   DXB.guard('admin').then(function () {
     $('logout').addEventListener('click', DXB.signOut);
     $('add-one').addEventListener('click', addOne);
+    $('add-cm').addEventListener('click', addCommittee);
+    $('rm-cm').addEventListener('click', removeCommittee);
+    $('n-cname').addEventListener('keydown', function (e) { if (e.key === 'Enter') addCommittee(); });
     $('n-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') addOne(); });
     $('n-deleg').addEventListener('keydown', function (e) { if (e.key === 'Enter') addOne(); });
     $('add-bulk').addEventListener('click', addBulk);
     $('csv').addEventListener('click', downloadCsv);
+    $('toggle-codes').addEventListener('click', function () { showCodes = !showCodes; this.textContent = showCodes ? 'Hide codes' : 'Show codes'; if (ov) draw(); });
     DXB.poll(loadOverview, 6000);
     DXB.poll(loadChits, 6000);
   }).catch(function (e) { if (e.message !== 'Signed out') DXB.toast(e.message); });
@@ -24,7 +29,7 @@
       var key = JSON.stringify(r);
       if (key === last.ov) return;
       last.ov = key; ov = r;
-      if (!ov.committees.some(function (c) { return c.id === sel; })) sel = ov.committees[0].id;
+      if (!ov.committees.some(function (c) { return c.id === sel; })) sel = ov.committees.length ? ov.committees[0].id : '';
       draw();
     }).catch(function () {});
   }
@@ -35,9 +40,10 @@
     $('s-chair').textContent = ov.stats.chairs;
     $('s-chits').textContent = ov.stats.chits;
     $('s-wait').textContent = ov.stats.pending;
+    if (!ov.committees.length) { drawNone(); return; }
     var c = current();
-    ['sel-a', 'sel-b', 'sel-c'].forEach(function (id) { $(id).textContent = c.id; });
-    drawPick(); drawChair(c); drawTable(c);
+    ['sel-a', 'sel-b', 'sel-c', 'sel-d'].forEach(function (id) { $(id).textContent = c.id; });
+    drawPick(); drawChair(c); drawScreen(c); drawTable(c);
   }
 
   function drawPick() {
@@ -63,14 +69,17 @@
       body.appendChild(el('tr', {}, [
         el('td', {}, [el('b', { text: d.delegation })]),
         el('td', { text: d.name || '–' }),
+        el('td', {}, [el('span', { class: 'code', text: codeText(d.code) })]),
         el('td', {}, [el('div', { class: 'acts' }, [
+          el('button', { class: 'btn ghost xs', type: 'button', text: 'Copy code', onclick: function () { DXB.copy(d.code); } }),
           el('button', { class: 'btn ghost xs', type: 'button', text: 'Edit', onclick: function () { edit(d); } }),
+          el('button', { class: 'btn ghost xs', type: 'button', text: 'New code', onclick: function () { newCode(d, d.delegation); } }),
           el('button', { class: 'btn danger xs', type: 'button', text: 'Remove', onclick: function () { remove(d, d.delegation); } })
         ])])
       ]));
     });
     box.appendChild(el('table', { class: 'tbl' }, [
-      el('thead', {}, [el('tr', {}, ['Delegation', 'Name', ''].map(function (h) { return el('th', { text: h }); }))]),
+      el('thead', {}, [el('tr', {}, ['Delegation', 'Name', 'Access code', ''].map(function (h) { return el('th', { text: h }); }))]),
       body
     ]));
   }
@@ -83,7 +92,7 @@
     var d = $('n-deleg').value.trim();
     if (!d) { setMsg(msg, 'Enter a delegation.'); $('n-deleg').focus(); return; }
     DXB.api('POST', '/api/admin/delegates', { committee: sel, delegation: d, name: $('n-name').value }).then(function (r) {
-      setMsg(msg, 'Added ' + r.delegate.delegation + '.', true);
+      setMsg(msg, 'Added ' + r.delegate.delegation + '. Code: ' + r.delegate.code, true);
       $('n-deleg').value = ''; $('n-name').value = ''; $('n-deleg').focus();
       return refresh();
     }).catch(function (e) { setMsg(msg, e.message); });
@@ -123,8 +132,10 @@
     box.replaceChildren();
     if (c.chair) {
       box.appendChild(el('div', { class: 'chair-box' }, [
-        el('div', {}, [el('b', { text: c.chair.name || 'Chair' })]),
+        el('div', {}, [el('b', { text: c.chair.name || 'Chair' }), el('div', {}, [el('span', { class: 'code', text: codeText(c.chair.code) })])]),
         el('div', { class: 'acts', style: 'display:flex;flex-wrap:wrap;gap:6px' }, [
+          el('button', { class: 'btn ghost xs', type: 'button', text: 'Copy code', onclick: function () { DXB.copy(c.chair.code); } }),
+          el('button', { class: 'btn ghost xs', type: 'button', text: 'New code', onclick: function () { newCode(c.chair, c.id + ' chair'); } }),
           el('button', { class: 'btn danger xs', type: 'button', text: 'Remove', onclick: function () { remove(c.chair, c.id + ' chair'); } })
         ])
       ]));
@@ -133,7 +144,7 @@
     var name = el('input', { class: 'f-input', type: 'text', maxlength: '80', placeholder: 'Chair name (optional)', 'aria-label': 'Chair name' });
     var add = function () {
       DXB.api('POST', '/api/admin/chairs', { committee: sel, name: name.value }).then(function (r) {
-        setMsg($('chair-msg'), 'Chair created.', true);
+        setMsg($('chair-msg'), 'Chair created. Code: ' + r.chair.code, true);
         return refresh();
       }).catch(function (e) { setMsg($('chair-msg'), e.message); });
     };
@@ -141,17 +152,68 @@
     box.appendChild(el('div', { class: 'chair-box' }, [name, el('button', { class: 'btn', type: 'button', text: 'Create chair', onclick: add })]));
   }
 
+  /* ---------- access codes ---------- */
+  function codeText(code) { return showCodes ? code : String(code).slice(0, 3) + '-••••-••••'; }
+  function newCode(u, label) {
+    if (!confirm('Create a new code for ' + label + '? Their old code stops working and they are signed out.')) return;
+    DXB.api('POST', '/api/admin/users/' + u.id + '/reset-code').then(function (r) { DXB.toast('New code for ' + label + ': ' + r.code); return refresh(); })
+      .catch(function (e) { DXB.toast(e.message); });
+  }
+
+  /* ---------- committees and their screens ---------- */
+  function drawNone() {
+    ['sel-a', 'sel-b', 'sel-c', 'sel-d'].forEach(function (id) { $(id).textContent = '–'; });
+    $('pick').replaceChildren(el('p', { class: 'empty', text: 'No committees yet. Add one below.' }));
+    $('chair-box').replaceChildren(); $('screen-box').replaceChildren(); $('tbl').replaceChildren();
+    $('tbl-count').textContent = '0'; $('tbl-count').classList.add('zero');
+    $('rm-cm').hidden = true;
+  }
+  function drawScreen(c) {
+    var box = $('screen-box');
+    box.replaceChildren();
+    $('rm-cm').hidden = false;
+    if (!c.screen) { box.appendChild(el('p', { class: 'empty', text: 'No screen account yet. Run the latest supabase/setup.sql in Supabase.' })); return; }
+    box.appendChild(el('div', { class: 'chair-box' }, [
+      el('div', {}, [el('b', { text: c.id + ' screen' }), el('div', {}, [el('span', { class: 'code', text: codeText(c.screen.code) })])]),
+      el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px' }, [
+        el('button', { class: 'btn ghost xs', type: 'button', text: 'Copy code', onclick: function () { DXB.copy(c.screen.code); } }),
+        el('button', { class: 'btn ghost xs', type: 'button', text: 'New code', onclick: function () { newCode(c.screen, c.id + ' screen'); } })
+      ])
+    ]));
+  }
+  function addCommittee() {
+    var msg = $('cm-msg'), id = $('n-cid').value.trim(), name = $('n-cname').value.trim();
+    if (!id || !name) { setMsg(msg, 'Enter an acronym and the full name.'); return; }
+    DXB.api('POST', '/api/admin/committees', { id: id, name: name }).then(function (r) {
+      sel = r.committee.id; $('n-cid').value = ''; $('n-cname').value = '';
+      setMsg(msg, 'Added ' + r.committee.id + '. Its screen code: ' + r.screen.code, true);
+      return refresh();
+    }).catch(function (e) { setMsg(msg, e.message); });
+  }
+  function removeCommittee() {
+    if (!ov.committees.length) return;
+    var c = current();
+    var n = c.delegates.length + (c.chair ? 1 : 0);
+    var typed = prompt('This permanently removes ' + c.id + ' (' + c.name + '): its ' + n + ' account' + (n === 1 ? '' : 's') + ', its screen and all its chits.\n\nType ' + c.id + ' to confirm:');
+    if (typed === null) return;
+    if (typed.trim().toUpperCase() !== c.id) { DXB.toast('Not removed: the acronym did not match'); return; }
+    DXB.api('DELETE', '/api/admin/committees/' + encodeURIComponent(c.id)).then(function () {
+      DXB.toast(c.id + ' removed'); sel = ''; return refresh();
+    }).catch(function (e) { DXB.toast(e.message); });
+  }
+
   /* ---------- export ---------- */
   function downloadCsv() {
-    var rows = [['Committee', 'Role', 'Delegation', 'Name']];
+    var rows = [['Committee', 'Role', 'Delegation', 'Name', 'Access code']];
     ov.committees.forEach(function (c) {
-      if (c.chair) rows.push([c.id, 'Chair', 'Chair', c.chair.name]);
-      c.delegates.forEach(function (d) { rows.push([c.id, 'Delegate', d.delegation, d.name]); });
+      if (c.chair) rows.push([c.id, 'Chair', 'Chair', c.chair.name, c.chair.code]);
+      if (c.screen) rows.push([c.id, 'Screen', 'Committee screen', '', c.screen.code]);
+      c.delegates.forEach(function (d) { rows.push([c.id, 'Delegate', d.delegation, d.name, d.code]); });
     });
     var csv = rows.map(function (r) { return r.map(function (v) { v = String(v == null ? '' : v); if (/^[=+\-@]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n');
-    var a = el('a', { href: URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv' })), download: 'dxb-mun-roster.csv' });
+    var a = el('a', { href: URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv' })), download: 'dxb-mun-access-codes.csv' });
     document.body.appendChild(a); a.click(); a.remove();
-    DXB.toast('Downloaded ' + (rows.length - 1) + ' roster entries.');
+    DXB.toast('Downloaded ' + (rows.length - 1) + ' accounts with their codes. Keep this file private.');
   }
 
   /* ---------- all chits ---------- */

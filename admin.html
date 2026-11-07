@@ -42,10 +42,17 @@
 <section class="pt-card wide" aria-labelledby="cm-h">
 <div class="pt-head">
 <div><p class="eyebrow disp">01</p><h2 class="disp" id="cm-h">Committees</h2></div>
-<button class="btn ghost xs" id="csv" type="button">Download roster (CSV)</button>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn ghost xs" id="toggle-codes" type="button">Show codes</button><button class="btn ghost xs" id="csv" type="button">Download roster + codes (CSV)</button></div>
 </div>
 <p class="pt-sub">Select a committee to manage its delegation, chair and activity.</p>
 <div class="cm-pick" id="pick"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+<div class="f-row">
+<div><label class="f-label" for="n-cid">New committee: acronym</label><input class="f-input" id="n-cid" type="text" maxlength="12" placeholder="e.g. UNICEF" autocomplete="off"></div>
+<div><label class="f-label" for="n-cname">Full name</label><input class="f-input" id="n-cname" type="text" maxlength="100" placeholder="e.g. United Nations Children&rsquo;s Fund" autocomplete="off"></div>
+<button class="btn" id="add-cm" type="button">Add committee</button>
+</div>
+<p class="f-msg" id="cm-msg" role="status" aria-live="polite"></p>
 </section>
 
 <section class="pt-card" aria-labelledby="add-h">
@@ -66,20 +73,31 @@
 <div class="bulk-out" id="bulk-out" role="status" aria-live="polite"></div>
 </section>
 
+<div class="pt-stack">
 <section class="pt-card" aria-labelledby="chair-h">
 <div class="pt-head"><div><p class="eyebrow disp">03</p><h2 class="disp" id="chair-h">Chair of <span id="sel-b">…</span></h2></div></div>
 <p class="pt-sub">Each committee has one chair account.</p>
 <div id="chair-box"></div>
 <p class="f-msg" id="chair-msg" role="status" aria-live="polite"></p>
 </section>
+<section class="pt-card" aria-labelledby="screen-h">
+<div class="pt-head"><div><p class="eyebrow disp">04</p><h2 class="disp" id="screen-h">Screen of <span id="sel-d">…</span></h2></div></div>
+<p class="pt-sub">Sign in with this code on the display in the committee room to show its dashboard.</p>
+<div id="screen-box"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+<button class="btn danger" id="rm-cm" type="button">Remove this committee</button>
+<p class="pt-sub" style="margin:10px 0 0">Permanently removes its chair, delegates, screen and chits.</p>
+</section>
+
+</div>
 
 <section class="pt-card wide" aria-labelledby="tbl-h">
-<div class="pt-head"><div><p class="eyebrow disp">04</p><h2 class="disp" id="tbl-h">Delegates in <span id="sel-c">…</span> <span class="pt-count zero" id="tbl-count">0</span></h2></div></div>
+<div class="pt-head"><div><p class="eyebrow disp">05</p><h2 class="disp" id="tbl-h">Delegates in <span id="sel-c">…</span> <span class="pt-count zero" id="tbl-count">0</span></h2></div></div>
 <div class="tbl-wrap" id="tbl"></div>
 </section>
 
 <section class="pt-card wide" aria-labelledby="log-h">
-<div class="pt-head"><div><p class="eyebrow disp">05</p><h2 class="disp" id="log-h">All chits</h2></div></div>
+<div class="pt-head"><div><p class="eyebrow disp">06</p><h2 class="disp" id="log-h">All chits</h2></div></div>
 <div class="scroll-list" id="log"></div>
 </section>
 

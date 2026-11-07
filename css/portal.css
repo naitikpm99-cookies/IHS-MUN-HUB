@@ -142,3 +142,35 @@ select.f-input option{background:#1B0D10;color:#fff}
 .admin-page .cm-pick{gap:9px}.admin-page .cm-pick button{min-height:77px;border-color:#e5d8ce;background:#fff;color:#211014;box-shadow:0 2px 0 rgba(0,0,0,.02)}.admin-page .cm-pick button:hover{border-color:var(--pop);background:#fff3eb}.admin-page .cm-pick button[aria-pressed="true"]{background:#211014;border-color:#211014;color:#fff;box-shadow:0 7px 0 var(--accent)}.admin-page .cm-pick small{color:#806f70}.admin-page .cm-pick button[aria-pressed="true"] small{color:#ecd9d3}.admin-page .cm-pick .no-chair small::after{color:var(--pop)}
 .admin-page .f-label{color:#514044}.admin-page .f-input{border-color:#ddcdc4;background:#fff;color:#211014}.admin-page .f-input::placeholder{color:#9c8988}.admin-page .f-input:focus{border-color:var(--pop);box-shadow:0 0 0 4px rgba(255,90,54,.12)}.admin-page .chair-box{border-color:#f0ce71;background:#fff8df}.admin-page .empty{border-color:#dfcec3;color:#806f70}.admin-page .tbl th{color:#806f70}.admin-page .tbl td,.admin-page .tbl th{border-color:#eadbd1}.admin-page .btn.ghost{border-color:#cdbbb1;color:#4d383d;background:transparent}.admin-page .btn.ghost:hover{border-color:var(--pop);background:#fff0e9;color:#211014}.admin-page .btn.danger{border-color:#df817d;color:#a23d38}.admin-page .btn.danger:hover{background:#df817d;color:#211014}.admin-page .chit{border-color:#e5d6cc;background:#fff}.admin-page .chit-route{color:#211014}.admin-page .chit-meta{color:#806f70}.admin-page .chit.is-new{border-color:var(--accent)}
 @media (max-width:960px){.admin-hero-top{align-items:flex-start;flex-direction:column}.admin-hero-note{max-width:none}.admin-page .pt-stats{grid-template-columns:repeat(2,1fr)}.admin-page .pt-stat:nth-child(2){border-right:0}.admin-page .pt-stat:nth-child(-n+2){border-bottom:1px solid rgba(255,255,255,.17)}}
+
+/* ---------- committee screen (the display in each committee room) ---------- */
+.screen-page{margin:0;height:100vh;height:100dvh;overflow:hidden;background:radial-gradient(70% 90% at 85% 15%,rgba(122,20,37,.9),transparent 70%),var(--bg)}
+.screen-page.idle{cursor:none}
+.scr{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:auto 1fr;gap:0 4vw;padding:3.2vh 4vw}
+.scr-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.scr-brand{font-size:clamp(18px,2.2vw,34px);letter-spacing:.1em}
+.scr-brand b{color:var(--accent);font-weight:400}
+.scr-clock{text-align:right}
+.scr-clock b{display:block;font:400 clamp(34px,5vw,84px)/1 'Anton',Impact,sans-serif;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.scr-clock span{font-size:clamp(11px,1.2vw,20px);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.scr-main{align-self:center;min-width:0}
+.scr-kicker{margin:0 0 1vh;font-size:clamp(14px,1.8vw,28px);letter-spacing:.3em;color:var(--accent)}
+.scr-acr{margin:0;font-size:clamp(70px,17vw,320px);line-height:.85;overflow-wrap:anywhere}
+.scr-name{margin:2vh 0 0;font-size:clamp(20px,3.2vw,60px);line-height:1.1;letter-spacing:.05em;color:var(--cream)}
+.scr-chair{margin:3vh 0 0;font-size:clamp(14px,1.8vw,30px);color:var(--muted)}
+.scr-chair b{color:#fff}
+.scr-roll{align-self:center;min-width:0;max-height:100%;padding:2.4vh 2vw;border:1px solid rgba(255,255,255,.14);border-radius:28px;background:rgba(0,0,0,.28);overflow:hidden}
+.scr-roll-h{margin:0 0 1.6vh;font-size:clamp(16px,2vw,34px);letter-spacing:.2em;color:var(--accent)}
+.scr-roll-h span{margin-left:.6em;color:#fff}
+.scr-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,13vw),1fr));gap:1vh 1vw;margin:0;padding:0;list-style:none}
+.scr-list li{padding:.9vh 1vw;border-radius:999px;background:rgba(255,255,255,.08);font-size:clamp(12px,1.35vw,24px);font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scr-ui{position:fixed;z-index:60;right:2vw;bottom:2vh;display:flex;gap:8px;opacity:0;pointer-events:none;transition:opacity .3s}
+.scr-ui.show{opacity:1;pointer-events:auto}
+@media (max-width:900px){
+.screen-page{height:auto;min-height:100dvh;overflow:auto}
+.scr{height:auto;grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:4vh 0;padding:4vh 6vw 10vh}
+.scr-list{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+}
+
+/* access codes are readable on the light admin theme */
+.admin-page .code{color:var(--maroon)}

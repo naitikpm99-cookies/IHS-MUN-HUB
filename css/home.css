@@ -39,6 +39,14 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(-
 .start-subtitle span:nth-child(2){animation-delay:1.82s}.start-subtitle span:nth-child(3){animation-delay:1.89s}.start-subtitle span:nth-child(4){animation-delay:1.96s}.start-subtitle span:nth-child(5){animation-delay:2.03s}.start-subtitle span:nth-child(6){animation-delay:2.1s}.start-subtitle span:nth-child(7){animation-delay:2.17s}.start-subtitle span:nth-child(8){animation-delay:2.24s}.start-subtitle span:nth-child(9){animation-delay:2.31s}
 @keyframes start-word-reveal{0%{opacity:0;transform:scale(1.12)}12%,72%{opacity:1}100%{opacity:0;transform:scale(1)}}
 @keyframes wordmark-reveal{0%{opacity:0;transform:scale(1.28)}100%{opacity:1;transform:scale(.82)}}
+@media(max-width:600px){
+.start-grid{inset:0;opacity:.24;mask-image:none;animation:none}
+.start-grid::after{display:none}
+.start-bursts i{clip-path:none;animation-name:start-burst-mobile;animation-duration:.34s}
+.start-word-stage{text-shadow:0 6px 24px rgba(242,183,5,.16);animation-duration:.48s}
+.start-title{text-shadow:0 6px 24px rgba(242,183,5,.16);animation-duration:.48s}
+}
+@keyframes start-burst-mobile{from{opacity:0}to{opacity:1}}
 
 /* ---------- navigation: floating pill ---------- */
 .nav{position:fixed;z-index:50;top:calc(14px + env(safe-area-inset-top,0px));left:0;right:0;width:min(1120px,calc(100% - 24px));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 10px 8px 24px;border-radius:999px;background:rgba(20,8,11,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.12)}

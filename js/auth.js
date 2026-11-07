@@ -3,7 +3,7 @@
 // Supabase database functions (supabase/setup.sql), never in the browser.
 (function () {
   var TOKEN = 'dxbmun_token';
-  var HOME = { admin: 'admin.html', chair: 'chair.html', delegate: 'dashboard.html' };
+  var HOME = { admin: 'admin.html', chair: 'chair.html', delegate: 'dashboard.html', committee: 'committee.html' };
   var CFG = window.DXB_CONFIG || {};
   var DXB = window.DXB = {};
 
@@ -30,6 +30,9 @@
     ['PATCH', new RegExp('^/api/admin/users/' + ID + '$'), function (m, b) { return ['admin_update_user', { p_id: m[1], p_name: b.name, p_delegation: b.delegation }]; }],
     ['DELETE', new RegExp('^/api/admin/users/' + ID + '$'), function (m) { return ['admin_delete_user', { p_id: m[1] }]; }],
     ['POST', new RegExp('^/api/admin/users/' + ID + '/reset-code$'), function (m) { return ['admin_reset_code', { p_id: m[1] }]; }],
+    ['GET', /^\/api\/committee\/screen$/, function () { return ['committee_screen', {}]; }],
+    ['POST', /^\/api\/admin\/committees$/, function (m, b) { return ['admin_add_committee', { p_id: b.id, p_name: b.name }]; }],
+    ['DELETE', /^\/api\/admin\/committees\/([A-Za-z0-9-]+)$/, function (m) { return ['admin_remove_committee', { p_id: m[1] }]; }],
     ['GET', /^\/api\/admin\/chits$/, function () { return ['admin_chits', {}]; }]
   ];
   function route(method, url, body) {
