@@ -24,6 +24,7 @@
     loadSeen();
     $('logout').addEventListener('click', DXB.signOut);
     wire();
+    wireShortcuts();
     DXB.poll(loadChits, 4000);
     DXB.poll(loadRoster, 20000);
     wireParallax();
@@ -39,6 +40,17 @@
       wrap.style.transform = 'perspective(1100px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 6) + 'deg) translate3d(' + (x * 10) + 'px,' + (y * 8) + 'px,0)';
     });
     stage.addEventListener('pointerleave', function () { wrap.style.transform = ''; });
+  }
+
+  function wireShortcuts() {
+    [].slice.call(document.querySelectorAll('.delegate-tools [data-jump]')).forEach(function (button) {
+      button.addEventListener('click', function () {
+        var target = $(button.dataset.jump);
+        if (!target) return;
+        target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        if (button.dataset.jump === 'send-h') $('filter').focus();
+      });
+    });
   }
 
   /* ---------- choosing who to write to ---------- */
@@ -78,6 +90,11 @@
     else if (picked.chair) { t.textContent = 'To: the Chair. Delivered straight away.'; $('hint').textContent = 'Goes directly to your chair.'; }
     else { t.textContent = 'To: ' + picked.label + '. Goes via the Chair for approval.'; $('hint').textContent = 'Approved by the chair before delivery.'; }
     $('reply-bar').hidden = !replyTo;
+    var guide = $('delegate-guide');
+    if (!guide) return;
+    if (!picked) guide.replaceChildren(el('b', { text: 'Start here' }), el('span', { text: 'Choose a delegation, write your message, then send it to the chair for approval.' }));
+    else if (picked.chair) guide.replaceChildren(el('b', { text: 'Direct line' }), el('span', { text: 'Your message will be delivered directly to the Chair.' }));
+    else guide.replaceChildren(el('b', { text: 'Ready to write' }), el('span', { text: 'Your chit to ' + picked.label + ' will go to the Chair for approval first.' }));
   }
 
   /* ---------- writing and sending ---------- */
@@ -123,6 +140,8 @@
     $('in-count').textContent = String(unread || inboxData.length);
     $('in-count').classList.toggle('zero', !unread);
     $('read-all').hidden = !unread;
+    var toolCount = $('tool-in-count');
+    if (toolCount) { toolCount.textContent = unread; toolCount.hidden = !unread; }
     document.title = (unread ? '(' + unread + ') ' : '') + baseTitle;
     if (!inboxData.length) { box.appendChild(el('p', { class: 'empty', text: 'No chits yet. Messages approved by your chair appear here.' })); return; }
     inboxData.forEach(function (c) {
