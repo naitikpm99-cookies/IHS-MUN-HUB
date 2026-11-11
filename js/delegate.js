@@ -19,14 +19,28 @@
     me = info.user;
     var first = (me.name || '').split(' ')[0] || me.delegation;
     $('hello').textContent = 'Welcome, ' + first;
-    $('tags').appendChild(el('li', { class: 'pt-tag' }, ['Committee ', el('b', { text: info.committee.id }), ' · ' + info.committee.name]));
-    $('tags').appendChild(el('li', { class: 'pt-tag' }, ['Delegation ', el('b', { text: me.delegation })]));
+    $('id-delegation').textContent = me.delegation || 'Delegate';
+    $('id-committee').textContent = info.committee.id + ' · ' + info.committee.name;
+    $('id-name').textContent = me.name || me.delegation || 'Delegate';
     loadSeen();
     $('logout').addEventListener('click', DXB.signOut);
     wire();
     DXB.poll(loadChits, 4000);
     DXB.poll(loadRoster, 20000);
+    wireParallax();
   }).catch(function (e) { if (e.message !== 'Signed out') DXB.toast(e.message); });
+
+  function wireParallax() {
+    var stage = $('delegate-stage'), wrap = $('delegate-card-wrap');
+    if (!stage || !wrap || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(pointer: fine)').matches) return;
+    stage.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - .5;
+      var y = (e.clientY - r.top) / r.height - .5;
+      wrap.style.transform = 'perspective(1100px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 6) + 'deg) translate3d(' + (x * 10) + 'px,' + (y * 8) + 'px,0)';
+    });
+    stage.addEventListener('pointerleave', function () { wrap.style.transform = ''; });
+  }
 
   /* ---------- choosing who to write to ---------- */
   function loadRoster() {
