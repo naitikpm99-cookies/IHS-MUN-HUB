@@ -23,8 +23,8 @@
 </nav>
 </header>
 
-<main>
-<section class="delegate-stage" id="delegate-stage">
+<main class="delegate-workspace">
+<section class="delegate-stage workspace-identity" id="delegate-stage">
 <div class="delegate-atmosphere" aria-hidden="true"></div>
 <div class="delegate-card-wrap" id="delegate-card-wrap">
 <article class="delegate-id-card" id="delegate-id-card" aria-label="Delegate identification card">
@@ -33,20 +33,15 @@
 <div class="id-main"><div class="id-identity"><p class="id-label">Accredited delegate</p><h1 class="disp" id="hello">Delegate</h1><p class="id-delegation" id="id-delegation">Delegation</p></div><div class="id-seal" aria-hidden="true">DXB<br><b>MUN</b></div></div>
 <div class="id-bottom"><div><span>Committee</span><b id="id-committee">—</b></div><div><span>Delegate</span><b id="id-name">—</b></div><span class="id-mark">VALID · 2027</span></div>
 </article>
-<p class="stage-hint">Move your cursor across the credential</p>
+<p class="stage-hint">Delegate workspace · Session ready</p>
 </div>
 </section>
 
-<div class="pt-in pt-body">
-<nav class="delegate-tools" aria-label="Delegate dashboard shortcuts">
-<button type="button" class="tool-active" data-jump="send-h"><span>01</span> Write a chit</button>
-<button type="button" data-jump="in-h"><span>02</span> Inbox <b id="tool-in-count">0</b></button>
-<button type="button" data-jump="sent-h"><span>03</span> Sent history</button>
-</nav>
+<div class="pt-in pt-body workspace-body">
 <div class="delegate-guide" id="delegate-guide" role="status"><b>Start here</b><span>Choose a delegation, write your message, then send it to the chair for approval.</span></div>
-<div class="pt-grid">
+<div class="pt-grid workspace-grid">
 
-<section class="pt-card delegate-action-card" aria-labelledby="send-h">
+<section class="pt-card delegate-action-card workspace-compose" aria-labelledby="send-h">
 <div class="pt-head"><div><p class="eyebrow disp">01</p><h2 class="disp" id="send-h">Send a chit</h2></div></div>
 <p class="pt-sub">Chits go to your chair first. Once the chair approves, the other delegation receives it.</p>
 
@@ -64,17 +59,15 @@
 <p class="f-msg" id="send-msg" role="status" aria-live="polite"></p>
 </section>
 
-<div class="pt-stack">
-<section class="pt-card" aria-labelledby="in-h">
+<section class="pt-card workspace-inbox" aria-labelledby="in-h">
 <div class="pt-head">
 <div><p class="eyebrow disp">02</p><h2 class="disp" id="in-h">Inbox <span class="pt-count zero" id="in-count">0</span></h2></div>
 <button class="btn ghost xs" id="read-all" type="button" hidden>Mark all read</button>
 </div>
 <div class="scroll-list" id="inbox"></div>
 </section>
-</div>
 
-<section class="pt-card wide" aria-labelledby="sent-h">
+<section class="pt-card workspace-sent" aria-labelledby="sent-h">
 <div class="pt-head"><div><p class="eyebrow disp">03</p><h2 class="disp" id="sent-h">Sent chits</h2></div></div>
 <div class="scroll-list" id="sent"></div>
 </section>

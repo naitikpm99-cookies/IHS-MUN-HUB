@@ -150,6 +150,24 @@ select.f-input option{background:#1B0D10;color:#fff}
 @media (max-width:600px){.delegate-stage{min-height:510px;padding:108px 18px 54px}.delegate-id-card{min-height:420px;padding:22px;border-radius:20px;box-shadow:10px 12px 0 var(--accent),0 25px 52px rgba(0,0,0,.46)}.id-top{font-size:9px;letter-spacing:.1em}.id-top span:first-child{font-size:15px}.id-main{align-items:flex-start;margin:42px 0 50px;gap:14px}.id-identity{max-width:calc(100% - 88px)}.id-main h1{font-size:clamp(42px,13.5vw,68px);line-height:.86}.id-label{font-size:10px;letter-spacing:.11em}.id-delegation{margin-top:11px;font-size:clamp(22px,7.5vw,38px)}.id-seal{width:76px;font-size:23px}.id-bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}.id-bottom b{font-size:11px;line-height:1.35}.id-bottom span{font-size:9px}.id-mark{grid-column:1/-1;margin-top:0}.stage-hint{display:none}}
 @media (max-width:600px){.delegate-page .pt-body{padding-top:20px}.delegate-tools{position:relative;top:auto;width:100%;margin-bottom:12px;padding:5px;gap:3px}.delegate-tools button{flex:1;justify-content:center;padding:0 9px;font-size:9px;letter-spacing:.04em}.delegate-tools button span{display:none}.delegate-guide{align-items:flex-start;margin-bottom:16px;padding:11px 13px;font-size:12px}.delegate-guide b{font-size:15px}.delegate-page .pt-card{border-radius:16px}}
 
+/* ---------- desktop-first delegate workspace: all live tools stay in view ---------- */
+@media (min-width:961px){
+  .delegate-page{height:100svh;overflow:hidden}
+  .delegate-workspace{display:grid;grid-template-columns:minmax(270px,22vw) minmax(0,1fr);gap:22px;min-height:100svh;padding:96px 24px 22px;overflow:hidden}
+  .workspace-identity{min-height:0;padding:0;background:none;display:block;overflow:visible}
+  .workspace-identity::before,.workspace-identity .delegate-atmosphere,.workspace-identity .stage-hint{display:none}
+  .workspace-identity .delegate-card-wrap{width:100%;height:100%;transform:none!important}
+  .workspace-identity .delegate-id-card{height:100%;min-height:0;padding:26px 22px;border-radius:20px;box-shadow:10px 12px 0 var(--accent),0 20px 45px rgba(0,0,0,.34)}
+  .workspace-identity .id-top{font-size:9px}.workspace-identity .id-top span:first-child{font-size:16px}.workspace-identity .id-main{align-items:flex-start;margin:clamp(38px,9vh,100px) 0}.workspace-identity .id-identity{max-width:100%}.workspace-identity .id-main h1{font-size:clamp(42px,4vw,74px)}.workspace-identity .id-delegation{font-size:clamp(24px,2.6vw,39px)}.workspace-identity .id-seal{width:84px;position:absolute;right:18px;bottom:118px}.workspace-identity .id-bottom{display:grid;gap:15px}.workspace-identity .id-mark{position:absolute;bottom:30px;right:22px}
+  .workspace-body{min-width:0;padding:0;display:grid;grid-template-rows:auto minmax(0,1fr);gap:14px;overflow:hidden}
+  .workspace-body .delegate-guide{max-width:none;margin:0;padding:11px 14px}
+  .workspace-grid{min-height:0;grid-template-columns:minmax(330px,1.15fr) minmax(245px,.85fr) minmax(245px,.85fr);gap:14px;align-items:stretch}
+  .workspace-grid .pt-card{min-height:0;max-height:100%;padding:20px;overflow:hidden;display:flex;flex-direction:column;border-radius:18px}
+  .workspace-grid .pt-head{flex:none;margin-bottom:12px}.workspace-grid .pt-head h2{font-size:clamp(30px,2.8vw,42px)}
+  .workspace-compose .chips{max-height:125px;flex:none}.workspace-compose textarea.f-input{min-height:105px;resize:none}.workspace-compose .f-msg{margin-top:6px}.workspace-compose .pt-sub{font-size:13px}
+  .workspace-inbox .scroll-list,.workspace-sent .scroll-list{min-height:0;max-height:none;flex:1}.workspace-inbox .chit,.workspace-sent .chit{padding:13px;margin-bottom:9px}.workspace-inbox .chit-route,.workspace-sent .chit-route{font-size:17px}.workspace-inbox .chit-text,.workspace-sent .chit-text{font-size:13px}.workspace-inbox .chit-actions{margin-top:8px}
+}
+
 /* ---------- admin control room ---------- */
 .admin-page{--bg:#f7f0e6;--fg:#211014;--muted:#705f60;--card:#fffaf3;--line:#e5d6cc;--ink:#211014;background:var(--bg);color:var(--fg)}
 .admin-page .nav{background:#211014;border-color:rgba(255,255,255,.12)}
