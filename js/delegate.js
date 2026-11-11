@@ -17,8 +17,7 @@
 
   DXB.guard('delegate').then(function (info) {
     me = info.user;
-    var first = (me.name || '').split(' ')[0] || me.delegation;
-    $('hello').textContent = 'Welcome, ' + first;
+    $('hello').textContent = me.name || me.delegation || 'Delegate';
     $('id-delegation').textContent = me.delegation || 'Delegate';
     $('id-committee').textContent = info.committee.id + ' · ' + info.committee.name;
     $('id-name').textContent = me.name || me.delegation || 'Delegate';
