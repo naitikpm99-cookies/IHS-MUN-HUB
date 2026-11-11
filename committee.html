@@ -9,9 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/portal.css">
+<link rel="stylesheet" href="css/floor.css">
 <script src="js/config.js" defer></script>
 <script src="js/auth.js" defer></script>
 <script src="js/committee.js" defer></script>
+<script src="js/floor.js" defer></script>
+<script src="js/floor-display.js" defer></script>
 </head>
 <body class="screen-page">
 
@@ -21,6 +24,7 @@
 <main class="scr">
 <header class="scr-top">
 <span class="scr-brand disp">DXB <b>MUN</b> 2027</span>
+<span class="scr-chip disp" id="c-chip"></span>
 <div class="scr-clock"><b id="c-time">--:--</b><span id="c-date"></span></div>
 </header>
 
@@ -34,6 +38,22 @@
 <section class="scr-roll" aria-label="Delegations">
 <p class="scr-roll-h disp">Delegations <span id="c-count">0</span></p>
 <ul class="scr-list" id="c-list"></ul>
+</section>
+<section class="scr-floor" id="scr-floor" aria-label="Floor timer" hidden>
+<div class="fl-main">
+<p class="fl-format disp" id="fl-format">Timer</p>
+<p class="fl-speaker" id="fl-speaker"></p>
+<div class="fl-clock" id="fl-clock" role="timer" aria-live="off">--:--</div>
+<p class="fl-sub" id="fl-sub"></p>
+<div class="fl-extra" id="fl-extra" hidden>
+<div class="fl-box" id="fl-caucus" hidden><span id="fl-caucus-l">Caucus time left</span><strong id="fl-caucus-t">--:--</strong></div>
+<div class="fl-box" id="fl-general" hidden><span id="fl-general-l">General timer</span><strong id="fl-general-t">--:--</strong></div>
+</div>
+</div>
+<aside class="fl-order" id="fl-order" hidden>
+<p class="fl-order-h disp">Speaking order <span id="fl-order-n">0</span></p>
+<ol class="fl-queue" id="fl-queue"></ol>
+</aside>
 </section>
 </main>
 

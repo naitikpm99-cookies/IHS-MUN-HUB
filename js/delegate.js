@@ -31,6 +31,9 @@
   /* ---------- choosing who to write to ---------- */
   function loadRoster() {
     return DXB.api('GET', '/api/delegate/roster').then(function (r) {
+      // Never trust a roster response blindly: the current delegate must not be able
+      // to select their own account, even if stale or misconfigured server data includes it.
+      r.delegations = (r.delegations || []).filter(function (d) { return d.id !== me.id; });
       var key = JSON.stringify(r);
       if (key === last.roster) return;
       last.roster = key; roster = r;
@@ -45,7 +48,7 @@
     box.replaceChildren();
     var items = [];
     if (roster.chair) items.push({ id: roster.chair.id, label: 'Chair', chair: true });
-    roster.delegations.forEach(function (d) { items.push({ id: d.id, label: d.delegation, chair: false }); });
+    roster.delegations.filter(function (d) { return d.id !== me.id; }).forEach(function (d) { items.push({ id: d.id, label: d.delegation, chair: false }); });
     items = items.filter(function (i) { return !q || i.label.toLowerCase().indexOf(q) > -1; });
     if (!items.length) { box.appendChild(el('p', { class: 'empty', text: roster.delegations.length || roster.chair ? 'No delegation matches your search.' : 'No other delegations have been added to your committee yet.' })); return; }
     items.forEach(function (i) {

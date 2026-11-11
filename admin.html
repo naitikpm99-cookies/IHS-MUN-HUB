@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="css/portal.css">
 <script src="js/config.js" defer></script>
 <script src="js/auth.js" defer></script>
+<script src="js/sheets.js" defer></script>
 <script src="js/admin.js" defer></script>
 </head>
 <body class="admin-page">
@@ -42,7 +43,7 @@
 <section class="pt-card wide" aria-labelledby="cm-h">
 <div class="pt-head">
 <div><p class="eyebrow disp">01</p><h2 class="disp" id="cm-h">Committees</h2></div>
-<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn ghost xs" id="toggle-codes" type="button">Show codes</button><button class="btn ghost xs" id="csv" type="button">Download roster + codes (CSV)</button></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn ghost xs" id="toggle-codes" type="button">Show codes</button><button class="btn ghost xs" id="xlsx-all" type="button">Download codes (Excel)</button><button class="btn ghost xs" id="csv" type="button">Download roster + codes (CSV)</button></div>
 </div>
 <p class="pt-sub">Select a committee to manage its delegation, chair and activity.</p>
 <div class="cm-pick" id="pick"></div>
@@ -53,6 +54,18 @@
 <button class="btn" id="add-cm" type="button">Add committee</button>
 </div>
 <p class="f-msg" id="cm-msg" role="status" aria-live="polite"></p>
+</section>
+
+<section class="pt-card wide" aria-labelledby="imp-h">
+<div class="pt-head">
+<div><p class="eyebrow disp">Import</p><h2 class="disp" id="imp-h">Import from Excel</h2></div>
+<button class="btn ghost xs" id="tpl" type="button">Download template (Excel)</button>
+</div>
+<p class="pt-sub">Upload an Excel (.xlsx) or CSV file with the columns <b>Committee</b>, <b>Delegation</b> and <b>Name</b> (name is optional). A delegation called <b>Chair</b> creates that committee&rsquo;s chair. A sheet tab named after a committee (for example a tab called UNSC) doesn&rsquo;t need the Committee column. Everyone gets a unique access code, and you can download them all as Excel afterwards.</p>
+<label class="f-label" for="imp-file">Choose a file</label>
+<input class="f-input" id="imp-file" type="file" accept=".xlsx,.csv,.tsv,.txt">
+<div id="imp-preview"></div>
+<div id="imp-result" role="status" aria-live="polite"></div>
 </section>
 
 <section class="pt-card" aria-labelledby="add-h">

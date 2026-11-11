@@ -174,3 +174,9 @@ select.f-input option{background:#1B0D10;color:#fff}
 
 /* access codes are readable on the light admin theme */
 .admin-page .code{color:var(--maroon)}
+
+/* spreadsheet import */
+.imp-sum{margin:16px 0 10px;font-size:15px}
+.imp-bad{margin:16px 0 6px;font-weight:700;color:#B3261E}
+.imp-list{margin:0 0 6px;padding-left:20px;font-size:14px;color:#B3261E}
+.imp-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}

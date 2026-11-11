@@ -9,9 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/portal.css">
+<link rel="stylesheet" href="css/floor.css">
 <script src="js/config.js" defer></script>
 <script src="js/auth.js" defer></script>
 <script src="js/chair.js" defer></script>
+<script src="js/floor.js" defer></script>
+<script src="js/floor-controls.js" defer></script>
 </head>
 <body>
 
@@ -40,6 +43,75 @@
 
 <div class="pt-in pt-body">
 <div class="pt-grid">
+
+<section class="pt-card wide" aria-labelledby="fl-h">
+<div class="pt-head"><div><p class="eyebrow disp">Floor</p><h2 class="disp" id="fl-h">Floor timer</h2></div></div>
+<p class="pt-sub">What you start here shows live on the committee screen in the room.</p>
+<p class="fl-status" id="fl-status" role="status" aria-live="polite">Loading…</p>
+
+<p class="f-label">1 · Speaking format</p>
+<div class="fl-formats" role="group" aria-label="Speaking format">
+<button class="btn" type="button" data-fmt="gsl">Start GSL</button>
+<button class="btn" type="button" data-fmt="moderated_caucus">Start moderated caucus</button>
+<button class="btn" type="button" data-fmt="unmoderated_caucus">Start unmoderated caucus</button>
+<button class="btn danger" id="fl-end" type="button" hidden>End speaking format</button>
+</div>
+
+<div class="fl-picker" id="fl-picker" hidden>
+<p class="f-label" id="fl-picker-label">2 · Time per speech</p>
+<div class="fl-presets" role="group" aria-label="Time presets">
+<button class="fl-preset" type="button" data-d="30" aria-pressed="false">0:30</button>
+<button class="fl-preset" type="button" data-d="60" aria-pressed="false">1:00</button>
+<button class="fl-preset" type="button" data-d="90" aria-pressed="false">1:30</button>
+<button class="fl-preset" type="button" data-d="120" aria-pressed="false">2:00</button>
+<button class="fl-preset" type="button" data-d="180" aria-pressed="false">3:00</button>
+<button class="fl-preset" type="button" data-d="300" aria-pressed="false">5:00</button>
+</div>
+<div class="fl-wheels">
+<div class="fl-wheel-unit"><span class="fl-wheel-label" id="fl-min-l">Minutes</span><div class="fl-wheel" id="fl-min" role="listbox" aria-labelledby="fl-min-l" tabindex="0"><div class="fl-wheel-in"></div></div></div>
+<span class="fl-colon" aria-hidden="true">:</span>
+<div class="fl-wheel-unit"><span class="fl-wheel-label" id="fl-sec-l">Seconds</span><div class="fl-wheel" id="fl-sec" role="listbox" aria-labelledby="fl-sec-l" tabindex="0"><div class="fl-wheel-in"></div></div></div>
+</div>
+<div class="fl-total" id="fl-total" hidden><label class="f-label" for="fl-total-min">Total caucus time (minutes)</label><input class="f-input" id="fl-total-min" type="number" min="1" max="60" step="1" value="10"></div>
+<div class="fl-confirm"><button class="btn" id="fl-confirm" type="button">Start</button><button class="btn ghost" id="fl-cancel" type="button">Cancel</button></div>
+</div>
+<p class="f-msg" id="fl-msg" role="status" aria-live="polite"></p>
+
+<div class="fl-grid">
+<div class="fl-block">
+<p class="f-label">Speaker</p>
+<p class="fl-now" id="fl-now">No active speaker timer.</p>
+<p class="fl-line" id="fl-caucus-line" hidden></p>
+<button class="btn danger xs" id="fl-stop" type="button" hidden>Stop speaker timer</button>
+<div class="fl-mod" id="fl-mod" hidden>
+<label class="f-label" for="fl-mod-select">Give the floor to</label>
+<select class="f-input" id="fl-mod-select"></select>
+<button class="btn" id="fl-mod-go" type="button">Start speech</button>
+</div>
+<div class="fl-ordbox" id="fl-order" hidden>
+<p class="f-label">Speaking order</p>
+<div id="fl-order-list"></div>
+<div class="fl-add">
+<label class="sr-only" for="fl-add-select">Delegate to add</label>
+<select class="f-input" id="fl-add-select"></select>
+<button class="btn sm" id="fl-add" type="button">Add delegate</button>
+<button class="btn ghost sm" id="fl-add-all" type="button">Add all delegates</button>
+</div>
+</div>
+</div>
+<div class="fl-block">
+<p class="f-label">General timer</p>
+<p class="fl-gen-clock" id="fl-gen-clock">--:--</p>
+<p class="fl-gen-state" id="fl-gen-state">No timer is active.</p>
+<div class="fl-gen-acts">
+<button class="btn ghost sm" id="fl-gen-setup" type="button">Set up timer</button>
+<button class="btn sm" id="fl-gen-pause" type="button" hidden>Pause</button>
+<button class="btn sm" id="fl-gen-resume" type="button" hidden>Resume</button>
+<button class="btn ghost sm" id="fl-gen-reset" type="button" hidden>Reset</button>
+</div>
+</div>
+</div>
+</section>
 
 <section class="pt-card" aria-labelledby="q-h">
 <div class="pt-head"><div><p class="eyebrow disp">01</p><h2 class="disp" id="q-h">Chit queue <span class="pt-count zero" id="q-count">0</span></h2></div></div>
