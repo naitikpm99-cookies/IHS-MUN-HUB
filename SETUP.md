@@ -19,7 +19,7 @@ Nothing here needs a server of your own. Supabase stores the accounts and chits.
 ## 3. Using it
 - Admin: pick a committee, create its chair, add delegates (one by one or pasted in bulk). Each person gets an access code.
   Use **Download all codes (CSV)** to hand them out. Keep that file private.
-- Delegates and chairs sign in at `/login.html` with their own code and land on their own dashboard.
+- Delegates and chairs sign in at `/login.html` with their own code and land on their own dashboard. Sign-in is kept per browser tab, so you can test different roles in separate tabs.
 - A chit goes: delegate -> their chair (approves or rejects) -> recipient delegation.
 - Chair: issue a **Crisis alert** to show an animated, committee-wide update on the room screen and delegate dashboards. It remains active until the chair ends it.
 

@@ -7,9 +7,10 @@
   var CFG = window.DXB_CONFIG || {};
   var DXB = window.DXB = {};
 
-  DXB.token = function () { try { return localStorage.getItem(TOKEN); } catch (e) { return null; } };
-  DXB.setToken = function (t) { try { localStorage.setItem(TOKEN, t); } catch (e) {} };
-  DXB.clear = function () { try { localStorage.removeItem(TOKEN); } catch (e) {} };
+  try { localStorage.removeItem(TOKEN); } catch (e) {}
+  DXB.token = function () { try { return sessionStorage.getItem(TOKEN); } catch (e) { return null; } };
+  DXB.setToken = function (t) { try { sessionStorage.setItem(TOKEN, t); } catch (e) {} };
+  DXB.clear = function () { try { sessionStorage.removeItem(TOKEN); } catch (e) {} };
 
   // The pages ask for things like ('GET', '/api/chits'). Each one maps onto a database function.
   var ID = '([0-9a-fA-F-]{36})';
