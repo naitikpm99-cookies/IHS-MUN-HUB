@@ -23,6 +23,7 @@
     $('id-name').textContent = me.name || me.delegation || 'Delegate';
     loadSeen();
     $('logout').addEventListener('click', DXB.signOut);
+    DXB.crisisWatch();
     wire();
     wireShortcuts();
     DXB.poll(loadChits, 4000);

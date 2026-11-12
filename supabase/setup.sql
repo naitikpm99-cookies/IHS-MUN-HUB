@@ -619,7 +619,48 @@
 
   grant execute on function public.floor_state(text), public.floor_start_session(text, text, int, int), public.floor_end_session(text),
     public.floor_queue(text, text, uuid, text), public.floor_start_speaker(text, uuid), public.floor_stop_speaker(text), public.floor_general(text, text, int) to anon, authenticated;
-  -- ---------------------------------------------------------------- permissions
+  -- ---------------------------------------------------------------- crisis alerts
+create table if not exists private.crisis (
+  committee text primary key references private.committees (id) on delete cascade,
+  active boolean not null default false,
+  body text not null default '',
+  seq bigint not null default 0,          -- goes up every time a crisis is triggered, so screens know it is a new one
+  started_at timestamptz
+);
+alter table private.crisis enable row level security;
+
+create or replace function private.crisis_json(cid text) returns jsonb language sql set search_path = '' as $$
+  select jsonb_build_object('server_now', private.ms(now()), 'active', coalesce(c.active, false), 'text', coalesce(c.body, ''),
+                            'seq', coalesce(c.seq, 0), 'started_at', private.ms(c.started_at))
+  from (select 1) x left join private.crisis c on c.committee = cid $$;
+
+create or replace function public.crisis_state(p_token text) returns jsonb language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token);
+begin
+  if u.role not in ('chair', 'committee', 'delegate') then perform private.fail('Not allowed', 'PT403'); end if;
+  return private.crisis_json(u.committee);
+end $$;
+
+create or replace function public.crisis_start(p_token text, p_text text) returns jsonb language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token); txt text := private.clean_text(p_text, 400);
+begin
+  perform private.need(u, 'chair');
+  if txt = '' then perform private.fail('Describe the crisis first.', 'PT400'); end if;
+  insert into private.crisis as existing_crisis (committee, active, body, seq, started_at) values (u.committee, true, txt, 1, now())
+  on conflict (committee) do update set active = true, body = excluded.body, seq = existing_crisis.seq + 1, started_at = now();
+  return private.crisis_json(u.committee);
+end $$;
+
+create or replace function public.crisis_end(p_token text) returns jsonb language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token);
+begin
+  perform private.need(u, 'chair');
+  update private.crisis set active = false where committee = u.committee;
+  return private.crisis_json(u.committee);
+end $$;
+
+grant execute on function public.crisis_state(text), public.crisis_start(text, text), public.crisis_end(text) to anon, authenticated;
+-- ---------------------------------------------------------------- permissions
   revoke all on all functions in schema private from public, anon, authenticated;
   grant execute on function public.login(text), public.logout(text), public.me(text), public.delegate_roster(text), public.my_chits(text),
     public.send_chit(text, uuid, text, uuid), public.chair_chits(text), public.chair_decide(text, uuid, text, text), public.chair_roster(text),

@@ -16,6 +16,7 @@
     clock(); setInterval(clock, 1000);
     controls();
     keepAwake();
+    DXB.crisisWatch();
     DXB.poll(load, 15000);
   }).catch(function (e) { if (e.message !== 'Signed out') DXB.toast(e.message); });
 

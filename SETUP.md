@@ -21,6 +21,7 @@ Nothing here needs a server of your own. Supabase stores the accounts and chits.
   Use **Download all codes (CSV)** to hand them out. Keep that file private.
 - Delegates and chairs sign in at `/login.html` with their own code and land on their own dashboard.
 - A chit goes: delegate -> their chair (approves or rejects) -> recipient delegation.
+- Chair: issue a **Crisis alert** to show an animated, committee-wide update on the room screen and delegate dashboards. It remains active until the chair ends it.
 
 Every time you change the website files, push to GitHub and Vercel redeploys by itself.
 

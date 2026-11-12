@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="css/floor.css">
 <script src="js/config.js" defer></script>
 <script src="js/auth.js" defer></script>
+<script src="js/crisis.js" defer></script>
 <script src="js/chair.js" defer></script>
 <script src="js/floor.js" defer></script>
 <script src="js/floor-controls.js" defer></script>
@@ -43,6 +44,24 @@
 
 <div class="pt-in pt-body">
 <div class="pt-grid">
+
+<section class="pt-card wide crisis-controls" aria-labelledby="crisis-h">
+<div class="pt-head">
+<div><p class="eyebrow disp">Agenda twist · Live to your committee</p><h2 class="disp" id="crisis-h">Drop new intel</h2></div>
+<span class="crisis-live-status" id="crisis-active-label">Ready for a plot twist</span>
+</div>
+<p class="pt-sub">Share a surprise development with the room screen and every delegate dashboard. Each new update gets a dramatic countdown before the reveal.</p>
+<form id="crisis-form">
+<label class="f-label" for="crisis-text">What just happened?</label>
+<textarea class="f-input" id="crisis-text" maxlength="400" rows="3" placeholder="The moon has been stolen. The culprit left a ransom note…" required></textarea>
+<div class="crisis-form-actions">
+<span class="crisis-count" id="crisis-count">0 / 400</span>
+<div><button class="btn" id="crisis-start" type="submit" disabled>Drop the plot twist</button><button class="btn danger" id="crisis-end" type="button" hidden>Close this storyline</button></div>
+</div>
+</form>
+<div class="crisis-active" id="crisis-active" hidden><b>Now unfolding</b><p id="crisis-active-text"></p></div>
+<p class="f-msg" id="crisis-status" role="status" aria-live="polite">Checking crisis status…</p>
+</section>
 
 <section class="pt-card wide" aria-labelledby="fl-h">
 <div class="pt-head"><div><p class="eyebrow disp">Floor</p><h2 class="disp" id="fl-h">Floor timer</h2></div></div>

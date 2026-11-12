@@ -11,12 +11,23 @@
 <link rel="stylesheet" href="css/portal.css">
 <script src="js/config.js" defer></script>
 <script src="js/auth.js" defer></script>
+<script src="js/crisis.js" defer></script>
 <script src="js/delegate.js" defer></script>
 </head>
 <body class="delegate-page">
 
 <header class="nav pt-nav">
-<a class="logo disp" href="index.html">DXB <span>MUN</span></a>
+<a class="logo disp masthead-logo" href="index.html" aria-label="DXB MUN">
+<span class="masthead-word masthead-dxb" aria-hidden="true"><span class="masthead-char">D</span><span class="masthead-char">X</span><span class="masthead-char">B</span></span>
+<span class="masthead-word masthead-mun" aria-hidden="true"><span class="masthead-char">M</span><span class="masthead-char">U</span><span class="masthead-char">N</span></span>
+</a>
+<span class="masthead-gavel" aria-hidden="true">
+<svg viewBox="0 0 100 100" focusable="false">
+<path d="M47 43 78 75" fill="none" stroke="#fff7dc" stroke-linecap="round" stroke-width="9"/>
+<path d="m21 25 17-17 33 33-17 17z" fill="#f2b705" stroke="#fff7dc" stroke-linejoin="round" stroke-width="4"/>
+<path d="m29 17 12 12m17 17 12 12" fill="none" stroke="#7a1425" stroke-linecap="round" stroke-width="4"/>
+</svg>
+</span>
 <nav class="links" aria-label="Account">
 <a class="hide-sm" href="index.html">Website</a>
 <button class="cta" id="logout" type="button">Sign out</button>
@@ -30,7 +41,7 @@
 <article class="delegate-id-card" id="delegate-id-card" aria-label="Delegate identification card">
 <div class="id-noise" aria-hidden="true"></div>
 <div class="id-top"><span class="disp">DXB MUN 2027</span><span>DELEGATE CREDENTIAL</span></div>
-<div class="id-main"><div class="id-identity"><p class="id-label">Accredited delegate</p><h1 class="disp" id="hello">Delegate</h1><p class="id-delegation" id="id-delegation">Delegation</p></div><div class="id-seal" aria-hidden="true">DXB<br><b>MUN</b></div></div>
+<div class="id-main"><div class="id-identity"><p class="id-label">Accredited delegate</p><h1 class="disp" id="hello">Delegate</h1><p class="id-delegation" id="id-delegation">Delegation</p></div></div>
 <div class="id-bottom"><div><span>Committee</span><b id="id-committee">—</b></div><div><span>Delegate</span><b id="id-name">—</b></div><span class="id-mark">VALID · 2027</span></div>
 </article>
 <p class="stage-hint">Delegate workspace · Session ready</p>
@@ -38,6 +49,11 @@
 </section>
 
 <div class="pt-in pt-body workspace-body">
+<nav class="delegate-tools" aria-label="Dashboard shortcuts">
+<button type="button" data-jump="send-h" aria-controls="send-h">01 <span>Compose</span></button>
+<button type="button" data-jump="in-h" aria-controls="in-h">02 <span>Inbox</span><b id="tool-in-count" hidden>0</b></button>
+<button type="button" data-jump="sent-h" aria-controls="sent-h">03 <span>Sent chits</span></button>
+</nav>
 <div class="delegate-guide" id="delegate-guide" role="status"><b>Start here</b><span>Choose a delegation, write your message, then send it to the chair for approval.</span></div>
 <div class="pt-grid workspace-grid">
 
@@ -75,6 +91,13 @@
 </div>
 </div>
 </main>
+
+<div class="crisis-alert" id="crisis-alert" role="alert" aria-live="assertive" hidden>
+<div class="crisis-alert-panel">
+<span class="crisis-alert-symbol" aria-hidden="true"><span class="crisis-alert-count" id="crisis-alert-count">3</span></span>
+<div class="crisis-alert-copy"><p class="crisis-alert-kicker" id="crisis-alert-kicker">Incoming transmission · Decoding</p><h2 id="crisis-alert-title">WAIT FOR IT...</h2><p class="crisis-alert-text" id="crisis-alert-text" aria-live="assertive" hidden></p></div>
+</div>
+</div>
 
 </body>
 </html>

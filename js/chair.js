@@ -14,6 +14,7 @@
     $('tags').appendChild(el('li', { class: 'pt-tag' }, ['Committee ', el('b', { text: info.committee.id }), ' · ' + info.committee.name]));
     if (info.user.name) $('tags').appendChild(el('li', { class: 'pt-tag' }, ['Chair ', el('b', { text: info.user.name })]));
     $('logout').addEventListener('click', DXB.signOut);
+    DXB.crisisChair();
     $('queue').addEventListener('focusout', function () {
       setTimeout(function () { if (deferred && !$('queue').contains(document.activeElement)) { deferred = false; drawQueue(); } }, 0);
     });
