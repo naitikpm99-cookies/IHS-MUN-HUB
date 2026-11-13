@@ -2,6 +2,7 @@
 (function () {
   var revealTimer = null;
   var countdownTimer = null;
+  var dismissedSeq = null;
 
   function clearReveal() {
     clearTimeout(revealTimer);
@@ -18,10 +19,16 @@
       clearReveal();
       box.hidden = true;
       box.removeAttribute('data-seq');
+      dismissedSeq = null;
       return;
     }
 
     var seq = String(state.seq);
+    if (dismissedSeq === seq) {
+      box.hidden = true;
+      return;
+    }
+
     var text = document.getElementById('crisis-alert-text');
     var title = document.getElementById('crisis-alert-title');
     var kicker = document.getElementById('crisis-alert-kicker');
@@ -42,8 +49,8 @@
 
     function reveal() {
       clearReveal();
-      kicker.textContent = 'Breaking news · Agenda update';
-      title.textContent = 'PLOT TWIST!';
+      kicker.textContent = 'Breaking news · Committee crisis';
+      title.textContent = 'CRISIS ALERT!';
       text.textContent = state.text;
       text.hidden = false;
       counter.textContent = '!';
@@ -99,6 +106,15 @@
   }
 
   DXB.crisisWatch = function () {
+    var close = document.getElementById('crisis-alert-close');
+    if (close) close.addEventListener('click', function () {
+      var box = document.getElementById('crisis-alert');
+      if (!box) return;
+      dismissedSeq = box.getAttribute('data-seq');
+      clearReveal();
+      box.hidden = true;
+    });
+
     var failed = false;
     watchState(function (state) {
       failed = false;
@@ -131,10 +147,10 @@
       activeText.textContent = state.active ? state.text : '';
       end.hidden = !state.active;
       var label = document.getElementById('crisis-active-label');
-      label.textContent = state.active ? 'LIVE' : 'Ready for a plot twist';
+      label.textContent = state.active ? 'LIVE' : 'Ready for a crisis';
       label.classList.toggle('is-active', !!state.active);
-      if (state.active && !input.value.trim()) start.textContent = 'Drop another twist';
-      else start.textContent = state.active ? 'Update the plot twist' : 'Drop the plot twist';
+      if (state.active && !input.value.trim()) start.textContent = 'Start another crisis';
+      else start.textContent = state.active ? 'Update the crisis' : 'Start the crisis';
       start.disabled = posting || !input.value.trim();
       end.disabled = posting;
     }
@@ -143,7 +159,7 @@
       render(state);
       if (status.dataset.error === 'true') {
         status.dataset.error = '';
-        message(state.active ? 'The plot twist is live.' : 'No active plot twist.', false);
+        message(state.active ? 'The crisis is live.' : 'No active crisis.', false);
       }
     }, function (error) {
       status.dataset.error = 'true';
@@ -155,14 +171,14 @@
       posting = true;
       start.disabled = true;
       end.disabled = true;
-      message(action === 'start' ? 'Sending the plot twist…' : 'Closing this storyline…', false);
+      message(action === 'start' ? 'Sending the crisis…' : 'Closing the crisis…', false);
       DXB.api('POST', '/api/crisis/' + action, body || {}).then(function (state) {
         if (action === 'start') {
           input.value = '';
           count.textContent = '0 / 400';
         }
         render(state);
-        message(action === 'start' ? 'The plot twist is live across your committee.' : 'This storyline is closed.', false);
+        message(action === 'start' ? 'The crisis is live across your committee.' : 'The crisis is closed.', false);
       }).catch(function (error) {
         message(error.message, true);
       }).then(function () {

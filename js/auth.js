@@ -6,11 +6,24 @@
   var HOME = { admin: 'admin.html', chair: 'chair.html', delegate: 'dashboard.html', committee: 'committee.html' };
   var CFG = window.DXB_CONFIG || {};
   var DXB = window.DXB = {};
+  var authChannel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('dxbmun-auth') : null;
+  var tabInstance = Date.now().toString(36) + Math.random().toString(36).slice(2);
+  var logoutChecks = {};
 
   try { localStorage.removeItem(TOKEN); } catch (e) {}
   DXB.token = function () { try { return sessionStorage.getItem(TOKEN); } catch (e) { return null; } };
   DXB.setToken = function (t) { try { sessionStorage.setItem(TOKEN, t); } catch (e) {} };
   DXB.clear = function () { try { sessionStorage.removeItem(TOKEN); } catch (e) {} };
+
+  if (authChannel) authChannel.addEventListener('message', function (event) {
+    var message = event.data || {};
+    if (message.from === tabInstance) return;
+    if (message.type === 'logout-check' && DXB.token() === message.token) {
+      authChannel.postMessage({ type: 'logout-in-use', requestId: message.requestId, to: message.from, from: tabInstance });
+    } else if (message.type === 'logout-in-use' && message.to === tabInstance) {
+      logoutChecks[message.requestId] = true;
+    }
+  });
 
   // The pages ask for things like ('GET', '/api/chits'). Each one maps onto a database function.
   var ID = '([0-9a-fA-F-]{36})';
@@ -101,7 +114,21 @@
   };
 
   DXB.signOut = function () {
-    DXB.api('POST', '/api/logout').catch(function () {}).then(function () { DXB.clear(); location.href = 'login.html'; });
+    var token = DXB.token();
+    function clearTab(revoke) {
+      var request = revoke ? DXB.api('POST', '/api/logout').catch(function () {}) : Promise.resolve();
+      request.then(function () { DXB.clear(); location.href = 'login.html'; });
+    }
+    if (!authChannel || !token) { clearTab(false); return; }
+
+    var requestId = tabInstance + '-' + Date.now().toString(36);
+    logoutChecks[requestId] = false;
+    authChannel.postMessage({ type: 'logout-check', requestId: requestId, token: token, from: tabInstance });
+    setTimeout(function () {
+      var tokenInAnotherTab = logoutChecks[requestId];
+      delete logoutChecks[requestId];
+      clearTab(!tokenInAnotherTab);
+    }, 200);
   };
 
   // Build elements without innerHTML, so nobody can inject markup through a name or a chit.
