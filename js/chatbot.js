@@ -5,10 +5,12 @@
   var form = document.getElementById('chat-form');
   var input = document.getElementById('chat-input');
   var sendButton = document.getElementById('chat-send');
+  var loadingScreen = document.getElementById('chat-loading');
   var messagesEl = document.getElementById('chat-messages');
   var suggestions = document.getElementById('chat-suggestions');
   var menuButton = document.getElementById('chat-menu');
   var backButton = document.getElementById('chat-back');
+  var hasLoaded = false;
   var links = {
     '#committees': 'Committees',
     '#schedule': 'Schedule',
@@ -20,8 +22,19 @@
     panel.hidden = !open;
     launcher.setAttribute('aria-expanded', String(open));
     launcher.setAttribute('aria-label', open ? 'Close chat' : 'Ask DXB MUN');
-    if (open) input.focus();
-    else launcher.focus();
+    if (open && !hasLoaded) {
+      hasLoaded = true;
+      loadingScreen.hidden = false;
+      input.disabled = true;
+      sendButton.disabled = true;
+      window.setTimeout(function () {
+        loadingScreen.hidden = true;
+        input.disabled = false;
+        sendButton.disabled = false;
+        if (!panel.hidden) input.focus();
+      }, 900);
+    } else if (open && !input.disabled) input.focus();
+    else if (!open) launcher.focus();
   }
 
   function addMessage(role, text) {
@@ -111,22 +124,6 @@
     input.style.height = Math.min(input.scrollHeight, 112) + 'px';
   }
 
-  function addTypingIndicator() {
-    var indicator = document.createElement('div');
-    indicator.className = 'chat-message bot typing';
-    indicator.setAttribute('role', 'status');
-    indicator.setAttribute('aria-label', 'Preparing a reply');
-    for (var i = 0; i < 3; i++) {
-      var dot = document.createElement('span');
-      dot.className = 'typing-dot';
-      dot.setAttribute('aria-hidden', 'true');
-      indicator.appendChild(dot);
-    }
-    messagesEl.appendChild(indicator);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-    return indicator;
-  }
-
   launcher.addEventListener('click', function () { setOpen(panel.hidden); });
   closeButton.addEventListener('click', function () { setOpen(false); });
   backButton.addEventListener('click', function () { setOpen(false); });
@@ -164,15 +161,7 @@
     resizeInput();
     suggestions.hidden = true;
     addMessage('user', question);
-    var typing = addTypingIndicator();
-    sendButton.disabled = true;
-    input.disabled = true;
-    window.setTimeout(function () {
-      typing.remove();
-      addMessage('bot', getReply(question));
-      sendButton.disabled = false;
-      input.disabled = false;
-      input.focus();
-    }, 420);
+    addMessage('bot', getReply(question));
+    input.focus();
   });
 })();

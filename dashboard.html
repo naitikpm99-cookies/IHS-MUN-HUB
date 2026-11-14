@@ -28,6 +28,16 @@
 <path d="m29 17 12 12m17 17 12 12" fill="none" stroke="#7a1425" stroke-linecap="round" stroke-width="4"/>
 </svg>
 </span>
+<div class="mobile-dashboard-nav">
+<button class="mobile-dashboard-toggle" id="mobile-dashboard-toggle" type="button" aria-label="Open dashboard menu" aria-expanded="false" aria-controls="mobile-dashboard-menu">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+<nav class="mobile-dashboard-menu" id="mobile-dashboard-menu" aria-label="Dashboard sections" hidden>
+<button type="button" data-jump="send-h" aria-controls="send-h">Compose a chit</button>
+<button type="button" data-jump="in-h" aria-controls="in-h">Inbox</button>
+<button type="button" data-jump="sent-h" aria-controls="sent-h">Sent chits</button>
+</nav>
+</div>
 <nav class="links" aria-label="Account">
 <a class="hide-sm" href="index.html">Website</a>
 <button class="cta" id="logout" type="button">Sign out</button>

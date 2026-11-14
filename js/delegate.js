@@ -44,10 +44,31 @@
   }
 
   function wireShortcuts() {
-    [].slice.call(document.querySelectorAll('.delegate-tools [data-jump]')).forEach(function (button) {
+    var menuToggle = $('mobile-dashboard-toggle');
+    var mobileMenu = $('mobile-dashboard-menu');
+    function setMenuOpen(open) {
+      mobileMenu.hidden = !open;
+      document.body.classList.toggle('mobile-dashboard-menu-open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close dashboard menu' : 'Open dashboard menu');
+      if (open) mobileMenu.querySelector('button').focus();
+      else menuToggle.focus();
+    }
+    menuToggle.addEventListener('click', function () { setMenuOpen(mobileMenu.hidden); });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !mobileMenu.hidden) {
+        setMenuOpen(false);
+        menuToggle.focus();
+      }
+    });
+    mobileMenu.addEventListener('click', function (event) {
+      if (event.target === mobileMenu) setMenuOpen(false);
+    });
+    [].slice.call(document.querySelectorAll('.delegate-tools [data-jump], .mobile-dashboard-menu [data-jump]')).forEach(function (button) {
       button.addEventListener('click', function () {
         var target = $(button.dataset.jump);
         if (!target) return;
+        if (button.closest('.mobile-dashboard-menu')) setMenuOpen(false);
         target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
         if (button.dataset.jump === 'send-h') $('filter').focus();
       });

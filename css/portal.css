@@ -699,3 +699,23 @@ select.f-input option{background:#1B0D10;color:#fff}
   .chair-page.delegate-page .delegate-id-card,.chair-page.delegate-page .delegate-id-card::after,.chair-page.delegate-page .masthead-char,.chair-page.delegate-page .masthead-gavel,.chair-page.delegate-page .masthead-gavel::before,.chair-page.delegate-page .masthead-gavel::after{animation:none}
   .chair-page.delegate-page .delegate-id-card{transform:none}
 }
+
+.mobile-dashboard-nav{display:none}
+@media(max-width:700px){
+  .delegate-page.mobile-dashboard-menu-open{overflow:hidden}
+  .delegate-page .nav{position:sticky;top:0;z-index:50;display:grid;grid-template-columns:minmax(0,1fr) 44px auto;grid-template-rows:auto;align-items:center;gap:8px;width:100%;min-height:0;padding:8px 12px 10px;border-bottom-width:3px;box-shadow:0 4px 0 var(--pop)}
+  .delegate-page .masthead-logo{grid-column:1;grid-row:1;font-size:clamp(36px,10vw,48px);line-height:.9}
+  .mobile-dashboard-nav{position:relative;display:block;grid-column:2;grid-row:1;width:44px;height:44px}
+  .mobile-dashboard-toggle{display:grid;place-items:center;width:44px;height:44px;padding:0;border:2px solid rgba(255,255,255,.55);border-radius:0;background:transparent;color:#fff;cursor:pointer}
+  .mobile-dashboard-toggle svg{width:26px;height:26px}
+  .mobile-dashboard-toggle:hover,.mobile-dashboard-toggle[aria-expanded=true]{border-color:var(--accent);background:var(--accent);color:var(--ink)}
+  .mobile-dashboard-menu{position:fixed;inset:0;z-index:49;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px;overflow-y:auto;padding:100px 22px 34px;background:var(--bg)}
+  .mobile-dashboard-menu[hidden]{display:none}
+  .mobile-dashboard-menu button{min-height:50px;padding:5px 13px;border:0;border-radius:999px;background:transparent;color:var(--cream);font:400 clamp(30px,8vw,42px)/1.05 'Anton',Impact,sans-serif;letter-spacing:.03em;text-align:left;text-transform:uppercase;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+  .mobile-dashboard-menu button:hover,.mobile-dashboard-menu button:focus-visible{background:var(--accent);color:var(--ink);outline:none}
+  .mobile-dashboard-menu button:active{transform:scale(.97)}
+  .delegate-page .pt-nav .links{grid-column:3;grid-row:1;display:flex;align-items:center;justify-content:flex-end;gap:0}
+  .delegate-page .pt-nav .links button{min-height:32px;margin:0;padding:6px 9px;font-size:9px;white-space:nowrap}
+  .delegate-page .delegate-tools,.delegate-page .chair-tools{display:none}
+  .delegate-page #send-h,.delegate-page #in-h,.delegate-page #sent-h,.delegate-page #crisis-card,.delegate-page #floor-card,.delegate-page #queue-card,.delegate-page #tochair-card,.delegate-page #roster-card,.delegate-page #log-card{scroll-margin-top:112px}
+}
