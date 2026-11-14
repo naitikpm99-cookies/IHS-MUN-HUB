@@ -8,11 +8,13 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:wght@400;700&family=DM+Sans:wght@400;500;700;800&family=Press+Start+2P&family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
 
 <!-- Our own files (the homepage has its own stylesheet; portal pages use css/style.css) -->
 <link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/chatbot.css">
 <script src="js/main.js" defer></script>
+<script src="js/chatbot.js" defer></script>
 <script src="js/wellness.js" defer></script>
 </head>
 <body>
@@ -57,6 +59,16 @@
 <p class="kicker disp">Model United Nations · Dubai</p>
 <h1 class="disp">DXB MUN</h1>
 <p class="tagline disp">DXB MUN 2027</p>
+<div class="countdown" id="countdown">
+<p class="countdown-label disp">Countdown to 23 April</p>
+<div class="countdown-time" id="countdown-time" role="timer" aria-label="Time until DXB MUN begins" aria-live="off">
+<div><b id="countdown-days">000</b><span>Days</span></div>
+<div><b id="countdown-hours">00</b><span>Hours</span></div>
+<div><b id="countdown-minutes">00</b><span>Minutes</span></div>
+<div><b id="countdown-seconds">00</b><span>Seconds</span></div>
+</div>
+<p class="countdown-complete" id="countdown-complete" hidden>The conference has begun</p>
+</div>
 <div class="actions">
 <a class="btn" href="#committees">Explore committees</a>
 <a class="btn ghost" href="#schedule">See the schedule</a>
@@ -157,11 +169,15 @@
 <!-- Schedule: edit the sessions and times here. Each <ol> is one day; the Day buttons switch between them. -->
 <section class="sec sched" id="schedule">
 <div class="wrap">
+<div class="sched-meta"><span>DXB MUN · 2027</span><span>Conference program</span></div>
 <div class="head"><p class="eyebrow disp">03</p><h2 class="disp">Schedule</h2></div>
+<div class="tw" id="tw">
 <div class="tabs" role="tablist" aria-label="Conference days">
-<button type="button" role="tab" id="tab-1" aria-selected="true" aria-controls="day-1" data-day="1">Day 1</button>
-<button type="button" role="tab" id="tab-2" aria-selected="false" aria-controls="day-2" data-day="2">Day 2</button>
-<button type="button" role="tab" id="tab-3" aria-selected="false" aria-controls="day-3" data-day="3">Day 3</button>
+<button type="button" role="tab" id="tab-1" aria-selected="true" aria-controls="day-1" data-day="1">Day 1</button><button type="button" role="tab" id="tab-2" aria-selected="false" aria-controls="day-2" data-day="2">Day 2</button><button type="button" role="tab" id="tab-3" aria-selected="false" aria-controls="day-3" data-day="3">Day 3</button>
+</div>
+<div class="tw-stage">
+<div class="tw-paper" id="tw-paper" aria-hidden="true"><div class="tw-top"><span>dxb.mun.2027</span><span>schedule</span></div><div class="tw-lines" id="tw-lines"></div></div>
+<img class="tw-machine" src="images/typewriter.png" alt="" aria-hidden="true" width="620" height="460">
 </div>
 
 <ol class="tl" id="day-1" role="tabpanel" aria-labelledby="tab-1">
@@ -172,7 +188,6 @@
 <li><span class="tm">4:00 PM – 5:30 PM</span><span class="nm">Committee Session 1</span><span class="du">1 hour 30 minutes</span></li>
 <li><span class="tm">5:30 PM</span><span class="nm">Dispersal</span><span class="du">30 minutes</span></li>
 </ol>
-
 <ol class="tl" id="day-2" role="tabpanel" aria-labelledby="tab-2" hidden>
 <li><span class="tm">9:00 AM – 9:30 AM</span><span class="nm">Registration</span><span class="du">30 minutes</span></li>
 <li><span class="tm">9:30 AM – 11:15 AM</span><span class="nm">Committee Session 2</span><span class="du">1 hour 45 minutes</span></li>
@@ -183,7 +198,6 @@
 <li><span class="tm">4:30 PM – 7:00 PM</span><span class="nm">Socials</span><span class="du">2 hours 30 minutes</span></li>
 <li><span class="tm">7:00 PM</span><span class="nm">Dispersal</span><span class="du">30 minutes</span></li>
 </ol>
-
 <ol class="tl" id="day-3" role="tabpanel" aria-labelledby="tab-3" hidden>
 <li><span class="tm">9:00 AM – 9:30 AM</span><span class="nm">Registration</span><span class="du">30 minutes</span></li>
 <li><span class="tm">9:30 AM – 11:30 AM</span><span class="nm">Committee Session 5</span><span class="du">2 hours</span></li>
@@ -193,6 +207,7 @@
 <li><span class="tm">3:30 PM – 5:30 PM</span><span class="nm">Closing Ceremony</span><span class="du">2 hours</span></li>
 <li><span class="tm">5:30 PM</span><span class="nm">Dispersal</span><span class="du">30 minutes</span></li>
 </ol>
+</div>
 </div>
 </section>
 
@@ -243,6 +258,43 @@
 </div>
 </div>
 </footer>
+
+<aside class="mun-chat" id="mun-chat">
+<section class="chat-panel" id="chat-panel" aria-labelledby="chat-title" hidden>
+<div class="chat-status" aria-hidden="true"><span><i class="pixel-signal"></i>DXB MUN</span><span>2027 <i class="pixel-battery"></i></span></div>
+<header class="chat-header">
+<div><p class="chat-kicker">DXB MUN 2027</p><h2 id="chat-title">Delegate help desk</h2></div>
+<button class="chat-close" id="chat-close" type="button" aria-label="Close chat">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+</button>
+</header>
+<div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-relevant="additions text">
+<div class="chat-message bot">Hi! I can help with committees, the schedule, delegate sign-in, and site resources.</div>
+</div>
+<div class="chat-suggestions" id="chat-suggestions" aria-label="Suggested questions">
+<button type="button">What committees are there?</button>
+<button type="button">Show me the schedule</button>
+<button type="button">How do I sign in?</button>
+</div>
+<form class="chat-form" id="chat-form">
+<label class="visually-hidden" for="chat-input">Your message</label>
+<textarea id="chat-input" name="message" rows="1" maxlength="1000" placeholder="Ask a question..." required></textarea>
+<button class="chat-send" id="chat-send" type="submit" aria-label="Send message">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12 20 4l-5 16-3-7-8-1Zm8 1 8-9"/></svg>
+</button>
+</form>
+<p class="chat-note">Replies use information from this website. Check important details with an organiser.</p>
+<div class="chat-softkeys">
+<button id="chat-menu" type="button" aria-controls="chat-suggestions" aria-expanded="true">Menu</button>
+<span aria-hidden="true">DXB MUN</span>
+<button id="chat-back" type="button">Back</button>
+</div>
+</section>
+<button class="chat-launcher" id="chat-launcher" type="button" aria-label="Ask DXB MUN" aria-expanded="false" aria-controls="chat-panel">
+<svg class="chat-icon-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-1 2v-5a7.5 7.5 0 1 1 16-4.5Z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg>
+<svg class="chat-icon-close" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+</button>
+</aside>
 
 </body>
 </html>

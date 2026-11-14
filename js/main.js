@@ -5,6 +5,28 @@ var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var fine = window.matchMedia('(pointer: fine)').matches;
 function $(id) { return document.getElementById(id); }
 
+// ---------- Countdown to DXB MUN 2027 (Dubai time) ----------
+var countdown = $('countdown');
+if (countdown) {
+  var countdownTarget = new Date('2027-04-23T00:00:00+04:00').getTime();
+  var countdownTime = $('countdown-time');
+  var countdownComplete = $('countdown-complete');
+  function updateCountdown() {
+    var remaining = countdownTarget - Date.now();
+    if (remaining <= 0) {
+      countdownTime.hidden = true;
+      countdownComplete.hidden = false;
+      return;
+    }
+    $('countdown-days').textContent = Math.floor(remaining / 86400000);
+    $('countdown-hours').textContent = ('0' + Math.floor(remaining / 3600000) % 24).slice(-2);
+    $('countdown-minutes').textContent = ('0' + Math.floor(remaining / 60000) % 60).slice(-2);
+    $('countdown-seconds').textContent = ('0' + Math.floor(remaining / 1000) % 60).slice(-2);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
 // ---------- Cinematic opening: skip with a click, Enter, Space, or Escape ----------
 (function () {
   var intro = $('start-screen');
@@ -458,3 +480,104 @@ wheel.addEventListener('pointercancel', endDrag);
 
 renderWheel();
 wheelReady = true;
+
+// ---------- Schedule typewriter: types each day onto the paper, line by line ----------
+(function () {
+  var box = document.getElementById('tw'), lines = document.getElementById('tw-lines');
+  if (!box || !lines) return;
+  var keys = box.querySelector('.tw-keys');   // the drawn keyboard was replaced by the photo; keys may be absent
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var KEYS = 22, row = [];
+  if (keys) for (var k = 0; k < KEYS; k++) keys.appendChild(document.createElement('i'));
+  row = keys ? [].slice.call(keys.children) : [];
+  var typing = false, day = 1, timer = null, played = {};
+
+  function rowsOf(d) { return [].slice.call(document.querySelectorAll('#day-' + d + ' li')); }
+
+  // build one printed line for a programme row: time on the left, event in bold
+  function printed(li) {
+    var el = document.createElement('div'); el.className = 'tw-line';
+    var t = document.createElement('span'); t.className = 't'; t.textContent = li.querySelector('.tm').textContent;
+    var n = document.createElement('span'); n.className = 'n'; n.textContent = li.querySelector('.nm').textContent;
+    el.appendChild(n); el.appendChild(t);
+    return el;
+  }
+
+  function press(i) {
+    if (!row.length) return;
+    var key = row[i % row.length];
+    key.classList.add('press');
+    setTimeout(function () { key.classList.remove('press'); }, 90);
+  }
+
+  // type the day: a blinking cursor on the line being typed, then the next line, then the paper feeds up
+  function typeDay(d) {
+    if (typing) return;
+    typing = true; day = d; lines.replaceChildren(); lines.style.transform = ''; lines.classList.remove('is-feeding');
+    box.classList.add('is-typing');
+    var rows = rowsOf(d), idx = 0, ch = 0, cur = null, full = null;
+    var step = function () {
+      if (idx >= rows.length) { finish(); return; }
+      if (!full) {
+        full = printed(rows[idx]);
+        var label = full.querySelector('.n').textContent;
+        full.querySelector('.n').textContent = '';
+        lines.appendChild(full);
+        if (cur && cur.parentNode) cur.remove();
+        cur = document.createElement('span'); cur.className = 'cur';
+        full.querySelector('.n').appendChild(cur);
+        ch = 0;
+      }
+      var target = full.querySelector('.n'), src = rows[idx].querySelector('.nm').textContent;
+      if (ch < src.length) {
+        target.insertBefore(document.createTextNode(src.charAt(ch)), cur);
+        press(ch); ch++;
+        timer = setTimeout(step, 38);
+      } else {
+        // the whole line is typed; move the time into view and go to the next line
+        full.querySelector('.t').style.opacity = '1';
+        if (cur && cur.parentNode) cur.remove();
+        if (cur && cur.parentNode) cur.remove();
+        idx++; full = null;
+        timer = setTimeout(step, 180);
+      }
+    };
+    step();
+    function finish() {
+      if (cur && cur.parentNode) cur.remove();
+      box.classList.remove('is-typing');
+      typing = false;
+    }
+  }
+
+  function skipTo(d) {
+    clearTimeout(timer); typing = false;
+    lines.replaceChildren();
+    rowsOf(d).forEach(function (li) { lines.appendChild(printed(li)); });
+    box.classList.remove('is-typing');
+    played[d] = true;
+  }
+
+  function play(d) { skipTo(d); }
+  function typeIt(d) { typeDay(d); played[d] = true; }
+
+  // type the first day when the section comes into view, the others when their tab is picked
+  if (reduce || !('IntersectionObserver' in window)) {
+    skipTo(1);
+  } else {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && !played[1]) { io.disconnect(); typeIt(1); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(box);
+  }
+
+  // the day tabs drive the typewriter
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var d = +b.dataset.day;
+      if (reduce) skipTo(d); else { clearTimeout(timer); typing = false; typeDay(d); }
+    });
+  });
+})();

@@ -16,6 +16,8 @@ Nothing here needs a server of your own. Supabase stores the accounts and chits.
 2. On vercel.com choose **Add New > Project**, import that repository, and click **Deploy** (no settings to change).
 3. Open the Vercel link, go to `/login.html`, and sign in with your admin code.
 
+The homepage chatbot uses scripted replies and needs no separate API key or backend setup.
+
 ## 3. Using it
 - Admin: pick a committee, create its chair, add delegates (one by one or pasted in bulk). Each person gets an access code.
   Use **Download all codes (CSV)** to hand them out. Keep that file private.

@@ -11,9 +11,11 @@
 
   DXB.guard('chair').then(function (info) {
     $('hello').textContent = info.committee.id + ' chair';
-    $('tags').appendChild(el('li', { class: 'pt-tag' }, ['Committee ', el('b', { text: info.committee.id }), ' · ' + info.committee.name]));
-    if (info.user.name) $('tags').appendChild(el('li', { class: 'pt-tag' }, ['Chair ', el('b', { text: info.user.name })]));
+    $('id-delegation').textContent = info.committee.name;
+    $('id-committee').textContent = info.committee.id;
+    $('id-name').textContent = info.user.name || 'Committee chair';
     $('logout').addEventListener('click', DXB.signOut);
+    wireShortcuts();
     DXB.crisisChair();
     $('queue').addEventListener('focusout', function () {
       setTimeout(function () { if (deferred && !$('queue').contains(document.activeElement)) { deferred = false; drawQueue(); } }, 0);
@@ -21,6 +23,15 @@
     DXB.poll(loadChits, 3000);
     DXB.poll(loadRoster, 20000);
   }).catch(function (e) { if (e.message !== 'Signed out') DXB.toast(e.message); });
+
+  function wireShortcuts() {
+    [].slice.call(document.querySelectorAll('.chair-tools [data-jump]')).forEach(function (button) {
+      button.addEventListener('click', function () {
+        var target = $(button.dataset.jump);
+        if (target) target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+    });
+  }
 
   function loadRoster() {
     return DXB.api('GET', '/api/chair/roster').then(function (r) {

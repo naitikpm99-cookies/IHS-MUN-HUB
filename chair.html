@@ -17,37 +17,61 @@
 <script src="js/floor.js" defer></script>
 <script src="js/floor-controls.js" defer></script>
 </head>
-<body>
+<body class="delegate-page chair-page">
 
 <header class="nav pt-nav">
-<a class="logo disp" href="index.html">DXB <span>MUN</span></a>
+<a class="logo disp masthead-logo" href="index.html" aria-label="DXB MUN">
+<span class="masthead-word masthead-dxb" aria-hidden="true"><span class="masthead-char">D</span><span class="masthead-char">X</span><span class="masthead-char">B</span></span>
+<span class="masthead-word masthead-mun" aria-hidden="true"><span class="masthead-char">M</span><span class="masthead-char">U</span><span class="masthead-char">N</span></span>
+</a>
+<span class="masthead-gavel" aria-hidden="true">
+<svg viewBox="0 0 100 100" focusable="false">
+<path d="M47 43 78 75" fill="none" stroke="#fff7dc" stroke-linecap="round" stroke-width="9"/>
+<path d="m21 25 17-17 33 33-17 17z" fill="#f2b705" stroke="#fff7dc" stroke-linejoin="round" stroke-width="4"/>
+<path d="m29 17 12 12m17 17 12 12" fill="none" stroke="#7a1425" stroke-linecap="round" stroke-width="4"/>
+</svg>
+</span>
 <nav class="links" aria-label="Account">
 <a class="hide-sm" href="index.html">Website</a>
-<button class="cta" id="logout" type="button">Back to website</button>
+<button class="cta" id="logout" type="button">Sign out</button>
 </nav>
 </header>
 
-<main>
-<section class="pt-hero">
-<div class="pt-in">
-<p class="kicker disp">DXB MUN 2027 · Chair portal</p>
-<h1 class="disp" id="hello">Chair dashboard</h1>
-<ul class="pt-tags" id="tags"></ul>
-<div class="pt-stats">
+<main class="delegate-workspace chair-workspace">
+<section class="delegate-stage workspace-identity chair-identity" id="chair-stage" aria-label="Chair credential">
+<div class="delegate-atmosphere" aria-hidden="true"></div>
+<div class="delegate-card-wrap" id="chair-card-wrap">
+<article class="delegate-id-card" aria-label="Chair identification card">
+<div class="id-noise" aria-hidden="true"></div>
+<div class="id-top"><span>DXB MUN 2027</span><span>CHAIR CREDENTIAL</span></div>
+<div class="id-main"><div class="id-identity"><p class="id-label">Committee chair</p><h1 class="disp" id="hello">Chair</h1><p class="id-delegation" id="id-delegation">Committee</p></div></div>
+<div class="id-bottom"><div><span>Committee</span><b id="id-committee">—</b></div><div><span>Chair</span><b id="id-name">—</b></div><span class="id-mark">VALID · 2027</span></div>
+</article>
+<p class="stage-hint">Chair workspace · Session ready</p>
+</div>
+</section>
+
+<div class="pt-in pt-body workspace-body chair-body">
+<nav class="delegate-tools chair-tools" aria-label="Chair dashboard shortcuts">
+<button type="button" data-jump="crisis-card" aria-controls="crisis-card">01 <span>Crisis</span></button>
+<button type="button" data-jump="floor-card" aria-controls="floor-card">02 <span>Floor</span></button>
+<button type="button" data-jump="queue-card" aria-controls="queue-card">03 <span>Queue</span><b id="tool-q-count" hidden>0</b></button>
+<button type="button" data-jump="tochair-card" aria-controls="tochair-card">04 <span>To chair</span></button>
+<button type="button" data-jump="roster-card" aria-controls="roster-card">05 <span>Roster</span></button>
+<button type="button" data-jump="log-card" aria-controls="log-card">06 <span>Log</span></button>
+</nav>
+<div class="pt-stats chair-stats">
 <div class="pt-stat"><b id="s-wait">0</b><span>Waiting for you</span></div>
 <div class="pt-stat"><b id="s-ok">0</b><span>Approved</span></div>
 <div class="pt-stat"><b id="s-no">0</b><span>Not approved</span></div>
 <div class="pt-stat"><b id="s-del">0</b><span>Delegations</span></div>
 </div>
-</div>
-</section>
+<div class="delegate-guide chair-guide" id="chair-guide" role="status"><b>Chair desk</b><span>Review chits, run the floor, and send updates to your committee.</span></div>
+<div class="pt-grid workspace-grid chair-grid">
 
-<div class="pt-in pt-body">
-<div class="pt-grid">
-
-<section class="pt-card wide crisis-controls" aria-labelledby="crisis-h">
+<section class="pt-card wide crisis-controls chair-crisis" id="crisis-card" aria-labelledby="crisis-h">
 <div class="pt-head">
-<div><p class="eyebrow disp">Crisis · Live to your committee</p><h2 class="disp" id="crisis-h">Drop new intel</h2></div>
+<div><p class="eyebrow disp">Crisis · Live to your committee</p><h2 class="disp" id="crisis-h">Crisis</h2></div>
 <span class="crisis-live-status" id="crisis-active-label">Ready for a crisis</span>
 </div>
 <p class="pt-sub">Share a surprise development with the room screen and every delegate dashboard. Each new update gets a dramatic countdown before the reveal.</p>
@@ -63,7 +87,7 @@
 <p class="f-msg" id="crisis-status" role="status" aria-live="polite">Checking crisis status…</p>
 </section>
 
-<section class="pt-card wide" aria-labelledby="fl-h">
+<section class="pt-card wide chair-floor" id="floor-card" aria-labelledby="fl-h">
 <div class="pt-head"><div><p class="eyebrow disp">Floor</p><h2 class="disp" id="fl-h">Floor timer</h2></div></div>
 <p class="pt-sub">What you start here shows live on the committee screen in the room.</p>
 <p class="fl-status" id="fl-status" role="status" aria-live="polite">Loading…</p>
@@ -132,24 +156,24 @@
 </div>
 </section>
 
-<section class="pt-card" aria-labelledby="q-h">
+<section class="pt-card chair-queue" id="queue-card" aria-labelledby="q-h">
 <div class="pt-head"><div><p class="eyebrow disp">01</p><h2 class="disp" id="q-h">Chit queue <span class="pt-count zero" id="q-count">0</span></h2></div></div>
 <p class="pt-sub">Oldest first. Approve to deliver the chit to its recipient, or reject it with an optional note for the sender.</p>
 <div class="scroll-list" id="queue"></div>
 </section>
 
-<div class="pt-stack">
-<section class="pt-card" aria-labelledby="c-h">
+<div class="pt-stack chair-stack">
+<section class="pt-card" id="tochair-card" aria-labelledby="c-h">
 <div class="pt-head"><div><p class="eyebrow disp">02</p><h2 class="disp" id="c-h">To the Chair <span class="pt-count zero" id="c-count">0</span></h2></div></div>
 <div class="scroll-list" id="tochair"></div>
 </section>
-<section class="pt-card" aria-labelledby="r-h">
+<section class="pt-card" id="roster-card" aria-labelledby="r-h">
 <div class="pt-head"><div><p class="eyebrow disp">03</p><h2 class="disp" id="r-h">Delegations</h2></div></div>
 <ul class="roster" id="roster"></ul>
 </section>
 </div>
 
-<section class="pt-card wide" aria-labelledby="l-h">
+<section class="pt-card wide chair-log" id="log-card" aria-labelledby="l-h">
 <div class="pt-head"><div><p class="eyebrow disp">04</p><h2 class="disp" id="l-h">Chit log</h2></div></div>
 <div class="scroll-list" id="log"></div>
 </section>
