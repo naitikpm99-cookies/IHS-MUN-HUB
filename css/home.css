@@ -570,18 +570,18 @@ footer{position:relative;overflow:hidden;padding:80px 0 28px;background:var(--bg
 .wz{position:fixed;inset:0;z-index:960;overflow:hidden;background:#0B0707;color:var(--cream,#FFF1D0);opacity:0;transition:opacity .9s ease}
 .wz.on{opacity:1}
 .wz-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.wz-flash{position:absolute;inset:0;background:radial-gradient(circle,#FFF1D0 0,rgba(255,241,208,.35) 45%,rgba(11,7,7,0) 75%);opacity:0;pointer-events:none;mix-blend-mode:screen}
+.wz-flash{position:absolute;inset:0;background:radial-gradient(circle,rgba(255,241,208,.5) 0,rgba(11,7,7,0) 60%);opacity:0;pointer-events:none}
 .wz-stage{position:absolute;inset:0;display:grid;place-items:center;padding:4vmin;text-align:center;pointer-events:none}
-.wz-big{font:400 min(44vmin,46vw)/.85 'Anton',Impact,sans-serif;letter-spacing:.02em;color:var(--cream,#FFF1D0);text-shadow:0 0 60px rgba(242,183,5,.35)}
+.wz-big{font:400 min(44vmin,46vw)/.85 'Anton',Impact,sans-serif;letter-spacing:.02em;color:var(--cream,#FFF1D0)}
 .wz-word{font:400 min(15.5vmin,15vw)/1.02 'Anton',Impact,sans-serif;letter-spacing:.035em;text-transform:uppercase;color:var(--cream,#FFF1D0)}
 .wz-ch{display:inline-block;will-change:transform,opacity,filter}
-.wz-word-big .wz-ch{color:var(--gold,#F2B705)}
+.wz-word-big .wz-ch{color:var(--cream,#FFF1D0)}
 .wz-lines{display:grid;gap:.04em;justify-items:center}
 .wz-line{display:block;overflow:hidden;padding:.02em .06em}
 .wz-in{display:inline-block;will-change:transform}
 .wz-welcome .wz-ch{color:var(--cream,#FFF1D0)}
-.wz-final{background:linear-gradient(90deg,#F2B705,#FF5A36,#FFF1D0,#F2B705);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 0 40px rgba(242,183,5,.45))}
+.wz-final{color:var(--cream,#FFF1D0)}
 .wz-prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,241,208,.08)}
-.wz-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7A1425,#FF5A36,#F2B705)}
+.wz-prog i{display:block;height:100%;width:0;background:rgba(255,241,208,.6)}
 .wz-hint{position:absolute;right:16px;bottom:12px;margin:0;font:700 11px 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,241,208,.4)}
 @media (prefers-reduced-motion:reduce){.wz{transition:opacity .4s}}

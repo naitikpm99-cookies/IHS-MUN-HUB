@@ -38,7 +38,7 @@
     size(); window.addEventListener('resize', size);
 
     var scene = { bg: C.black, bgTo: C.black, grid: 0, rays: 0, sweep: -1, ringAt: -1e9, ringRad: 0.22 };
-    var dust = []; for (var i = 0; i < 110; i++) dust.push({ x: Math.random(), y: Math.random(), z: 0.2 + Math.random() * 0.9, s: Math.random() });
+    var dust = []; for (var i = 0; i < 28; i++) dust.push({ x: Math.random(), y: Math.random(), z: 0.2 + Math.random() * 0.9, s: Math.random() });
     var t0 = performance.now(), alive = true, total = 13200;
 
     function hexRGB(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
@@ -66,7 +66,7 @@
       }
       // swiss grid that draws itself in
       if (scene.grid > 0.01) {
-        ctx.strokeStyle = 'rgba(242,183,5,' + (0.12 * scene.grid).toFixed(3) + ')'; ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(255,241,208,' + (0.05 * scene.grid).toFixed(3) + ')'; ctx.lineWidth = 1;
         for (var gx = 1; gx < 12; gx++) { var x = Math.round(W * gx / 12) + 0.5; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H * scene.grid); ctx.stroke(); }
         for (var gy = 1; gy < 8; gy++) { var y = Math.round(H * gy / 8) + 0.5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W * scene.grid, y); ctx.stroke(); }
       }
@@ -74,7 +74,7 @@
       var rage = (now - scene.ringAt) / 720;
       if (rage >= 0 && rage < 1) {
         ctx.beginPath(); ctx.arc(W / 2, H / 2, Math.min(W, H) * (scene.ringRad + rage * 0.9), 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(255,241,208,' + (0.9 * (1 - rage)).toFixed(3) + ')'; ctx.lineWidth = 2 + 10 * (1 - rage); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,241,208,' + (0.5 * (1 - rage)).toFixed(3) + ')'; ctx.lineWidth = 1.5; ctx.stroke();
       }
       // one gold light sweeps across for DELEGATES
       if (scene.sweep >= 0 && scene.sweep <= 1) {
@@ -88,7 +88,7 @@
       for (var d = 0; d < dust.length; d++) {
         var p = dust[d];
         p.y -= 0.00022 * p.z * (1 + scene.rays); if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-        ctx.fillStyle = 'rgba(255,' + (150 + Math.round(90 * p.s)) + ',60,' + (0.12 + 0.25 * p.z).toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(255,241,208,' + (0.06 + 0.14 * p.z).toFixed(3) + ')';
         ctx.beginPath(); ctx.arc(p.x * W, p.y * H, 0.6 + 2.2 * p.z, 0, Math.PI * 2); ctx.fill();
       }
       ctx.globalCompositeOperation = 'source-over';
@@ -113,7 +113,7 @@
       var el = mk('div', 'wz-big', String(n));
       setStage(el);
       anim(el, [{ transform: 'scale(2.6)', opacity: 0, filter: 'blur(14px)' }, { transform: 'scale(.96)', opacity: 1, filter: 'blur(0px)', offset: .55 }, { transform: 'scale(1)', opacity: 1, filter: 'blur(0px)' }], 520);
-      flashNow(0.55);
+      flashNow(0.1);
       scene.ringAt = performance.now(); scene.grid = Math.min(1, scene.grid + 0.2); scene.rays = 0;
       kick(0.7);
     }
@@ -151,8 +151,8 @@
       setStage(el);
       anim(el, [{ transform: 'scale(1.7)', opacity: 0, letterSpacing: '.4em' }, { transform: 'scale(1)', opacity: 1, letterSpacing: '.03em' }], 1500);
       el.animate([{ backgroundPosition: '0% 50%' }, { backgroundPosition: '200% 50%' }], { duration: 2600 * T, iterations: Infinity, delay: 1200 * T });
-      scene.rays = 1; scene.bgTo = C.black; scene.grid = 1;
-      scene.ringAt = performance.now(); flashNow(0.8); kick(0.9);
+      scene.rays = 0; scene.bgTo = C.black; scene.grid = 0.6;
+      scene.ringAt = performance.now(); flashNow(0.12); kick(0.9);
     }
 
     // ---- the show, in time ----
@@ -162,7 +162,7 @@
       [2000, function () { count(3); }],
       [3000, function () { count(2); }],
       [4000, function () { count(1); }],
-      [5000, function () { scene.bgTo = C.maroon; scene.sweep = 0; anim(root, [{}, {}], 1); word('DELEGATES', 'word-big'); kick(0.8); sweepRun(); }],
+      [5000, function () { scene.bgTo = C.black; word('DELEGATES', 'word-big'); kick(0.8); }],
       [6600, function () { scene.bgTo = C.black; lines(['ARE YOU', 'READY?']); kick(0.7); }],
       [8300, function () { scene.bgTo = C.black; welcome(); kick(0.8); }],
       [9900, function () { final(); }]
