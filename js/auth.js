@@ -57,7 +57,10 @@
     ['GET', /^\/api\/committee\/screen$/, function () { return ['committee_screen', {}]; }],
     ['POST', /^\/api\/admin\/committees$/, function (m, b) { return ['admin_add_committee', { p_id: b.id, p_name: b.name }]; }],
     ['DELETE', /^\/api\/admin\/committees\/([A-Za-z0-9-]+)$/, function (m) { return ['admin_remove_committee', { p_id: m[1] }]; }],
-    ['GET', /^\/api\/admin\/chits$/, function () { return ['admin_chits', {}]; }]
+    ['POST', /^\/api\/admin\/import$/, function (m, b) { return ['admin_import', { p_rows: b.rows }]; }],
+    ['GET', /^\/api\/admin\/chits$/, function () { return ['admin_chits', {}]; }],
+    ['GET', /^\/api\/welcome$/, function () { return ['welcome_state', {}, false]; }],
+    ['POST', /^\/api\/admin\/welcome$/, function () { return ['admin_welcome_play', {}]; }],
   ];
   function route(method, url, body) {
     for (var i = 0; i < ROUTES.length; i++) {

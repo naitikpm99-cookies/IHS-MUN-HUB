@@ -13,6 +13,7 @@
 <script src="js/auth.js" defer></script>
 <script src="js/sheets.js" defer></script>
 <script src="js/admin.js" defer></script>
+<script src="js/welcome-admin.js" defer></script>
 </head>
 <body class="admin-page">
 
@@ -39,6 +40,12 @@
 
 <div class="pt-in pt-body">
 <div class="pt-grid">
+<section class="pt-card wide" aria-labelledby="wa-h">
+<div class="pt-head"><div><p class="eyebrow disp">Welcome</p><h2 class="disp" id="wa-h">Welcome animation</h2></div></div>
+<p class="pt-sub">Press play when the room is ready. The homepage (keep it open on the auditorium screen) counts down 5 to 1, shows DELEGATES, ARE YOU READY?, WELCOME and DXB MUN. Press it again to play it again.</p>
+<button class="btn" id="wa-play" type="button">Play welcome animation</button>
+<p class="f-msg" id="wa-msg" role="status" aria-live="polite"></p>
+</section>
 
 <section class="pt-card wide" aria-labelledby="cm-h">
 <div class="pt-head">

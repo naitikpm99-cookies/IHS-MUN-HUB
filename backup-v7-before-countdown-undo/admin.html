@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin dashboard – DXB MUN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/portal.css">
+<script src="js/config.js" defer></script>
+<script src="js/auth.js" defer></script>
+<script src="js/sheets.js" defer></script>
+<script src="js/admin.js" defer></script>
+<script src="js/countdown-admin.js" defer></script>
+<script src="js/countdown.js" defer></script>
+</head>
+<body class="admin-page">
+
+<header class="nav pt-nav">
+<a class="logo disp" href="index.html">DXB <span>MUN</span></a>
+<nav class="links" aria-label="Account">
+<a class="hide-sm" href="index.html">Website</a>
+<button class="cta" id="logout" type="button">Back to website</button>
+</nav>
+</header>
+
+<main>
+<section class="pt-hero admin-hero">
+<div class="pt-in">
+<div class="admin-hero-top"><div><p class="kicker disp">DXB MUN 2027 · Organiser portal</p><h1 class="disp">Control room</h1></div><p class="admin-hero-note">Committee operations, all in one place.</p></div>
+<div class="pt-stats">
+<div class="pt-stat"><b id="s-del">0</b><span>Delegates</span></div>
+<div class="pt-stat"><b id="s-chair">0</b><span>Chairs</span></div>
+<div class="pt-stat"><b id="s-chits">0</b><span>Chits sent</span></div>
+<div class="pt-stat"><b id="s-wait">0</b><span>Waiting for a chair</span></div>
+</div>
+</div>
+</section>
+
+<div class="pt-in pt-body">
+<div class="pt-grid">
+<section class="pt-card wide" aria-labelledby="cd-h">
+<div class="pt-head"><div><p class="eyebrow disp">Welcome</p><h2 class="disp" id="cd-h">Welcome countdown</h2></div></div>
+<p class="pt-sub">Shows a countdown on every page (homepage, sign-in, chair, committee screen and the dashboards) until the date you choose.</p>
+<div class="f-row">
+<div><label class="f-label" for="cd-when">Counting down to</label><input class="f-input" id="cd-when" type="datetime-local"></div>
+<div><label class="f-label" for="cd-title">Message (optional)</label><input class="f-input" id="cd-title" type="text" maxlength="80" placeholder="Welcome to DXB MUN"></div>
+<button class="btn" id="cd-on" type="button">Turn on</button>
+</div>
+<div class="chair-box" style="margin-top:12px"><span id="cd-status" class="pt-sub" style="margin:0">Loading…</span><button class="btn ghost xs" id="cd-off" type="button">Turn off</button></div>
+<p class="f-msg" id="cd-msg" role="status" aria-live="polite"></p>
+</section>
+
+<section class="pt-card wide" aria-labelledby="cm-h">
+<div class="pt-head">
+<div><p class="eyebrow disp">01</p><h2 class="disp" id="cm-h">Committees</h2></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><button class="btn ghost xs" id="toggle-codes" type="button">Show codes</button><button class="btn ghost xs" id="xlsx-all" type="button">Download codes (Excel)</button><button class="btn ghost xs" id="csv" type="button">Download roster + codes (CSV)</button></div>
+</div>
+<p class="pt-sub">Select a committee to manage its delegation, chair and activity.</p>
+<div class="cm-pick" id="pick"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+<div class="f-row">
+<div><label class="f-label" for="n-cid">New committee: acronym</label><input class="f-input" id="n-cid" type="text" maxlength="12" placeholder="e.g. UNICEF" autocomplete="off"></div>
+<div><label class="f-label" for="n-cname">Full name</label><input class="f-input" id="n-cname" type="text" maxlength="100" placeholder="e.g. United Nations Children&rsquo;s Fund" autocomplete="off"></div>
+<button class="btn" id="add-cm" type="button">Add committee</button>
+</div>
+<p class="f-msg" id="cm-msg" role="status" aria-live="polite"></p>
+</section>
+
+<section class="pt-card wide" aria-labelledby="imp-h">
+<div class="pt-head">
+<div><p class="eyebrow disp">Import</p><h2 class="disp" id="imp-h">Import from Excel</h2></div>
+<button class="btn ghost xs" id="tpl" type="button">Download template (Excel)</button>
+</div>
+<p class="pt-sub">Upload an Excel (.xlsx) or CSV file with the columns <b>Committee</b>, <b>Delegation</b> and <b>Name</b> (name is optional). A delegation called <b>Chair</b> creates that committee&rsquo;s chair. A sheet tab named after a committee (for example a tab called UNSC) doesn&rsquo;t need the Committee column. Everyone gets a unique access code, and you can download them all as Excel afterwards.</p>
+<label class="f-label" for="imp-file">Choose a file</label>
+<input class="f-input" id="imp-file" type="file" accept=".xlsx,.csv,.tsv,.txt">
+<div id="imp-preview"></div>
+<div id="imp-result" role="status" aria-live="polite"></div>
+</section>
+
+<section class="pt-card" aria-labelledby="add-h">
+<div class="pt-head"><div><p class="eyebrow disp">02</p><h2 class="disp" id="add-h">Add delegates to <span id="sel-a">…</span></h2></div></div>
+
+<div class="f-row">
+<div><label class="f-label" for="n-deleg">Delegation</label><input class="f-input" id="n-deleg" type="text" maxlength="60" placeholder="e.g. France" autocomplete="off"></div>
+<div><label class="f-label" for="n-name">Delegate name</label><input class="f-input" id="n-name" type="text" maxlength="80" placeholder="Optional" autocomplete="off"></div>
+<button class="btn" id="add-one" type="button">Add</button>
+</div>
+<p class="f-msg" id="add-msg" role="status" aria-live="polite"></p>
+
+<hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+<label class="f-label" for="bulk">Or add many at once</label>
+<p class="pt-sub" style="margin-top:0">One per line: <b>Delegation | Delegate name</b>. The name is optional.</p>
+<textarea class="f-input" id="bulk" placeholder="France | Asha&#10;Brazil | Ben&#10;China"></textarea>
+<button class="btn ghost" id="add-bulk" type="button">Add all</button>
+<div class="bulk-out" id="bulk-out" role="status" aria-live="polite"></div>
+</section>
+
+<div class="pt-stack">
+<section class="pt-card" aria-labelledby="chair-h">
+<div class="pt-head"><div><p class="eyebrow disp">03</p><h2 class="disp" id="chair-h">Chair of <span id="sel-b">…</span></h2></div></div>
+<p class="pt-sub">Each committee has one chair account.</p>
+<div id="chair-box"></div>
+<p class="f-msg" id="chair-msg" role="status" aria-live="polite"></p>
+</section>
+<section class="pt-card" aria-labelledby="screen-h">
+<div class="pt-head"><div><p class="eyebrow disp">04</p><h2 class="disp" id="screen-h">Screen of <span id="sel-d">…</span></h2></div></div>
+<p class="pt-sub">Sign in with this code on the display in the committee room to show its dashboard.</p>
+<div id="screen-box"></div>
+<hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+<button class="btn danger" id="rm-cm" type="button">Remove this committee</button>
+<p class="pt-sub" style="margin:10px 0 0">Permanently removes its chair, delegates, screen and chits.</p>
+</section>
+
+</div>
+
+<section class="pt-card wide" aria-labelledby="tbl-h">
+<div class="pt-head"><div><p class="eyebrow disp">05</p><h2 class="disp" id="tbl-h">Delegates in <span id="sel-c">…</span> <span class="pt-count zero" id="tbl-count">0</span></h2></div></div>
+<div class="tbl-wrap" id="tbl"></div>
+</section>
+
+<section class="pt-card wide" aria-labelledby="log-h">
+<div class="pt-head"><div><p class="eyebrow disp">06</p><h2 class="disp" id="log-h">All chits</h2></div></div>
+<div class="scroll-list" id="log"></div>
+</section>
+
+</div>
+</div>
+</main>
+
+</body>
+</html>

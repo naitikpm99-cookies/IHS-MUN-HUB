@@ -660,6 +660,23 @@ begin
 end $$;
 
 grant execute on function public.crisis_state(text), public.crisis_start(text, text), public.crisis_end(text) to anon, authenticated;
+-- ---------------------------------------------------------------- welcome animation trigger (the admin presses play; the homepage plays it once per press)
+create table if not exists private.cues (id int primary key, seq bigint not null default 0);
+alter table private.cues enable row level security;
+insert into private.cues (id, seq) values (1, 0) on conflict (id) do nothing;
+
+create or replace function public.welcome_state() returns jsonb language sql security definer set search_path = '' as $$
+  select jsonb_build_object('seq', c.seq, 'server_now', private.ms(now())) from private.cues c where c.id = 1 $$;
+
+create or replace function public.admin_welcome_play(p_token text) returns jsonb language plpgsql security definer set search_path = '' as $$
+declare u private.users := private.me(p_token);
+begin
+  perform private.need(u, 'admin');
+  update private.cues set seq = seq + 1 where id = 1;
+  return public.welcome_state();
+end $$;
+
+grant execute on function public.welcome_state(), public.admin_welcome_play(text) to anon, authenticated;
 -- ---------------------------------------------------------------- permissions
   revoke all on all functions in schema private from public, anon, authenticated;
   grant execute on function public.login(text), public.logout(text), public.me(text), public.delegate_roster(text), public.my_chits(text),
