@@ -1,10 +1,9 @@
-// DXB MUN welcome show (homepage). The admin presses play; the homepage sees the new press and runs the show once.
-// Canvas light and grid, kinetic type, a synthesised beat on every count (no audio files, no licences needed).
+// DXB MUN welcome show (homepage): a slow, tense build-up in black and white, then the reveal.
+// Countdown intervals tighten, a low drone and riser build the tension, and every hit is a hard cut. Beats are synthesised.
 (function () {
   if (!window.DXB || !DXB.configured || !DXB.configured()) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var base = null, busy = false, T = reduce ? 0.35 : 1;      // reduced motion: same beats, much calmer
-  var C = { black: '#0B0707', maroon: '#7A1425', fire: '#FF5A36', gold: '#F2B705', cream: '#FFF1D0' };
+  var T = reduce ? 0.4 : 1, base = null, busy = false;
 
   DXB.poll(function () {
     DXB.api('GET', '/api/welcome').then(function (s) {
@@ -13,177 +12,135 @@
     }).catch(function () {});
   }, 2000);
 
-  // ---- sound: a kick on each beat, built from a sine sweep (silent if the browser blocks audio) ----
   var ac = null;
-  function kick(level) {
+  function ctx() {
     try {
       ac = ac || new (window.AudioContext || window.webkitAudioContext)();
       if (ac.state === 'suspended') ac.resume();
-      var o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime;
-      o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.16);
-      g.gain.setValueAtTime(level || 0.6, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
-      o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + 0.32);
-    } catch (e) {}
+      return ac;
+    } catch (e) { return null; }
   }
-
-  function play() {
-    busy = true;
-    var root = mk('div', 'wz'), cv = mk('canvas', 'wz-canvas'), flash = mk('div', 'wz-flash'),
-        stage = mk('div', 'wz-stage'), prog = mk('div', 'wz-prog'), bar = mk('i', ''), hint = mk('p', 'wz-hint');
-    hint.textContent = 'Esc to close'; prog.appendChild(bar);
-    root.appendChild(cv); root.appendChild(flash); root.appendChild(stage); root.appendChild(prog); root.appendChild(hint);
-    document.body.appendChild(root);
-    var ctx = cv.getContext('2d'), W = 0, H = 0, dpr = 1;
-    function size() { dpr = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
-    size(); window.addEventListener('resize', size);
-
-    var scene = { bg: C.black, bgTo: C.black, grid: 0, rays: 0, sweep: -1, ringAt: -1e9, ringRad: 0.22 };
-    var dust = []; for (var i = 0; i < 28; i++) dust.push({ x: Math.random(), y: Math.random(), z: 0.2 + Math.random() * 0.9, s: Math.random() });
-    var t0 = performance.now(), alive = true, total = 13200;
-
-    function hexRGB(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
-    function mix(a, b, k) { var A = hexRGB(a), B = hexRGB(b); return 'rgb(' + A.map(function (v, j) { return Math.round(v + (B[j] - v) * k); }).join(',') + ')'; }
-
-    function draw(now) {
-      if (!alive) return;
-      var t = now - t0;
-      // background colour eases toward its target
-      var tgt = hexRGB(scene.bgTo); scene.bgArr = (scene.bgArr || hexRGB(C.black)).map(function (v, j) { return v + (tgt[j] - v) * 0.05; });
-      scene.bg = 'rgb(' + scene.bgArr.map(Math.round).join(',') + ')';
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = scene.bg; ctx.fillRect(0, 0, W, H);
-      // rays from the centre
-      if (scene.rays > 0.01) {
-        ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(t / 9000);
-        ctx.globalCompositeOperation = 'lighter';
-        for (var r = 0; r < 18; r++) {
-          ctx.rotate(Math.PI * 2 / 18);
-          ctx.beginPath(); ctx.moveTo(0, 0);
-          ctx.lineTo(Math.max(W, H) * 1.2, -Math.max(W, H) * 0.05); ctx.lineTo(Math.max(W, H) * 1.2, Math.max(W, H) * 0.05);
-          ctx.closePath(); ctx.fillStyle = 'rgba(242,183,5,' + (0.05 * scene.rays).toFixed(3) + ')'; ctx.fill();
-        }
-        ctx.restore();
-      }
-      // swiss grid that draws itself in
-      if (scene.grid > 0.01) {
-        ctx.strokeStyle = 'rgba(255,241,208,' + (0.05 * scene.grid).toFixed(3) + ')'; ctx.lineWidth = 1;
-        for (var gx = 1; gx < 12; gx++) { var x = Math.round(W * gx / 12) + 0.5; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H * scene.grid); ctx.stroke(); }
-        for (var gy = 1; gy < 8; gy++) { var y = Math.round(H * gy / 8) + 0.5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W * scene.grid, y); ctx.stroke(); }
-      }
-      // a shockwave ring on each beat
-      var rage = (now - scene.ringAt) / 720;
-      if (rage >= 0 && rage < 1) {
-        ctx.beginPath(); ctx.arc(W / 2, H / 2, Math.min(W, H) * (scene.ringRad + rage * 0.9), 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(255,241,208,' + (0.5 * (1 - rage)).toFixed(3) + ')'; ctx.lineWidth = 1.5; ctx.stroke();
-      }
-      // one gold light sweeps across for DELEGATES
-      if (scene.sweep >= 0 && scene.sweep <= 1) {
-        var sx = -W * 0.3 + W * 1.6 * scene.sweep;
-        var g = ctx.createLinearGradient(sx - 220, 0, sx + 220, 0);
-        g.addColorStop(0, 'rgba(242,183,5,0)'); g.addColorStop(0.5, 'rgba(242,183,5,0.28)'); g.addColorStop(1, 'rgba(242,183,5,0)');
-        ctx.globalCompositeOperation = 'lighter'; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.globalCompositeOperation = 'source-over';
-      }
-      // drifting embers, always
-      ctx.globalCompositeOperation = 'lighter';
-      for (var d = 0; d < dust.length; d++) {
-        var p = dust[d];
-        p.y -= 0.00022 * p.z * (1 + scene.rays); if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-        ctx.fillStyle = 'rgba(255,241,208,' + (0.06 + 0.14 * p.z).toFixed(3) + ')';
-        ctx.beginPath(); ctx.arc(p.x * W, p.y * H, 0.6 + 2.2 * p.z, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.globalCompositeOperation = 'source-over';
-      bar.style.width = Math.min(100, t / total * 100).toFixed(2) + '%';
-      requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
-
-    // ---- text: each stage swaps in with its own motion, the old one is cleared ----
-    var cur = null;
-    function anim(el, frames, ms, delay) { if (el.animate) el.animate(frames, { duration: Math.max(1, ms * T), delay: (delay || 0) * T, fill: 'both', easing: 'cubic-bezier(.2,.8,.2,1)' }); }
-    function chars(text, cls) {
-      var wrap = mk('span', cls);
-      text.split('').forEach(function (ch, k) { var s = mk('span', 'wz-ch'); s.textContent = ch === ' ' ? '\u00a0' : ch; s.style.setProperty('--k', k); wrap.appendChild(s); });
-      return wrap;
-    }
-    function setStage(node) {
-      if (cur) { var old = cur; cur = null; old.style.transition = 'opacity .15s'; old.style.opacity = '0'; setTimeout(function () { if (old.parentNode) old.parentNode.removeChild(old); }, 160); }
-      cur = node; stage.appendChild(node);
-    }
-    function count(n) {
-      var el = mk('div', 'wz-big', String(n));
-      setStage(el);
-      anim(el, [{ transform: 'scale(2.6)', opacity: 0, filter: 'blur(14px)' }, { transform: 'scale(.96)', opacity: 1, filter: 'blur(0px)', offset: .55 }, { transform: 'scale(1)', opacity: 1, filter: 'blur(0px)' }], 520);
-      flashNow(0.1);
-      scene.ringAt = performance.now(); scene.grid = Math.min(1, scene.grid + 0.2); scene.rays = 0;
-      kick(0.7);
-    }
-    function flashNow(a) { anim(flash, [{ opacity: a }, { opacity: 0 }], 260); }
-
-    function word(text, kind) {
-      var el = chars(text, 'wz-word wz-' + kind);
-      setStage(el);
-      var list = el.querySelectorAll('.wz-ch');
-      for (var k = 0; k < list.length; k++) {
-        var side = k % 2 ? 1 : -1;
-        list[k].animate([{ transform: 'translateX(' + side * 70 + 'vw) skewX(' + side * -18 + 'deg)', opacity: 0, filter: 'blur(10px)' }, { transform: 'none', opacity: 1, filter: 'blur(0px)' }],
-          { duration: 760 * T, delay: k * 42 * T, fill: 'both', easing: 'cubic-bezier(.16,.9,.2,1)' });
-      }
-    }
-    function lines(parts) {
-      var el = mk('div', 'wz-word wz-lines');
-      parts.forEach(function (p, i) {
-        var row = mk('span', 'wz-line'); var inner = mk('span', 'wz-in', p); row.appendChild(inner); el.appendChild(row);
-        anim(inner, [{ transform: 'translateY(115%)' }, { transform: 'none' }], 700, i * 150);
-      });
-      setStage(el);
-    }
-    function welcome() {
-      var el = chars('WELCOME', 'wz-word wz-welcome');
-      setStage(el);
-      var list = el.querySelectorAll('.wz-ch');
-      for (var k = 0; k < list.length; k++) {
-        list[k].animate([{ transform: 'translateY(-160%) rotate(-12deg)', opacity: 0 }, { transform: 'translateY(6%) rotate(2deg)', opacity: 1, offset: .7 }, { transform: 'none', opacity: 1 }],
-          { duration: 820 * T, delay: k * 70 * T, fill: 'both', easing: 'cubic-bezier(.3,1.3,.5,1)' });
-      }
-    }
-    function final() {
-      var el = mk('div', 'wz-big wz-final', 'DXB MUN');
-      setStage(el);
-      anim(el, [{ transform: 'scale(1.7)', opacity: 0, letterSpacing: '.4em' }, { transform: 'scale(1)', opacity: 1, letterSpacing: '.03em' }], 1500);
-      el.animate([{ backgroundPosition: '0% 50%' }, { backgroundPosition: '200% 50%' }], { duration: 2600 * T, iterations: Infinity, delay: 1200 * T });
-      scene.rays = 0; scene.bgTo = C.black; scene.grid = 0.6;
-      scene.ringAt = performance.now(); flashNow(0.12); kick(0.9);
-    }
-
-    // ---- the show, in time ----
-    var steps = [
-      [0, function () { scene.bgTo = C.black; count(5); }],
-      [1000, function () { count(4); }],
-      [2000, function () { count(3); }],
-      [3000, function () { count(2); }],
-      [4000, function () { count(1); }],
-      [5000, function () { scene.bgTo = C.black; word('DELEGATES', 'word-big'); kick(0.8); }],
-      [6600, function () { scene.bgTo = C.black; lines(['ARE YOU', 'READY?']); kick(0.7); }],
-      [8300, function () { scene.bgTo = C.black; welcome(); kick(0.8); }],
-      [9900, function () { final(); }]
-    ];
-    steps.forEach(function (s) { setTimeout(function () { if (alive) s[1](); }, s[0] * T); });
-    function sweepRun() { var t1 = performance.now(), dur = 1100 * T; (function f(now) { var k = (now - t1) / dur; scene.sweep = Math.min(1, k); if (k < 1 && alive) requestAnimationFrame(f); else scene.sweep = -1; })(t1); }
-    // (time is scaled for reduced motion; the sequence length is the same)
-
-    function finish() {
-      if (!alive) return;
-      alive = false;
-      window.removeEventListener('resize', size);
-      document.removeEventListener('keydown', onKey);
-      root.style.transition = 'opacity .9s'; root.style.opacity = '0';
-      setTimeout(function () { if (root.parentNode) root.parentNode.removeChild(root); busy = false; }, 950);
-    }
-    function onKey(e) { if (e.key === 'Escape') finish(); }
-    document.addEventListener('keydown', onKey);
-    setTimeout(finish, total * T);
-    requestAnimationFrame(function () { root.classList.add('on'); });
+  function beat(level) {
+    var a = ctx(); if (!a) return;
+    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(38, t + 0.18);
+    g.gain.setValueAtTime(level || 0.6, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.34);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + 0.36);
+  }
+  // a low drone that swells under the countdown
+  function drone(ms) {
+    var a = ctx(); if (!a) return null;
+    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.type = 'sine'; o.frequency.value = 55;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.09, t + ms / 1000 * 0.6);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + ms / 1000 + 0.2);
+    return o;
+  }
+  // a rising riser that builds into the reveal
+  function riser(ms) {
+    var a = ctx(); if (!a) return;
+    var o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(70, t); o.frequency.exponentialRampToValueAtTime(900, t + ms / 1000);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + ms / 1000 * 0.9); g.gain.exponentialRampToValueAtTime(0.0001, t + ms / 1000 + 0.05);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + ms / 1000 + 0.1);
   }
 
   function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+
+  function play() {
+    busy = true;
+    var root = mk('div', 'wz'), grain = mk('canvas', 'wz-grain'), flash = mk('div', 'wz-flash'), streak = mk('div', 'wz-streak');
+    var bTop = mk('div', 'wz-bar top'), bBot = mk('div', 'wz-bar bot'), stage = mk('div', 'wz-stage');
+    var prog = mk('div', 'wz-prog'), bar = mk('i'), hint = mk('p', 'wz-hint', 'Esc');
+    var scan = mk('div', 'wz-scan'), tc = mk('div', 'wz-tc', '00:00:00:00'), live = mk('div', 'wz-live', 'LIVE');
+    prog.appendChild(bar);
+    [grain, flash, streak, stage, bTop, bBot, scan, mk('div', 'wz-crt'), mk('div', 'wz-roll'), tc, live, prog, hint].forEach(function (n) { root.appendChild(n); });
+    document.body.appendChild(root);
+    requestAnimationFrame(function () { root.classList.add('on', 'power'); });
+
+    var g = grain.getContext('2d'), W = 0, H = 0, frame = 0, alive = true, total = 26000;
+    var noise = document.createElement('canvas'); noise.width = noise.height = 128;
+    var nctx = noise.getContext('2d'), t0 = performance.now();
+    function size() { W = grain.width = root.clientWidth; H = grain.height = root.clientHeight; }
+    size(); window.addEventListener('resize', size);
+    function grainLoop() {
+      if (!alive) return;
+      if (frame++ % 2 === 0) {
+        var id = nctx.createImageData(128, 128);
+        for (var i = 0; i < id.data.length; i += 4) { var v = Math.random() * 255; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; }
+        nctx.putImageData(id, 0, 0);
+      }
+      g.clearRect(0, 0, W, H); g.fillStyle = g.createPattern(noise, 'repeat'); g.fillRect(0, 0, W, H);
+      bar.style.width = Math.min(100, (performance.now() - t0) / total * 100).toFixed(2) + '%';
+      var ms = performance.now() - t0, fr = Math.floor((ms % 1000) / 1000 * 25), sec = Math.floor(ms / 1000);
+      tc.textContent = ['00', ('0' + Math.floor(sec / 60)).slice(-2), ('0' + (sec % 60)).slice(-2), ('0' + fr).slice(-2)].join(':');
+      requestAnimationFrame(grainLoop);
+    }
+    requestAnimationFrame(grainLoop);
+
+    function hit() { restart(flash, 'hit'); restart(streak, 'hit'); beat(0.85); }
+    function cut(node) { stage.replaceChildren(node); restart(stage, 'push'); }
+    function silence() { stage.replaceChildren(); }
+    function anim(el, frames, ms, delay) { if (el.animate) el.animate(frames, { duration: Math.max(1, ms * T), delay: (delay || 0) * T, fill: 'both', easing: 'cubic-bezier(.2,.8,.2,1)' }); }
+
+    function num(n) { cut(mk('div', 'wz-num', String(n))); hit(); }
+    function track(text) {
+      var el = mk('div', 'wz-track', text); cut(el);
+      anim(el, [{ letterSpacing: '.8em', opacity: 0, filter: 'blur(14px)' }, { letterSpacing: '.02em', opacity: 1, filter: 'blur(0px)' }], 1800);
+      restart(streak, 'hit'); beat(0.5);
+    }
+    function heartbeat(lines) {
+      var wrap = mk('div', 'wz-lines');
+      lines.forEach(function (l, i) {
+        var s = mk('div', 'wz-line', l); wrap.appendChild(s);
+        if (s.animate) s.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0 }, { opacity: 1 }], { duration: 900 * T, delay: i * 900 * T, fill: 'both' });
+      });
+      cut(wrap);
+      beat(0.7); setTimeout(function () { if (alive) beat(0.45); }, 260 * T);
+      setTimeout(function () { if (alive) { beat(0.7); } }, 900 * T);
+      setTimeout(function () { if (alive) { beat(0.45); } }, 1160 * T);
+    }
+    function welcome() {
+      var el = mk('div', 'wz-welcome', 'WELCOME'); cut(el);
+      if (el.animate) el.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1200 * T, fill: 'both', easing: 'cubic-bezier(.7,0,.2,1)' });
+      hit();
+    }
+    function final() {
+      var el = mk('div', 'wz-final');
+      el.appendChild(document.createTextNode('DXB '));
+      el.appendChild(mk('span', 'acc', 'MUN'));
+      cut(el);
+      anim(el, [{ transform: 'scale(1.22)', letterSpacing: '.14em', opacity: 0 }, { transform: 'scale(1)', letterSpacing: '.04em', opacity: 1 }], 2400);
+      hit();
+    }
+
+    // the build-up: a drone under a dark room, then the countdown speeds up
+    drone(7600);
+    var steps = [
+      [1800, function () { num(5); }], [3400, function () { num(4); }], [4800, function () { num(3); }],
+      [6000, function () { num(2); }], [7000, function () { num(1); }],
+      [8100, function () { silence(); riser(2100); }],
+      [10400, function () { track('DELEGATES'); }],
+      [13200, function () { silence(); }],
+      [13800, function () { heartbeat(['ARE YOU', 'READY?']); }],
+      [16400, function () { silence(); }],
+      [16900, function () { welcome(); }],
+      [19600, function () { final(); }],
+      [24800, function () { root.classList.add('out'); }]
+    ];
+    steps.forEach(function (s) { setTimeout(function () { if (alive) s[1](); }, s[0] * T); });
+
+    function onKey(e) { if (e.key === 'Escape') finish(); }
+    document.addEventListener('keydown', onKey);
+    function finish() {
+      if (!alive) return;
+      alive = false;
+      document.removeEventListener('keydown', onKey);
+      root.classList.add('off');
+      setTimeout(function () { root.classList.remove('on'); }, 560);
+      setTimeout(function () { if (root.parentNode) root.parentNode.removeChild(root); busy = false; }, 1100);
+    }
+    setTimeout(finish, total * T);
+  }
 })();

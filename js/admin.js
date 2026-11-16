@@ -336,14 +336,19 @@
     DXB.toast('Downloaded ' + lastCreated.length + ' codes. Keep the file private.');
   }
   function downloadAllXlsx() {
-    var rows = [];
+    var chairs = [], screens = [], delegates = [];
     ov.committees.forEach(function (c) {
-      if (c.chair) rows.push([c.id, 'Chair', 'Chair', c.chair.name, c.chair.code]);
-      if (c.screen) rows.push([c.id, 'Screen', 'Committee screen', '', c.screen.code]);
-      c.delegates.forEach(function (d) { rows.push([c.id, 'Delegate', d.delegation, d.name, d.code]); });
+      if (c.chair) chairs.push([c.id, c.name, c.chair.name, c.chair.code]);
+      if (c.screen) screens.push([c.id, c.name, c.screen.code]);
+      c.delegates.forEach(function (d) { delegates.push([c.id, d.delegation, d.name, d.code]); });
     });
-    codesXlsx(rows, 'dxb-mun-access-codes.xlsx');
-    DXB.toast('Downloaded ' + rows.length + ' codes. Keep the file private.');
+    var sheets = [
+      { name: 'Chairs', rows: [['Committee', 'Committee name', 'Chair name', 'Access code']].concat(chairs), widths: [14, 44, 26, 18] },
+      { name: 'Committee screens', rows: [['Committee', 'Committee name', 'Access code']].concat(screens), widths: [14, 44, 18] },
+      { name: 'Delegates', rows: [['Committee', 'Delegation', 'Name', 'Access code']].concat(delegates), widths: [14, 30, 28, 18] }
+    ];
+    DXBSheets.download(DXBSheets.buildXlsx(sheets), 'dxb-mun-codes-by-committee.xlsx');
+    DXB.toast('Downloaded ' + (chairs.length + screens.length + delegates.length) + ' codes in three tabs. Keep the file private.');
   }
   function downloadTemplate() {
     var a = ov && ov.committees.length ? ov.committees[0].id : 'UNSC', b = ov && ov.committees.length > 1 ? ov.committees[1].id : a;
