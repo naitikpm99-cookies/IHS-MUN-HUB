@@ -55,9 +55,9 @@
     var prog = mk('div', 'wz-prog'), bar = mk('i'), hint = mk('p', 'wz-hint', 'Esc');
     var scan = mk('div', 'wz-scan'), tc = mk('div', 'wz-tc', '00:00:00:00'), live = mk('div', 'wz-live', 'LIVE');
     prog.appendChild(bar);
-    [grain, flash, streak, stage, bTop, bBot, scan, mk('div', 'wz-crt'), mk('div', 'wz-roll'), tc, live, prog, hint].forEach(function (n) { root.appendChild(n); });
+    [grain, flash, streak, stage, bTop, bBot, prog, hint].forEach(function (n) { root.appendChild(n); });
     document.body.appendChild(root);
-    requestAnimationFrame(function () { root.classList.add('on', 'power'); });
+    requestAnimationFrame(function () { root.classList.add('on', 'iris-in'); });
 
     var g = grain.getContext('2d'), W = 0, H = 0, frame = 0, alive = true, total = 26000;
     var noise = document.createElement('canvas'); noise.width = noise.height = 128;
@@ -115,9 +115,17 @@
       hit();
     }
 
+    function stamp(text, ms) {
+      var el = mk('div', 'wz-stamp', text); root.appendChild(el);
+      if (el.animate) el.animate([{ transform: 'translate(-50%,-50%) rotate(-8deg) scale(2.4)', opacity: 0 }, { transform: 'translate(-50%,-50%) rotate(-8deg) scale(1)', opacity: 0.95 }], { duration: 420 * T, fill: 'both', easing: 'cubic-bezier(.2,.8,.2,1)' });
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, ms * T);
+      beat(0.8);
+    }
+
     // the build-up: a drone under a dark room, then the countdown speeds up
     drone(7600);
     var steps = [
+      [1500, function () { stamp('CLASSIFIED', 1800); }],
       [1800, function () { num(5); }], [3400, function () { num(4); }], [4800, function () { num(3); }],
       [6000, function () { num(2); }], [7000, function () { num(1); }],
       [8100, function () { silence(); riser(2100); }],
@@ -137,9 +145,9 @@
       if (!alive) return;
       alive = false;
       document.removeEventListener('keydown', onKey);
-      root.classList.add('off');
-      setTimeout(function () { root.classList.remove('on'); }, 560);
-      setTimeout(function () { if (root.parentNode) root.parentNode.removeChild(root); busy = false; }, 1100);
+      root.classList.add('iris-out');
+      setTimeout(function () { root.classList.remove('on'); }, 1200);
+      setTimeout(function () { if (root.parentNode) root.parentNode.removeChild(root); busy = false; }, 1300);
     }
     setTimeout(finish, total * T);
   }

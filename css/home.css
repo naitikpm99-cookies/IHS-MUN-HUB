@@ -608,14 +608,10 @@ footer{position:relative;overflow:hidden;padding:80px 0 28px;background:var(--bg
 .wz-live{position:absolute;right:18px;top:calc(3cqh + 8px);z-index:6;padding:4px 10px 4px 22px;font:700 11px 'DM Sans',sans-serif;letter-spacing:.2em;color:#fff;background:#E10600;border-radius:2px}
 .wz-live::before{content:"";position:absolute;left:8px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:#fff;animation:wz-blink 1s steps(2,start) infinite}
 @keyframes wz-blink{50%{opacity:0}}
-/* CRT television look */
-.wz-stage{filter:drop-shadow(-2px 0 0 rgba(255,40,40,.4)) drop-shadow(2px 0 0 rgba(60,170,255,.35));animation:wz-flicker 3.2s steps(1,end) infinite}
-@keyframes wz-flicker{0%,100%{opacity:1}91%{opacity:.97}92%{opacity:1}96%{opacity:.9}97%{opacity:1}}
-.wz-crt{position:absolute;inset:0;pointer-events:none;z-index:7;background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 58%,rgba(0,0,0,.55) 88%,rgba(0,0,0,.95) 100%);box-shadow:inset 0 0 14cqmin rgba(0,0,0,.95)}
-.wz-roll{position:absolute;left:0;right:0;height:22cqh;top:-24cqh;z-index:7;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.035) 45%,rgba(255,255,255,.07) 50%,rgba(255,255,255,.035) 55%,rgba(255,255,255,0));animation:wz-roll 6s linear infinite}
-@keyframes wz-roll{to{transform:translateY(150cqh)}}
-.wz.power{animation:wz-power .9s cubic-bezier(.2,.7,.2,1) both}
-@keyframes wz-power{0%{transform:scale(1,.004);filter:brightness(5)}30%{transform:scale(1,.012);filter:brightness(3)}60%{transform:scale(1,1);filter:brightness(1.6)}100%{transform:scale(1,1);filter:brightness(1)}}
-.wz.off{animation:wz-off .62s cubic-bezier(.6,0,.9,.4) forwards;opacity:1}
-@keyframes wz-off{0%{transform:scale(1,1);filter:brightness(1)}55%{transform:scale(1,.006);filter:brightness(4)}100%{transform:scale(.01,.006);filter:brightness(8);opacity:0}}
-@media (prefers-reduced-motion:reduce){.wz.power,.wz.off,.wz-stage,.wz-roll{animation:none}}
+/* spy theme: iris wipe, classified stamp (js/welcome.js) */
+.wz.iris-in{animation:wz-iris-in 1.4s cubic-bezier(.6,0,.2,1) both}
+@keyframes wz-iris-in{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(80% at 50% 50%)}}
+.wz.iris-out{animation:wz-iris-out 1.2s cubic-bezier(.6,0,.9,.4) forwards}
+@keyframes wz-iris-out{from{clip-path:circle(80% at 50% 50%)}to{clip-path:circle(0% at 50% 50%)}}
+.wz-stamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);padding:.25em .6em;border:.07em solid #fff;color:#fff;font:400 min(12cqh,13cqw)/1 'Anton',Impact,sans-serif;letter-spacing:.14em;text-transform:uppercase;z-index:8;pointer-events:none;background:rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:reduce){.wz.iris-in,.wz.iris-out{animation:none}}
